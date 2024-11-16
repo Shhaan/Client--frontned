@@ -37,7 +37,7 @@ function Dashboard() {
     const fetchproduct = async () => {
       try {
         const axios = createAxiosInstanceWithAuth();
-        const productResponse = await axios.get(`main/invoice`);
+        const productResponse = await axios.get(`main/invoice/`);
         setproduct(productResponse?.data?.results);
 
         setTotalPages(Math.ceil(productResponse.data.count / 40));

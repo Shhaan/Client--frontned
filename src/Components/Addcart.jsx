@@ -18,7 +18,7 @@ const AddToCartButton = ({ deal }) => {
     e.stopPropagation(); // Prevent event bubbling
     try {
       const customization = await axiosInstancemain.get(
-        `/customize/${deal?.product_id}`
+        `/customize/${deal?.product_id}/`
       );
 
       if (customization?.data?.message?.length > 0) {

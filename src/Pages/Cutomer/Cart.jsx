@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import React, { useEffect, useRef, useState } from "react";
 import style from "../../Main.module.css";
 import { useDispatch, useSelector } from "react-redux";
-import { axiosInstancemain, baseURL } from "../../Functions/axios";
+import { baseURL } from "../../Functions/axios";
 import {
   FaPlusCircle,
   FaMinusCircle,

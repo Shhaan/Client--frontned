@@ -17,7 +17,7 @@ function Dashboard() {
   useEffect(() => {
     const fetchCategory = async () => {
       try {
-        const { data } = await axiosInstancemain.get("category");
+        const { data } = await axiosInstancemain.get("category/");
         setcategory(data?.message);
       } catch (error) {
         console.error("Failed to fetch categories:", error);

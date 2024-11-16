@@ -37,13 +37,13 @@ export const Categoryproduct = () => {
         setProduct([]); // Clear previous products
 
         const productResponse = await axiosInstancemain.get(
-          `/products/?category=${id}`
+          `/products/?category=${id}/`
         );
         setProduct(productResponse?.data?.results || []);
         setNextPage(productResponse?.data?.next);
 
         const categoryResponse = await axiosInstancemain.get(
-          `category/?name=${id}`
+          `category/?name=${id}/`
         );
         setCategory(categoryResponse?.data?.message);
       } catch (error) {
