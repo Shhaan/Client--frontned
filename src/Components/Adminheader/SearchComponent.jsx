@@ -35,7 +35,7 @@ function SearchComponent({
       try {
         const token = localStorage.getItem("token");
         const response = await axiosInstancemain.get(
-          `/${api}/?search=${searchValue}`,
+          `${api}/?search=${searchValue}`,
           { headers: { Authorization: `Token ${token}` } }
         );
         if (response.status === 200) {
@@ -44,9 +44,7 @@ function SearchComponent({
           setcurrent(1);
         }
       } catch (error) {
-        toast.error(error?.response?.data?.message || "An error occurred", {
-          duration: 3000,
-        });
+        console.log(error);
       }
     };
     fetchsearch();
