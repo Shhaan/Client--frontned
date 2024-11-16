@@ -50,9 +50,8 @@ function Dashboard() {
     const fetchcategory = async () => {
       try {
         const token = localStorage.getItem("token");
- 
+
         const data = await axiosInstancemain.get("category/", {
- 
           headers: { Authorization: `Token ${token}` },
         });
         setcategory(data?.data?.message);
@@ -210,6 +209,11 @@ function Dashboard() {
         });
       }
 
+      if (error?.response?.data?.message) {
+        return toast.error(error?.response?.data?.message, {
+          position: "top-center",
+        });
+      }
       toast.error("An error occured", {
         position: "top-center",
       });
