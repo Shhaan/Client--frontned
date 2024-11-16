@@ -8,6 +8,7 @@ import { FaTimes } from "react-icons/fa";
 const CustomizationPopup = ({ deal, onClose, cutomization }) => {
   const dispatch = useDispatch();
   const { items: cartItems } = useSelector((state) => state.cart);
+  console.log(cutomization);
 
   const handleAddToCart = (option) => {
     const customizedDeal = { ...deal, customization: option.name, count: 1 };
@@ -40,7 +41,7 @@ const CustomizationPopup = ({ deal, onClose, cutomization }) => {
           className={styles.customizationOption}
         >
           <img
-            src={`${baseURL}/${option.image}`}
+            src={`${baseURL}${option.image}`}
             alt={option.name}
             className={styles.customizationImage}
           />
