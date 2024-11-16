@@ -1,8 +1,10 @@
 import axios from "axios";
-export const baseURL = "http://192.168.1.67:8000";
-const baseURLmain = "http://192.168.1.67:8000/main";
-export const phone = +919567960644;
-export const whatsappapi = "https://api.whatsapp.com/send/?phone";
+
+const baseURL = process.env.REACT_APP_BASE_URL;
+const baseURLmain = process.env.REACT_APP_BASE_URL_MAIN;
+export const phone = process.env.REACT_APP_PHONE;
+export const whatsappapi = process.env.REACT_APP_WHATSAPP_API;
+
 export const axiosInstance = axios.create({
   baseURL: baseURL,
 });
@@ -14,6 +16,7 @@ export const createAxiosInstanceWithAuth = () => {
     headers: { Authorization: `Token ${token}` },
   });
 };
+
 export const axiosInstancemain = axios.create({
   baseURL: baseURLmain,
 });
