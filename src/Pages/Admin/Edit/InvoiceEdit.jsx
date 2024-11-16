@@ -324,7 +324,7 @@ function Dashboard() {
                       <Input
                         value={i?.customize}
                         style={{ height: "52px" }}
-                        placeholder="Customize"
+                        placeholder="Cutting size"
                         type="text"
                         onChange={(e) => {
                           const newPrice = e.target.value;

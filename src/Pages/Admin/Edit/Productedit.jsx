@@ -101,9 +101,9 @@ function Dashboard() {
           const initializeCustomizationItems = async (dataMessage) => {
             const customizationData = await Promise.all(
               dataMessage.customize.map(async (item) => {
-                const originFileObj = await createFileObject(
-                  baseURL + item.image
-                );
+                const originFileObj = item?.image
+                  ? await createFileObject(baseURL + item.image)
+                  : "";
                 return {
                   text: item.text || "",
                   image: [
@@ -111,7 +111,7 @@ function Dashboard() {
                       uid: "-1",
                       name: originFileObj.name || "image.png",
                       status: "done",
-                      url: baseURL + item.image,
+                      url: item?.image ? baseURL + item.image : null,
                       originFileObj: originFileObj,
                     },
                   ],
@@ -175,7 +175,6 @@ function Dashboard() {
     if (customizationItems) {
       for (let index = 0; index < customizationItems.length; index++) {
         const item = customizationItems[index];
-        console.log(item);
 
         formData.append(`customize[${index}][text]`, item.text || "");
 
@@ -184,9 +183,6 @@ function Dashboard() {
             `customize[${index}][image]`,
             item.image[0].originFileObj
           );
-        } else {
-          message.error("Image required for customization", 3000);
-          return;
         }
       }
     }
@@ -310,7 +306,7 @@ function Dashboard() {
 
               <Form.Item
                 name="count"
-                label="count"
+                label="Stock"
                 labelCol={{ span: 24 }}
                 wrapperCol={{ span: 24 }}
                 className={style.inputofadd}
@@ -318,7 +314,7 @@ function Dashboard() {
                 <Input
                   type="text"
                   style={{ height: "52px" }}
-                  placeholder="count"
+                  placeholder="Stock"
                 />
               </Form.Item>
 
@@ -388,12 +384,12 @@ function Dashboard() {
                 </Form.Item>
               </Form.Item>
 
-              <Form.Item label="Customization Items">
+              <Form.Item label="Cutting size">
                 {customizationItems.map((item, index) => (
                   <Row key={index} gutter={16} style={{ marginBottom: "8px" }}>
                     <Col span={12}>
                       <Input
-                        placeholder={`Customization Item ${index + 1}`}
+                        placeholder={`Cutting Item ${index + 1}`}
                         value={item.text}
                         onChange={(e) =>
                           handleCustomizationChange(

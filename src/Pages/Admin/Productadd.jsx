@@ -32,6 +32,7 @@ function Dashboard() {
     const fetchcategory = async () => {
       try {
         const token = localStorage.getItem("token");
+
         const data = await axiosInstancemain.get("category/", {
           headers: { Authorization: `Token ${token}` },
         });
@@ -83,7 +84,7 @@ function Dashboard() {
 
     try {
       const token = localStorage.getItem("token");
-      const response = await axiosInstancemain.post("products/", formData, {
+      const response = await axiosInstancemain.post("/products/", formData, {
         headers: { Authorization: `Token ${token}` },
       });
 
@@ -199,7 +200,7 @@ function Dashboard() {
 
               <Form.Item
                 name="count"
-                label="Count"
+                label="Stock"
                 labelCol={{ span: 24 }}
                 wrapperCol={{ span: 24 }}
                 className={style.inputofadd}
@@ -207,7 +208,7 @@ function Dashboard() {
                 <Input
                   type="number"
                   style={{ height: "52px" }}
-                  placeholder="Count"
+                  placeholder="Stock"
                   min={1}
                 />
               </Form.Item>
@@ -278,7 +279,7 @@ function Dashboard() {
                 </Form.Item>
               </Form.Item>
 
-              <Form.Item label="Customization Items">
+              <Form.Item label="Cutting size">
                 {customizationItems.map((item, index) => (
                   <Row key={index} gutter={16} style={{ marginBottom: "8px" }}>
                     <Col
@@ -291,7 +292,7 @@ function Dashboard() {
                       }}
                     >
                       <Input
-                        placeholder={`Customization Item ${index + 1}`}
+                        placeholder={`Cutting size ${index + 1}`}
                         value={item.text}
                         onChange={(e) =>
                           handleCustomizationChange(
