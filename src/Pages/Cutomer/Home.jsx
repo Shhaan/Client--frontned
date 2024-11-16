@@ -20,7 +20,7 @@ const Home = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axiosInstancemain.get("/category");
+        const response = await axiosInstancemain.get("/category/");
         setCategories(response?.data?.message);
       } catch (error) {
         toast.error(error?.response?.data?.message);
@@ -39,7 +39,7 @@ const Home = () => {
     fetchDeals();
     const fetchBestSellers = async () => {
       try {
-        const response = await axiosInstancemain.get("/best-seller");
+        const response = await axiosInstancemain.get("/best-seller/");
         setBestSellers(response?.data?.message);
         console.log(response?.data?.message, "bestSellers");
       } catch (error) {

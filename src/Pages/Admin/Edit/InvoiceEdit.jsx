@@ -106,7 +106,6 @@ function Dashboard() {
 
     try {
       const axios = createAxiosInstanceWithAuth();
-      console.log(values);
 
       const data = await axios.put("main/invoice/", {
         invoiceid: id,
