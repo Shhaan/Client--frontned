@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseURL = process.env.REACT_APP_BASE_URL;
+export const baseURL = process.env.REACT_APP_BASE_URL;
 const baseURLmain = process.env.REACT_APP_BASE_URL_MAIN;
 export const phone = process.env.REACT_APP_PHONE;
 export const whatsappapi = process.env.REACT_APP_WHATSAPP_API;
