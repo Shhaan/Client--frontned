@@ -17,7 +17,9 @@ function Dashboard() {
   useEffect(() => {
     const fetchCategory = async () => {
       try {
+ 
         const { data } = await axiosInstancemain.get("category/");
+
         setcategory(data?.message);
       } catch (error) {
         console.error("Failed to fetch categories:", error);
@@ -39,7 +41,7 @@ function Dashboard() {
 
     try {
       const token = localStorage.getItem("token");
-      const response = await axiosInstancemain.post("category/", formData, {
+      const response = await axiosInstancemain.post("/category/", formData, {
         headers: { Authorization: `Token ${token}` },
       });
       toast.success("Upload successful!");

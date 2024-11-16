@@ -30,7 +30,7 @@ function Dashboard() {
   useEffect(() => {
     const fetchinvoice = async () => {
       try {
-        const { data } = await axiosInstancemain.get(`invoice/`, {
+        const { data } = await axiosInstancemain.get(`/invoice/`, {
           headers: {
             Authorization: `Token ${localStorage.getItem("token")}`,
           },
@@ -123,7 +123,7 @@ function Dashboard() {
   const hanldekichenpdfclick = async (id) => {
     try {
       const response = await axiosInstance.get(
-        `invoice/generate-kichen-pdf/${id}/`,
+        `/invoice/generate-kichen-pdf/${id}/`,
         {
           headers: { Authorization: `Token ${localStorage.getItem("token")}` },
           responseType: "blob",
@@ -148,7 +148,7 @@ function Dashboard() {
 
   const hanldepdfclick = async (id) => {
     try {
-      const response = await axiosInstance.get(`invoice/generate-pdf/${id}/`, {
+      const response = await axiosInstance.get(`/invoice/generate-pdf/${id}/`, {
         headers: { Authorization: `Token ${localStorage.getItem("token")}` },
         responseType: "blob",
       });

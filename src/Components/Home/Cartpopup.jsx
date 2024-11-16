@@ -15,7 +15,7 @@ function Cartpopup({ today, slot, setslot, setselectedtime, selectedtime }) {
   useEffect(() => {
     const fetchdata = async () => {
       try {
-        const { data } = await axiosInstancemain.get("get-timeslot/");
+        const { data } = await axiosInstancemain.get("/get-timeslot/");
         settodayslot(data.today || { timeslote: [] });
         settomorrowslot(data.tomorrow || { timeslote: [] });
 

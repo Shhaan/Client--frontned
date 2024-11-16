@@ -14,7 +14,7 @@ const InvoiceProduct = ({ onclose, setSelectedProducts }) => {
   useEffect(() => {
     const fetchCategory = async () => {
       try {
-        const { data } = await axiosInstancemain.get("product-customize/", {
+        const { data } = await axiosInstancemain.get("/product-customize/", {
           headers: { Authorization: `Token ${localStorage.getItem("token")}` },
         });
 

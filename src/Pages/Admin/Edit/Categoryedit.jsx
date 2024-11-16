@@ -25,7 +25,7 @@ function Dashboard() {
     const fetchCategory = async () => {
       if (id) {
         try {
-          const { data } = await axiosInstancemain.get(`category/`, {
+          const { data } = await axiosInstancemain.get(`/category/`, {
             params: { id: id },
           });
 
@@ -91,7 +91,7 @@ function Dashboard() {
 
     try {
       const token = localStorage.getItem("token");
-      const response = await axiosInstancemain.put(`category/`, formData, {
+      const response = await axiosInstancemain.put(`/category/`, formData, {
         headers: { Authorization: `Token ${token}` },
       });
       toast.success("Category updated successfully!");

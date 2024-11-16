@@ -10,7 +10,7 @@ export default function Sidebar({ side, props }) {
   const handleClick = async () => {
     try {
       const axios = createAxiosInstanceWithAuth();
-      const data = await axios.post("logout/");
+      const data = await axios.post("/logout/");
 
       if (data.status == 200) {
         navigate("/admin/login");

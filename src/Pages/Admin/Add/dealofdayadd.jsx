@@ -25,7 +25,7 @@ function Dashboard() {
     const fetchCategory = async () => {
       try {
         const { data } = await axiosInstancemain.get(
-          `products/?is_paginated=${false}`,
+          `/products/?is_paginated=${false}`,
           {
             headers: {
               Authorization: `Token ${localStorage.getItem("token")}`,
@@ -51,7 +51,7 @@ function Dashboard() {
 
     try {
       const token = localStorage.getItem("token");
-      const response = await axiosInstancemain.post("deal/", formData, {
+      const response = await axiosInstancemain.post("/deal/", formData, {
         headers: { Authorization: `Token ${token}` },
       });
       toast.success("Upload successful!");
