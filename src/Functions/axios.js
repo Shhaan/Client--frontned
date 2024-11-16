@@ -1,9 +1,9 @@
 import axios from "axios";
 
-export const baseURL = process.env.REACT_APP_BASE_URL;
-const baseURLmain = process.env.REACT_APP_BASE_URL_MAIN;
-export const phone = process.env.REACT_APP_PHONE;
-export const whatsappapi = process.env.REACT_APP_WHATSAPP_API;
+export const baseURL = "https://client-backend-r9kn.onrender.com";
+const baseURLmain = "https://client-backend-r9kn.onrender.com/main";
+export const phone = 974 - 30162002;
+export const whatsappapi = "https://api.whatsapp.com/send/?phone";
 
 export const axiosInstance = axios.create({
   baseURL: baseURL,
