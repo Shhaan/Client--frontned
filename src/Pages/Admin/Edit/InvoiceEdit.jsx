@@ -30,7 +30,7 @@ function Dashboard() {
   useEffect(() => {
     const fetchinvoice = async () => {
       try {
-        const { data } = await axiosInstancemain.get(`invoice/`, {
+        const { data } = await axiosInstancemain.get(`/invoice/`, {
           headers: {
             Authorization: `Token ${localStorage.getItem("token")}`,
           },

@@ -35,7 +35,7 @@ function SearchComponent({
       try {
         const token = localStorage.getItem("token");
         const response = await axiosInstancemain.get(
-          `${api}/?search=${searchValue}`,
+          `/${api}/?search=${searchValue}`,
           { headers: { Authorization: `Token ${token}` } }
         );
         if (response.status === 200) {

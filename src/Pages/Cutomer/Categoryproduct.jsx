@@ -43,7 +43,7 @@ export const Categoryproduct = () => {
         setNextPage(productResponse?.data?.next);
 
         const categoryResponse = await axiosInstancemain.get(
-          `category/?name=${id}`
+          `/category/?name=${id}`
         );
         setCategory(categoryResponse?.data?.message);
       } catch (error) {

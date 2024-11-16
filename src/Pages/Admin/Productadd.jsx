@@ -32,7 +32,7 @@ function Dashboard() {
     const fetchcategory = async () => {
       try {
         const token = localStorage.getItem("token");
-        const data = await axiosInstancemain.get("category", {
+        const data = await axiosInstancemain.get("/category", {
           headers: { Authorization: `Token ${token}` },
         });
         setcategory(data?.data?.message);
@@ -83,7 +83,7 @@ function Dashboard() {
 
     try {
       const token = localStorage.getItem("token");
-      const response = await axiosInstancemain.post("products/", formData, {
+      const response = await axiosInstancemain.post("/products/", formData, {
         headers: { Authorization: `Token ${token}` },
       });
 
