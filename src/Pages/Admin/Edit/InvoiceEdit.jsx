@@ -154,16 +154,21 @@ function Dashboard() {
       const blob = new Blob([response.data], { type: "application/pdf" });
       const url = window.URL.createObjectURL(blob);
 
-      const newWindow = window.open(url, "_blank");
-      if (newWindow) {
-        newWindow.addEventListener("load", () => {
-          newWindow.print();
-        });
-      }
+      // Create an invisible iframe for printing
+      const iframe = document.createElement("iframe");
+      iframe.style.display = "none";
+      iframe.src = url;
+
+      document.body.appendChild(iframe);
+
+      iframe.onload = () => {
+        iframe.contentWindow.print();
+        document.body.removeChild(iframe);
+      };
 
       setTimeout(() => window.URL.revokeObjectURL(url), 5000);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
