@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useState } from "react";
+import React, { Suspense, lazy, useEffect, useState } from "react";
 import Adminheader from "../../../Components/Adminheader/Adminheader";
 import Sidebar from "../../../Components/Admin/Sidebar";
 import style from "../../../Main.module.css";
@@ -22,11 +22,31 @@ function Dashboard() {
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isdelivery, setisdelivery] = useState(false);
+  const [time, settime] = useState([]);
   const navigate = useNavigate();
   const handleAddProductClick = () => {
     setIsModalVisible(true);
   };
+  useEffect(() => {
+    const fetchdata = async () => {
+      try {
+        const { data } = await axiosInstancemain.get("get-timeslot/");
 
+        if (
+          Array.isArray(data?.today?.timeslote) &&
+          data?.today?.timeslote.length > 0
+        ) {
+          settime(data?.today?.timeslote);
+        } else {
+          settime(data?.tomorrow?.timeslote);
+        }
+      } catch (e) {
+        console.error("Error fetching time slots:", e);
+      }
+    };
+
+    fetchdata();
+  }, []);
   const onFinish = async (values) => {
     if (selectedProducts.length == 0) {
       toast.error("Product must be selected");
@@ -113,7 +133,14 @@ function Dashboard() {
                 wrapperCol={{ span: 24 }}
                 className={style.inputofadd}
               >
-                <Input style={{ height: "52px" }} placeholder="Time slot" />
+                <Select
+                  style={{ height: "52px" }}
+                  placeholder="Select a time slot"
+                  options={time.map((slot) => ({
+                    label: slot, // Displayed in the dropdown
+                    value: slot, // Stored in the form state
+                  }))}
+                />
               </Form.Item>
 
               <Form.Item name="is_delivery" label="Is delivery">
@@ -191,12 +218,9 @@ function Dashboard() {
                       <FaTimes
                         style={{ cursor: "pointer" }}
                         onClick={() =>
-                          setSelectedProducts(
-                            (prevSelectedProducts) => (
-                              console.log(prevSelectedProducts, i.product_id),
-                              prevSelectedProducts.filter(
-                                (product) => product.id !== i.id
-                              )
+                          setSelectedProducts((prevSelectedProducts) =>
+                            prevSelectedProducts.filter(
+                              (product) => product.id !== i.id
                             )
                           )
                         }
@@ -286,6 +310,12 @@ function Dashboard() {
                 Add Product
               </Button>
 
+              <h4 className="text-end">
+                Total :
+                {selectedProducts.reduce((sum, product) => {
+                  return sum + product.count * product.price;
+                }, 0)}
+              </h4>
               <Form.Item>
                 <Button
                   className={style.orderNow}

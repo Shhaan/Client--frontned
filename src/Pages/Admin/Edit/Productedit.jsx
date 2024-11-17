@@ -74,6 +74,8 @@ function Dashboard() {
           is_bestseller: dataMessage?.is_bestseller || false,
           category: dataMessage?.category || "",
           "Product name": dataMessage?.name || "",
+          discription: dataMessage?.discription || "",
+
           Price: dataMessage?.price || 0,
           count: dataMessage?.count || "",
           Quantity: dataMessage?.quantity || 0,
@@ -170,6 +172,8 @@ function Dashboard() {
     formData.append("code", values.Code);
     formData.append("sort_order", values.SortOrder);
     formData.append("id", id);
+    formData.append("discription", values.discription);
+
     console.log(customizationItems);
 
     if (customizationItems) {
@@ -304,6 +308,19 @@ function Dashboard() {
                 />
               </Form.Item>
 
+              <Form.Item
+                name="discription"
+                label="Discription"
+                labelCol={{ span: 24 }}
+                wrapperCol={{ span: 24 }}
+                className={style.inputofadd}
+              >
+                <Input
+                  type="text"
+                  style={{ height: "52px" }}
+                  placeholder="discription"
+                />
+              </Form.Item>
               <Form.Item
                 name="count"
                 label="Stock"

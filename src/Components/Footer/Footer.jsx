@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { FaFacebookF, FaInstagram, FaMapMarkerAlt } from "react-icons/fa"; // Import icons
 import style from "./Footer.module.css";
 
 function Footer() {
@@ -14,13 +15,14 @@ function Footer() {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
   return (
     <footer className={`${style.footer} container-fluid fixed-bottom`}>
       <div
         className="row py-2 align-items-center"
         style={{ justifyContent: "center" }}
       >
-        <div className="col-12 col-md-6 text-center text-md-start  mb-2 mb-md-0">
+        <div className="col-12 col-md-6 text-center text-md-start mb-2 mb-md-0">
           <p
             className="mb-0"
             style={viewportWidth < 400 ? { fontSize: "10px" } : {}}
@@ -28,14 +30,52 @@ function Footer() {
             © SSS Fresh chicken & meat - Copyright all right reserved
           </p>
         </div>
-        {/* <div className="col-12 col-md-6 text-center text-md-end">
-          <NavLink to="/terms" className={`${style.footerLink} me-3`}>
-            Terms and Conditions
-          </NavLink>
-          <NavLink to="/about" className={`${style.footerLink} me-3`}>
-            About Us
-          </NavLink>
-        </div> */}
+        <div className="col-12 col-md-6 text-center text-md-end">
+          {/* Social Media Links */}
+          <a
+            style={
+              viewportWidth < 400
+                ? { fontSize: "10px", color: "blue" }
+                : { color: "blue" }
+            }
+            href="https://www.facebook.com/profile.php?id=100064014914279&mibextid=ZbWKwL"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`${style.footerLink} me-3`}
+            title="Facebook"
+          >
+            <FaFacebookF />
+          </a>
+          <a
+            style={
+              viewportWidth < 400
+                ? { fontSize: "10px", color: "purple" }
+                : { color: "purple" }
+            }
+            href="https://www.instagram.com/sssfresh.qa/profilecard/?igsh=dnZhcHBmYWlicGJy"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`${style.footerLink} me-3`}
+            title="Instagram"
+          >
+            <FaInstagram />
+          </a>
+          <a
+            style={
+              viewportWidth < 400
+                ? { fontSize: "10px", color: "green" }
+                : { color: "green" }
+            }
+            href="https://maps.app.goo.gl/qotnRqHcgmkBAB2Z9"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`${style.footerLink}`}
+            title="Google Maps"
+            // Default color applied here
+          >
+            <FaMapMarkerAlt />
+          </a>
+        </div>
       </div>
     </footer>
   );

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../redux/cartSlice";
 import styles from "../Main.module.css";
@@ -44,12 +44,25 @@ const CustomizationPopup = ({ deal, onClose, cutomization }) => {
     );
     onClose();
   };
+  const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
 
+  useEffect(() => {
+    const handleResize = () => {
+      setViewportWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
   return (
     <div className={styles.customizationOverlay}>
       <div className={styles.customizationPopup} ref={popupRef}>
         <FaTimes onClick={onClose} className={styles.closeIcon} />
-        <h2>{deal.name} Cutting size</h2>
+        <h3 style={viewportWidth < 460 ? { fontSize: "16px" } : {}}>
+          {deal.name} Cutting size
+        </h3>
         {cutomization.map((option) => (
           <div
             key={option.customization_id}
@@ -60,11 +73,15 @@ const CustomizationPopup = ({ deal, onClose, cutomization }) => {
               alt={option.name}
               className={styles.customizationImage}
             />
-            <h3>
+            <h4 style={viewportWidth < 460 ? { fontSize: "16px" } : {}}>
               {deal.name} ({option.name})
-            </h3>
-            <p>Price: QR{deal.price}</p>
-            <p>Quantity: {deal.quantity}</p>
+            </h4>
+            <p style={viewportWidth < 460 ? { fontSize: "13px" } : {}}>
+              Price: QR{deal.price}
+            </p>
+            <p style={viewportWidth < 460 ? { fontSize: "13px" } : {}}>
+              Quantity: {deal.quantity}
+            </p>
 
             <button
               onClick={() => handleAddToCart(option)}

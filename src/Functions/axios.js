@@ -1,8 +1,8 @@
 import axios from "axios";
 
-export const baseURL = "https://client-backend-r9kn.onrender.com";
-const baseURLmain = "https://client-backend-r9kn.onrender.com/main";
-export const phone = 974 - 30162002;
+export const baseURL = "https://shanmohammed.pythonanywhere.com";
+const baseURLmain = "https://shanmohammed.pythonanywhere.com/main";
+export const phone = 97430162002;
 export const whatsappapi = "https://api.whatsapp.com/send/?phone";
 
 export const axiosInstance = axios.create({

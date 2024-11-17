@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import React, { useEffect, useRef, useState } from "react";
 import style from "../../Main.module.css";
 import { useDispatch, useSelector } from "react-redux";
-import { baseURL } from "../../Functions/axios";
+import { axiosInstancemain, baseURL } from "../../Functions/axios";
 import {
   FaPlusCircle,
   FaMinusCircle,
@@ -20,6 +20,7 @@ import Adminheader from "../../Components/Adminheader/Adminheader";
 import Footer from "../../Components/Footer/Footer";
 import toast from "react-hot-toast";
 import Cartpopup from "../../Components/Home/Cartpopup";
+import { MdDeliveryDining } from "react-icons/md";
 const Cart = () => {
   const navigate = useNavigate();
   const {
@@ -54,7 +55,7 @@ const Cart = () => {
     street: "",
     slot: "",
   });
-
+  const [time, settime] = useState([]);
   const [selected, setselected] = useState(0);
 
   const [selectedtime, setselectedtime] = useState(0);
@@ -87,7 +88,24 @@ const Cart = () => {
     const handleResize = () => {
       setViewportWidth(window.innerWidth);
     };
+    const fetchdata = async () => {
+      try {
+        const { data } = await axiosInstancemain.get("get-timeslot/");
 
+        if (
+          Array.isArray(data?.today?.timeslote) &&
+          data?.today?.timeslote.length > 0
+        ) {
+          settime(data?.today?.timeslote);
+        } else {
+          settime(data?.tomorrow?.timeslote);
+        }
+      } catch (e) {
+        console.error("Error fetching time slots:", e);
+      }
+    };
+
+    fetchdata();
     window.addEventListener("resize", handleResize);
     return () => {
       window.removeEventListener("resize", handleResize);
@@ -219,7 +237,7 @@ const Cart = () => {
             style={{
               position: "absolute",
               zIndex: 1,
-              background: "white",
+              background: "#f0f6f6",
               padding: "13px",
               width: "35%",
               left: "180px",
@@ -242,11 +260,29 @@ const Cart = () => {
           </div>
         )}
 
-        <div style={{ display: "flex", justifyContent: "space-around" }}>
+        <div
+          style={
+            viewportWidth > 886
+              ? {
+                  display: "flex",
+                  justifyContent: "space-around",
+                }
+              : {
+                  padding: "20px",
+                }
+          }
+        >
           {selected === 0 ? (
             <div className={style.cartitemmain}>
               {cartItems.map((item) => (
-                <div key={item.id} className={`px-5 ${style.cartItem}`}>
+                <div
+                  key={item.id}
+                  style={{
+                    paddingRight: "10px !important",
+                    paddingLeft: "10px !important",
+                  }}
+                  className={` ${style.cartItem}`}
+                >
                   <img
                     src={`${baseURL}${item.image}`}
                     alt={item.name}
@@ -332,7 +368,7 @@ const Cart = () => {
                   }`}
                   onClick={() => handledelivery()}
                 >
-                  Delivery
+                  Delivery <MdDeliveryDining />
                 </button>
 
                 {delivery && (
@@ -543,25 +579,32 @@ const Cart = () => {
 
                     <label className={style.formlabel}>Pick up time</label>
 
-                    <input
+                    <select
                       required
                       className={style.inputcheckout}
-                      type="Text"
-                      name="text"
+                      name="time"
                       value={takeawayform.time}
                       style={
                         takeawayformerror.time
-                          ? { border: "solid 1px red" }
-                          : {}
+                          ? { border: "solid 1px red", color: "#c1532e" }
+                          : { color: "#c1532e" }
                       }
-                      onChange={(e) => (
+                      onChange={(e) => {
                         settakeawayform((i) => ({
                           ...i,
                           time: e.target.value,
-                        })),
-                        (takeawayformerror.time = "")
-                      )}
-                    />
+                        }));
+                        takeawayformerror.time = "";
+                      }}
+                    >
+                      <option value="">Select a time</option>
+                      {time?.map((ti, index) => (
+                        <option key={index} value={ti}>
+                          {ti}
+                        </option>
+                      ))}
+                    </select>
+
                     {takeawayformerror.time && (
                       <h6 className={style.error}>{takeawayformerror.time}</h6>
                     )}

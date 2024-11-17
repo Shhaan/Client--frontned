@@ -70,6 +70,8 @@ function Dashboard() {
     formData.append("take_away", values.take_away);
     formData.append("code", values.Code);
     formData.append("sort_order", values.SortOrder);
+    formData.append("discription", values.discription);
+
     if (customizationItems) {
       customizationItems.forEach((item, index) => {
         formData.append(`customize[${index}][text]`, item.text || "");
@@ -198,6 +200,19 @@ function Dashboard() {
                 />
               </Form.Item>
 
+              <Form.Item
+                name="discription"
+                label="Discription"
+                labelCol={{ span: 24 }}
+                wrapperCol={{ span: 24 }}
+                className={style.inputofadd}
+              >
+                <Input
+                  type="text"
+                  style={{ height: "52px" }}
+                  placeholder="discription"
+                />
+              </Form.Item>
               <Form.Item
                 name="count"
                 label="Stock"

@@ -22,6 +22,8 @@ function Dashboard() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isdelivery, setisdelivery] = useState(false);
   const [form] = Form.useForm();
+  const [time, settime] = useState([]);
+
   const navigate = useNavigate();
   const handleAddProductClick = () => {
     setIsModalVisible(true);
@@ -76,6 +78,25 @@ function Dashboard() {
       }
     };
     fetchinvoice();
+
+    const fetchdata = async () => {
+      try {
+        const { data } = await axiosInstancemain.get("get-timeslot/");
+
+        if (
+          Array.isArray(data?.today?.timeslote) &&
+          data?.today?.timeslote.length > 0
+        ) {
+          settime(data?.today?.timeslote);
+        } else {
+          settime(data?.tomorrow?.timeslote);
+        }
+      } catch (e) {
+        console.error("Error fetching time slots:", e);
+      }
+    };
+
+    fetchdata();
   }, [form, id]); // Add form and id as dependencies
 
   const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
@@ -229,7 +250,14 @@ function Dashboard() {
                 wrapperCol={{ span: 24 }}
                 className={style.inputofadd}
               >
-                <Input style={{ height: "52px" }} placeholder="Time slot" />
+                <Select
+                  style={{ height: "52px" }}
+                  placeholder="Select a time slot"
+                  options={time.map((slot) => ({
+                    label: slot, // Displayed in the dropdown
+                    value: slot, // Stored in the form state
+                  }))}
+                />
               </Form.Item>
 
               <Form.Item name="is_delivery" label="Is delivery">
@@ -396,7 +424,12 @@ function Dashboard() {
               >
                 Add Product
               </Button>
-
+              <h4 className="text-end">
+                Total :
+                {selectedProducts.reduce((sum, product) => {
+                  return sum + product.selectedCount * product.price;
+                }, 0)}
+              </h4>
               <Form.Item>
                 <Button
                   className={style.orderNow}

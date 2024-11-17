@@ -44,6 +44,7 @@ function SearchComponent({
           setcurrent(1);
         }
       } catch (error) {
+        setitem([]);
         toast.error(error?.response?.data?.message || "An error occurred", {
           duration: 3000,
         });

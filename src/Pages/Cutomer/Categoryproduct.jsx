@@ -27,14 +27,13 @@ export const Categoryproduct = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const searchValue = searchParams.get("search") || "";
 
-  // Fetch initial products and category data on mount and when id changes
   useEffect(() => {
     const fetchInitialData = async () => {
-      setIsPiece(null); // Reset isPiece filter
+      setIsPiece(null);
 
       try {
         setLoading(true);
-        setProduct([]); // Clear previous products
+        setProduct([]);
 
         const productResponse = await axiosInstancemain.get(
           `/products/?category=${id}`
@@ -228,9 +227,11 @@ export const Categoryproduct = () => {
                   alt="img"
                   className={style.cardimg}
                 />
-                <p className={style.heading}>{product.name}</p>
+                <p style={{ margin: 0 }} className={style.heading}>
+                  {product.name}
+                </p>
                 {product.original_price ? (
-                  <div className={style.dealPrice}>
+                  <div style={{ padding: 0 }} className={style.dealPrice}>
                     <span className={style.originalPrice}>
                       QR{product.original_price}
                     </span>
@@ -239,12 +240,23 @@ export const Categoryproduct = () => {
                     </span>
                   </div>
                 ) : (
-                  <div className={style.dealPrice}>
+                  <div style={{ padding: 0 }} className={style.dealPrice}>
                     <span className={style.discountedPrice}>
                       QR{product.price}
                     </span>
                   </div>
                 )}
+                <p style={{ margin: 0 }} className={style.quantitycatepro}>
+                  {product.quantity}
+                </p>
+                <div className={style.discripcatepro}>
+                  <p
+                    className={style.discripcateprop}
+                    style={{ overflow: "auto", margin: 0 }}
+                  >
+                    {product.discription}
+                  </p>
+                </div>
               </div>
               <div style={{ position: "absolute", top: "9px", right: "9px" }}>
                 <AddToCartButton deal={product} />
