@@ -358,11 +358,13 @@ const Cart = () => {
                   className={`${style.pickoptionbutton} ${
                     takeaway && style.selectedpickoption
                   }`}
+                  style={viewportWidth < 450 ? { width: "135px" } : {}}
                   onClick={() => (settakeaway(true), setdelivery(false))}
                 >
                   Take away{" "}
                 </button>
                 <button
+                  style={viewportWidth < 450 ? { width: "135px" } : {}}
                   className={`${style.pickoptionbutton} ${
                     delivery && style.selectedpickoption
                   }`}
