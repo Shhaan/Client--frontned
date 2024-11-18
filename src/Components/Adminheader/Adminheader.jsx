@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import style from "./Adminheader.module.css";
 import logo from "../../Asset/Image/bg.png";
 import { useNavigate } from "react-router-dom";
@@ -27,6 +27,18 @@ function Adminheader({
     navigate("/cart");
   };
 
+  const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setViewportWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
   return (
     <header
       style={isAdmin ? { position: "fixed", width: "100%", zIndex: 10 } : {}}
@@ -47,6 +59,7 @@ function Adminheader({
         >
           {!isAdmin ? (
             <img
+              style={viewportWidth < 400 && { width: "74%", height: "51px" }}
               onClick={() => navigate("/")}
               className={`${style.logoimg} img-fluid`}
               src={logo}
@@ -73,6 +86,7 @@ function Adminheader({
               setIsCart(false);
             }}
             className={style.heading}
+            style={viewportWidth < 400 && { fontSize: "14px" }}
           >
             SSS FRESH CHICKEN & MEAT
           </h3>
@@ -81,11 +95,24 @@ function Adminheader({
               <div className={style.cartButton}>
                 <button onClick={handleClick} className={style.cartButtonog}>
                   <FaShoppingCart
-                    style={{ height: "26px", width: "20px", color: "#ffffff" }}
+                    style={
+                      viewportWidth < 400
+                        ? { height: "12px", width: "20px", color: "#ffffff" }
+                        : { height: "12px", width: "20px", color: "#ffffff" }
+                    }
                     className={`${style.icon}  `}
                   />
 
-                  <span style={{ color: "white" }}> {totalItemsCount}</span>
+                  <span
+                    style={
+                      viewportWidth < 400
+                        ? { fontSize: "13px", color: "white" }
+                        : { color: "white" }
+                    }
+                  >
+                    {" "}
+                    {totalItemsCount}
+                  </span>
                 </button>
               </div>
             </React.Fragment>

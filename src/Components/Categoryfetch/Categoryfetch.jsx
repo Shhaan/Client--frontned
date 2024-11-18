@@ -24,6 +24,18 @@ const Categoryfetch = () => {
     fetchCategories();
   }, []);
 
+  const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setViewportWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
   return (
     <div onClick={() => setIsCart(false)} className={style.categorylistmaindiv}>
       {categories.map((category, index) => (
@@ -40,9 +52,15 @@ const Categoryfetch = () => {
                 : {}
             }
           >
-            <div className={style.categoryfetchname}>{category.name}</div>
+            <div
+              style={viewportWidth < 400 && { fontSize: "13px" }}
+              className={style.categoryfetchname}
+            >
+              {category.name}
+            </div>
             <div>
               <img
+                style={viewportWidth < 400 && { width: "34px", height: "35px" }}
                 className={style.categorylistimg}
                 src={`${baseURL}${category.image}`}
                 alt={category.name}
