@@ -50,9 +50,17 @@ function Cartpopup({ today, slot, setslot, setselectedtime, selectedtime }) {
     <>
       <button className={style.checkoutcartbutton}>
         {today ? (
-          <>
-            Today <h6 style={{ fontSize: "13px" }}>{datetoday}</h6>
-          </>
+          todayslot?.timeslote.length === 0 ? (
+            <>
+              <h6 style={{ fontSize: "13px" }}>
+                No time slot available for today
+              </h6>
+            </>
+          ) : (
+            <>
+              Today <h6 style={{ fontSize: "13px" }}>{datetoday}</h6>
+            </>
+          )
         ) : (
           <>
             Tomorrow <h6 style={{ fontSize: "13px" }}>{datetommorow}</h6>
@@ -61,26 +69,30 @@ function Cartpopup({ today, slot, setslot, setselectedtime, selectedtime }) {
       </button>
       {today ? (
         <>
-          <select
-            className={style.selectDropdown}
-            value={slot?.deliverytype === "today" ? slot?.time : 0}
-            onChange={(e) => handleSlotClick(e.target.value, "today")}
-          >
-            <option value={""}> ----------------------------------</option>
-            {todayslot?.timeslote?.map((timeSlot, index) => (
-              <option
-                key={index}
-                className={`${style["time-slot"]} ${
-                  selectedSlot === timeSlot ? style.selectedpop : ""
-                }`}
-                value={timeSlot} // Set the value to timeSlot
+          {todayslot?.timeslote.length > 1 && (
+            <>
+              <select
+                className={style.selectDropdown}
+                value={slot?.deliverytype === "today" ? slot?.time : 0}
+                onChange={(e) => handleSlotClick(e.target.value, "today")}
               >
-                {timeSlot}
-              </option>
-            ))}
-          </select>
-          {todayslot?.timeslote.length === 0 && (
-            <p>No time slots available for today.</p>
+                <option value={""}> ----------------------------------</option>
+                {todayslot?.timeslote?.map((timeSlot, index) => (
+                  <option
+                    key={index}
+                    className={`${style["time-slot"]} ${
+                      selectedSlot === timeSlot ? style.selectedpop : ""
+                    }`}
+                    value={timeSlot} // Set the value to timeSlot
+                  >
+                    {timeSlot}
+                  </option>
+                ))}
+              </select>
+              {todayslot?.timeslote.length === 0 && (
+                <p>No time slots available for today.</p>
+              )}
+            </>
           )}
         </>
       ) : (

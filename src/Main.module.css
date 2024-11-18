@@ -23,8 +23,8 @@
   display: none;
 }
 .categoryfetchsubdiv:hover {
-  background-color: rgb(56 162 188);
-  border-radius: 10px;
+  background-color: rgb(118, 197, 217);
+
   cursor: pointer;
 }
 .categorylistimg {
@@ -44,7 +44,7 @@
   font-family: Montserrat;
   margin-top: 20px;
   margin-bottom: 20px;
-  color: #b64d11;
+  color: #000000;
   margin-left: 22px;
 }
 @media (max-width: 500px) {
@@ -72,10 +72,8 @@
 
 .categoryRow {
   display: flex;
-  overflow-x: auto;
-  scroll-behavior: smooth;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+
+  height: "353px";
   gap: 20px;
   padding: 10px 0;
 }
@@ -103,7 +101,7 @@
 .dealCard {
   background-color: #fff;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 9px rgb(0 0 0 / 10%);
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   width: 80vw;
@@ -112,13 +110,15 @@
 }
 
 .dealCard {
-  background: rgb(180 235 235);
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .categoryImage {
   width: 100%;
   height: 150px;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .categoryName,
@@ -156,7 +156,7 @@
 .discountedPrice {
   font-size: 16px;
   font-weight: 700;
-  color: #b64d11;
+  color: #000000;
 }
 
 @media (max-width: 481px) {
@@ -202,10 +202,10 @@
 }
 
 .addToCartButton {
-  background-color: #b64d11;
+  background-color: #34b1ca;
   color: white;
   font-weight: bold;
-  padding: 6px 10px;
+  padding: 10px 19px;
   border-radius: 20px;
   border: none;
   display: flex;
@@ -216,7 +216,7 @@
 }
 
 .addToCartButton:hover {
-  background-color: #e2bd78;
+  background-color: #41acac;
   transform: scale(1.05);
 }
 
@@ -240,6 +240,9 @@
 }
 
 @media (max-width: 480px) {
+  .categorybestsellerImage {
+    width: 40% !important;
+  }
   .addToCartButton {
     padding: 3px 6px;
   }
@@ -465,7 +468,7 @@
   font-size: 18px;
   font-weight: 700;
   text-align: center;
-  color: #b64d11;
+  color: #000000;
   margin: 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -493,11 +496,11 @@
   font-size: 18px;
   font-weight: 700;
   text-align: center;
-  color: #b64d11;
+  color: #000000;
   margin: 0;
-  overflow: hidden;
+  /* overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
+  white-space: nowrap; */
 
   transition: all 0.3s ease;
 }
@@ -673,9 +676,9 @@
 
 .filtercatbuttonselect {
   letter-spacing: 3px;
-  background-color: #8b4513;
+  background-color: #58ccd0;
   color: hsl(0, 0%, 100%);
-  box-shadow: #8b4513;
+  box-shadow: #58ccd0;
   transform: translateY(6px);
   transition: 100ms;
   letter-spacing: 3px;
@@ -685,7 +688,9 @@
   position: relative;
   width: 190px;
   height: 254px;
-  background: rgb(180 235 235);
+  background-color: #fff;
+
+  box-shadow: 0 6px 9px rgb(0 0 0 / 10%);
   display: flex;
   flex-direction: column;
   padding: 12px;
@@ -704,7 +709,15 @@
 @media (max-width: 460px) {
   .card {
     width: 110px;
-    height: 193px;
+    height: 165px;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+  .card::-webkit-scrollbar {
+    display: none;
+  }
+  .cardimg {
+    height: 73px !important;
   }
   .heading {
     font-size: x-small;
@@ -714,7 +727,10 @@
     font-size: 10px;
   }
   .discountedPrice {
-    font-size: 10px;
+    font-size: 8px;
+  }
+  .originalPrice {
+    font-size: 8px;
   }
   .quantitycatepro {
     font-size: 10px !important;
@@ -723,10 +739,11 @@
     height: 63px;
   }
   .DealNameday {
-    font-size: 13px;
+    text-align: left;
+    font-size: 10px;
   }
   .bestpriceseller {
-    font-size: 11px;
+    font-size: 9px;
     margin: 0;
   }
   .discripcateprop {
@@ -768,7 +785,7 @@ p {
 .cardimg {
   width: inherit;
   height: 100px;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .checkoutcart {
@@ -1298,4 +1315,12 @@ input[type="number"]::-webkit-inner-spin-button {
 
 .discripcateprop::-webkit-scrollbar {
   display: none;
+}
+.productgrid {
+  display: grid;
+  grid-template-columns: 0.5fr 0.5fr 1fr;
+}
+
+.productcatomize {
+  border-left: 1px solid rgb(210 210 244);
 }

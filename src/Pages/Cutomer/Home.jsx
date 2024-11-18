@@ -6,10 +6,7 @@ import Carousel from "../../Components/Home/Carousel";
 import style from "../../Main.module.css";
 import { axiosInstancemain, baseURL } from "../../Functions/axios";
 import toast from "react-hot-toast";
-import AddToCartButton from "../../Components/Addcart";
-import { PuffLoader } from "react-spinners";
-import { CartContext } from "../../App";
-import Cart from "./Cart";
+
 import { useNavigate } from "react-router-dom";
 const Home = () => {
   const [categories, setCategories] = useState([]);
@@ -95,17 +92,13 @@ const Home = () => {
                   <div
                     key={deal.id}
                     className={style.dealCard}
-                    style={{ "--animation-order": index, position: "relative" }}
+                    style={{
+                      "--animation-order": index,
+                      position: "relative",
+                      cursor: "pointer",
+                    }}
+                    onClick={() => navigate(`/product/${deal.code}`)}
                   >
-                    <div
-                      style={{
-                        position: "absolute",
-                        top: "10px",
-                        right: "10px",
-                      }}
-                    >
-                      <AddToCartButton deal={deal} />
-                    </div>
                     <img
                       className={style.categoryImage}
                       src={`${baseURL}${deal.image}`}
@@ -130,7 +123,6 @@ const Home = () => {
                         </div>
                       )}
                     </div>
-                    <p className={style.bestpriceseller}>{deal.quantity}</p>
                   </div>
                 ))}
               </div>
@@ -145,24 +137,24 @@ const Home = () => {
           >
             <h1 className={style.shopbycategoryheading}>Best seller</h1>
             <div className={style.categoryNavigation}>
-              <div className={style.categoryRow} ref={categoryRowRef}>
+              <div
+                className={style.categoryRow}
+                style={{ flexWrap: "wrap" }}
+                ref={categoryRowRef}
+              >
                 {bestSellers.map((deal, index) => (
                   <div
                     key={deal.id}
-                    className={style.dealCard}
-                    style={{ "--animation-order": index, position: "relative" }}
+                    className={` ${style.categorybestsellerImage} ${style.dealCard}`}
+                    style={{
+                      "--animation-order": index,
+                      position: "relative",
+                      cursor: "pointer",
+                    }}
+                    onClick={() => navigate(`/product/${deal.code}`)}
                   >
-                    <div
-                      style={{
-                        position: "absolute",
-                        top: "10px",
-                        right: "10px",
-                      }}
-                    >
-                      <AddToCartButton deal={deal} />
-                    </div>
                     <img
-                      className={style.categoryImage}
+                      className={`${style.categoryImage} `}
                       src={`${baseURL}${deal.image}`}
                       alt={deal.name}
                     />

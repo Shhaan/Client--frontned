@@ -6,10 +6,8 @@ import Footer from "../../Components/Footer/Footer";
 import { axiosInstancemain } from "../../Functions/axios";
 import style from "../../Main.module.css";
 import { baseURL } from "../../Functions/axios";
-import AddToCartButton from "../../Components/Addcart";
 import toast from "react-hot-toast";
 import { PuffLoader } from "react-spinners";
-import { message } from "antd";
 import { FaSearch } from "react-icons/fa";
 
 export const Categoryproduct = () => {
@@ -68,7 +66,6 @@ export const Categoryproduct = () => {
     };
   }, []);
 
-  // Fetch additional products when next page is available
   const loadMoreProducts = async () => {
     if (!nextpage || loading) return;
 
@@ -160,6 +157,7 @@ export const Categoryproduct = () => {
           justifyContent: "space-between",
           marginTop: "22px",
           alignItems: "center",
+          padding: "4px",
         }}
       >
         <form>
@@ -220,6 +218,7 @@ export const Categoryproduct = () => {
                   : { position: "relative" }
               }
               key={product.product_id}
+              onClick={() => navigate(`/product/${product.code}`)}
             >
               <div className={style.card}>
                 <img
@@ -246,20 +245,6 @@ export const Categoryproduct = () => {
                     </span>
                   </div>
                 )}
-                <p style={{ margin: 0 }} className={style.quantitycatepro}>
-                  {product.quantity}
-                </p>
-                <div className={style.discripcatepro}>
-                  <p
-                    className={style.discripcateprop}
-                    style={{ overflow: "auto", margin: 0 }}
-                  >
-                    {product.discription}
-                  </p>
-                </div>
-              </div>
-              <div style={{ position: "absolute", top: "9px", right: "9px" }}>
-                <AddToCartButton deal={product} />
               </div>
             </div>
           ))

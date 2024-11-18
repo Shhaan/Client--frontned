@@ -1,46 +1,48 @@
 import React, { useState } from "react";
 import { FaPlus, FaShoppingCart } from "react-icons/fa";
 import styles from "../Main.module.css";
-import CustomizationPopup from "./CustomizationPopup";
-import { axiosInstancemain } from "../Functions/axios";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../redux/cartSlice";
 import toast from "react-hot-toast";
 
-const AddToCartButton = ({ deal }) => {
-  const [showPopup, setShowPopup] = useState(false);
-  const [cutomization, setCutomization] = useState([]);
-
+const AddToCartButton = ({ deal, option }) => {
   const dispatch = useDispatch();
   const { items: cartItems } = useSelector((state) => state.cart);
 
   const handleClick = async (e) => {
-    e.stopPropagation(); // Prevent event bubbling
-    try {
-      const customization = await axiosInstancemain.get(
-        `/customize/${deal?.product_id}/`
+    e.stopPropagation();
+
+    if (option) {
+      const customizedDeal = {
+        ...deal,
+        customization: option?.name,
+        count: 1,
+      };
+      dispatch(addToCart(customizedDeal));
+
+      const updatedItem = cartItems.find(
+        (item) =>
+          item?.product_id === customizedDeal?.product_id &&
+          item?.customization === option?.name
       );
 
-      if (customization?.data?.message?.length > 0) {
-        setCutomization(customization?.data?.message);
-        setShowPopup(true);
-      } else {
-        dispatch(addToCart({ ...deal, count: 1 }));
-        const updatedItem = cartItems.find(
-          (item) => item.product_id === deal.product_id
-        );
-        const count = updatedItem ? updatedItem.count + 1 : 1;
-        toast.success(`${deal.name} added to cart! Count: ${count}`, {
-          duration: 2000,
+      const count = updatedItem ? updatedItem.count + 1 : 1;
+      toast.success(
+        `${deal.name} (${option.name}) added to cart! Count: ${count}`,
+        {
           icon: "🛒",
-        });
-      }
-    } catch (err) {
-      if (err?.response?.data?.message) {
-        toast.error(err?.response?.data?.message);
-      } else {
-        toast.error("some error in the server");
-      }
+        }
+      );
+    } else {
+      dispatch(addToCart({ ...deal, count: 1 }));
+      const updatedItem = cartItems.find(
+        (item) => item.product_id === deal.product_id
+      );
+      const count = updatedItem ? updatedItem.count + 1 : 1;
+      toast.success(`${deal.name} added to cart! Count: ${count}`, {
+        duration: 2000,
+        icon: "🛒",
+      });
     }
   };
 
@@ -50,15 +52,6 @@ const AddToCartButton = ({ deal }) => {
         <FaPlus className={styles.addToCartIcon} />
         <FaShoppingCart className={styles.addToCartIcon} />
       </button>
-      {showPopup && (
-        <div className={styles.popupWrapper}>
-          <CustomizationPopup
-            deal={deal}
-            cutomization={cutomization}
-            onClose={() => setShowPopup(false)}
-          />
-        </div>
-      )}
     </div>
   );
 };

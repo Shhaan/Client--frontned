@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import style from "./Adminheader.module.css";
 import logo from "../../Asset/Image/bg.png";
 import { useNavigate } from "react-router-dom";
-import { FaShoppingBag } from "react-icons/fa";
+import { FaShoppingCart } from "react-icons/fa";
 import { CartContext } from "../../App";
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
@@ -80,9 +80,12 @@ function Adminheader({
             <React.Fragment>
               <div className={style.cartButton}>
                 <button onClick={handleClick} className={style.cartButtonog}>
-                  <FaShoppingBag className={`${style.icon}  `} />
+                  <FaShoppingCart
+                    style={{ height: "26px", width: "20px", color: "#ffffff" }}
+                    className={`${style.icon}  `}
+                  />
 
-                  <span> {totalItemsCount}</span>
+                  <span style={{ color: "white" }}> {totalItemsCount}</span>
                 </button>
               </div>
             </React.Fragment>

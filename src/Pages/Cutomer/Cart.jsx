@@ -55,7 +55,6 @@ const Cart = () => {
     street: "",
     slot: "",
   });
-  const [time, settime] = useState([]);
   const [selected, setselected] = useState(0);
 
   const [selectedtime, setselectedtime] = useState(0);
@@ -88,24 +87,7 @@ const Cart = () => {
     const handleResize = () => {
       setViewportWidth(window.innerWidth);
     };
-    const fetchdata = async () => {
-      try {
-        const { data } = await axiosInstancemain.get("get-timeslot/");
 
-        if (
-          Array.isArray(data?.today?.timeslote) &&
-          data?.today?.timeslote.length > 0
-        ) {
-          settime(data?.today?.timeslote);
-        } else {
-          settime(data?.tomorrow?.timeslote);
-        }
-      } catch (e) {
-        console.error("Error fetching time slots:", e);
-      }
-    };
-
-    fetchdata();
     window.addEventListener("resize", handleResize);
     return () => {
       window.removeEventListener("resize", handleResize);
@@ -132,10 +114,10 @@ const Cart = () => {
 
     if (delivery) {
       if (!deliveryform.phone) error.phone = "Your phone number is required";
-      if (!deliveryform.street) error.street = "Your street number is required";
+
       if (!deliveryform.building)
         error.building = "Your building/villa number is required";
-      if (!deliveryform.zone) error.zone = "Your zone number is required";
+
       if (!timeandtype.deliverytype || !timeandtype.time || selectedtime === 0)
         error.slot = "Time slot must be selected";
 
@@ -163,10 +145,19 @@ const Cart = () => {
         settakeawayformerror(error);
         return;
       }
+      console.log(takeawayform.time);
+      const formatTimeTo12Hour = (time) => {
+        const [hours, minutes] = time.split(":");
+        const intHours = parseInt(hours, 10);
+        const ampm = intHours >= 12 ? "PM" : "AM";
+        const adjustedHours = intHours % 12 || 12;
+        return `${adjustedHours}:${minutes} ${ampm}`;
+      };
+      console.log(formatTimeTo12Hour(takeawayform.time));
 
       form = {
         Order_type: "Take away",
-        Time_slot: takeawayform.time,
+        Time_slot: formatTimeTo12Hour(takeawayform.time),
         Phone_number: takeawayform.phone,
       };
     }
@@ -581,8 +572,9 @@ const Cart = () => {
 
                     <label className={style.formlabel}>Pick up time</label>
 
-                    <select
+                    <input
                       required
+                      type="time"
                       className={style.inputcheckout}
                       name="time"
                       value={takeawayform.time}
@@ -592,20 +584,13 @@ const Cart = () => {
                           : { color: "#c1532e" }
                       }
                       onChange={(e) => {
-                        settakeawayform((i) => ({
-                          ...i,
+                        settakeawayform((prev) => ({
+                          ...prev,
                           time: e.target.value,
                         }));
-                        takeawayformerror.time = "";
+                        takeawayformerror.time = ""; // Clear error when user selects a valid time
                       }}
-                    >
-                      <option value="">Select a time</option>
-                      {time?.map((ti, index) => (
-                        <option key={index} value={ti}>
-                          {ti}
-                        </option>
-                      ))}
-                    </select>
+                    />
 
                     {takeawayformerror.time && (
                       <h6 className={style.error}>{takeawayformerror.time}</h6>

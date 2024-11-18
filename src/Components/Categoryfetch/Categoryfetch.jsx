@@ -33,7 +33,10 @@ const Categoryfetch = () => {
             className={style.categoryfetchsubdiv}
             style={
               category.name === id
-                ? { backgroundColor: " rgb(56 162 188)", borderRadius: "10px" }
+                ? {
+                    backgroundColor: "rgb(118, 197, 217)",
+                    borderRadius: "10px",
+                  }
                 : {}
             }
           >

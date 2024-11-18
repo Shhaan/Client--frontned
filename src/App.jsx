@@ -20,6 +20,7 @@ import Productedit from "./Pages/Admin/Edit/Productedit";
 import Invoice from "./Pages/Admin/Invoice";
 import InvoiceAdd from "./Pages/Admin/Add/InoviceAdd";
 import InvoiceEdit from "./Pages/Admin/Edit/InvoiceEdit";
+import Productcus from "./Pages/Cutomer/Product";
 
 export const CartContext = createContext();
 
@@ -33,6 +34,8 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/category/:id" element={<Categoryproduct />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/product/:code" element={<Productcus />} />
+
         <Route path="*" element={<Notfound />} />
         <Route path="/admin">
           <Route path="login" element={<Login />} />
