@@ -59,7 +59,9 @@ function Adminheader({
         >
           {!isAdmin ? (
             <img
-              style={viewportWidth < 400 && { width: "74%", height: "51px" }}
+              style={
+                viewportWidth < 400 ? { width: "74%", height: "51px" } : {}
+              }
               onClick={() => navigate("/")}
               className={`${style.logoimg} img-fluid`}
               src={logo}
@@ -86,7 +88,15 @@ function Adminheader({
               setIsCart(false);
             }}
             className={style.heading}
-            style={viewportWidth < 400 && { fontSize: "14px" }}
+            style={
+              viewportWidth < 400
+                ? {
+                    fontSize: "15px",
+                    margin: 0,
+                    fontWeight: "600",
+                  }
+                : {}
+            }
           >
             SSS FRESH CHICKEN & MEAT
           </h3>

@@ -53,14 +53,16 @@ const Categoryfetch = () => {
             }
           >
             <div
-              style={viewportWidth < 400 && { fontSize: "13px" }}
+              style={viewportWidth < 400 ? { fontSize: "13px" } : {}}
               className={style.categoryfetchname}
             >
               {category.name}
             </div>
             <div>
               <img
-                style={viewportWidth < 400 && { width: "34px", height: "35px" }}
+                style={
+                  viewportWidth < 400 ? { width: "34px", height: "35px" } : {}
+                }
                 className={style.categorylistimg}
                 src={`${baseURL}${category.image}`}
                 alt={category.name}
