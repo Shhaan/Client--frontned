@@ -27,22 +27,12 @@ const AddToCartButton = ({ deal, option }) => {
       );
 
       const count = updatedItem ? updatedItem.count + 1 : 1;
-      toast.success(
-        `${deal.name} (${option.name}) added to cart! Count: ${count}`,
-        {
-          icon: "🛒",
-        }
-      );
     } else {
       dispatch(addToCart({ ...deal, count: 1 }));
       const updatedItem = cartItems.find(
         (item) => item.product_id === deal.product_id
       );
       const count = updatedItem ? updatedItem.count + 1 : 1;
-      toast.success(`${deal.name} added to cart! Count: ${count}`, {
-        duration: 2000,
-        icon: "🛒",
-      });
     }
   };
 

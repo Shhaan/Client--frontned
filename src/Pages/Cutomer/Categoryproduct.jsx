@@ -27,6 +27,8 @@ export const Categoryproduct = () => {
 
   useEffect(() => {
     const fetchInitialData = async () => {
+      setSelected(1);
+
       setIsPiece(null);
 
       try {

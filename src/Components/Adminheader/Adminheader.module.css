@@ -8,8 +8,8 @@
   padding: 0 20px;
 }
 .logoimg {
-  height: 72px;
-  width: 72px;
+  height: 79px;
+  width: 117px;
   margin-top: 8px;
   cursor: pointer;
 }
@@ -35,7 +35,7 @@
   }
   .logoimg {
     height: 60px;
-    width: 60px;
+    width: 54%;
   }
   .heading {
     font-size: 20px;
@@ -47,8 +47,8 @@
     height: 117px;
   }
   .logoimg {
-    height: 90px;
-    width: 90px;
+    height: 110px;
+    width: 250px;
   }
   .heading {
     font-size: 40px;
@@ -67,4 +67,18 @@
 .icon:hover {
   color: white;
   transform: scale(1.1);
+}
+
+.cartEffect {
+  animation: bounce 0.3s ease-in-out;
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
 }

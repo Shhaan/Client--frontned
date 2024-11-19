@@ -146,18 +146,12 @@ const Cart = () => {
         settakeawayformerror(error);
         return;
       }
+
       console.log(takeawayform.time);
-      const formatTimeTo12Hour = (time) => {
-        const [hours, minutes] = time.split(":");
-        const intHours = parseInt(hours, 10);
-        const ampm = intHours >= 12 ? "PM" : "AM";
-        const adjustedHours = intHours % 12 || 12;
-        return `${adjustedHours}:${minutes} ${ampm}`;
-      };
 
       form = {
         Order_type: "Take away",
-        Time_slot: formatTimeTo12Hour(takeawayform.time),
+        Time_slot: takeawayform.time,
         Phone_number: takeawayform.phone,
       };
     }
@@ -167,7 +161,7 @@ const Cart = () => {
         (item, i) =>
           `${i + 1}. ${item.name}${
             item?.customization ? ` (${item.customization})` : ""
-          } (${item.count}) %0A`
+          }   (${item.quantity})  (${item.count}) %0A`
       )
       .join("%0A");
 
@@ -577,18 +571,28 @@ const Cart = () => {
                       type="time"
                       className={style.inputcheckout}
                       name="time"
-                      value={takeawayform.time}
+                      value={takeawayform.rawTime} // Use raw time for the input
                       style={
                         takeawayformerror.time
                           ? { border: "solid 1px red", color: "#c1532e" }
                           : { color: "#c1532e" }
                       }
                       onChange={(e) => {
+                        const time = e.target.value; // Raw time in HH:mm format
+
+                        const [hours, minutes] = time.split(":");
+                        const intHours = parseInt(hours, 10);
+                        const ampm = intHours >= 12 ? "PM" : "AM";
+                        const adjustedHours = intHours % 12 || 12;
+                        const formattedTime = `${adjustedHours}:${minutes} ${ampm}`; // Formatted time
+
+                        takeawayformerror.time = ""; // Clear any error message
+
                         settakeawayform((prev) => ({
                           ...prev,
-                          time: e.target.value,
+                          rawTime: time, // Store the raw time
+                          time: formattedTime, // Store the formatted time
                         }));
-                        takeawayformerror.time = ""; // Clear error when user selects a valid time
                       }}
                     />
 
