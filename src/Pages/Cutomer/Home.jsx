@@ -131,6 +131,7 @@ const Home = () => {
                         </div>
                       )}
                     </div>
+                    <p className={style.bestpriceseller}>{deal.quantity}</p>
                   </div>
                 ))}
               </div>
