@@ -7,19 +7,20 @@ import "@coreui/coreui/dist/css/coreui.min.css";
 import style from "../../Main.module.css";
 const Carousel = () => {
   return (
-    <CCarousel controls>
-      {/* <CCarouselItem interval={3000}>
-        <CImage
-          className={`${style.carouselimg} d-block w-100`}
-          src={c1}
-          alt="slide 1"
-        />
-      </CCarouselItem> */}
-      <CCarouselItem>
+    <CCarousel controls interval={3000}>
+      <CCarouselItem interval={3000}>
         <CImage
           className={`${style.carouselimg} d-block w-100`}
           src={c2}
           alt="slide 2"
+        />
+      </CCarouselItem>
+
+      <CCarouselItem interval={3000}>
+        <CImage
+          className={`${style.carouselimg} d-block w-100`}
+          src={c1}
+          alt="slide 1"
         />
       </CCarouselItem>
       {/* <CCarouselItem interval={3000}>
