@@ -154,7 +154,6 @@ const Cart = () => {
         const adjustedHours = intHours % 12 || 12;
         return `${adjustedHours}:${minutes} ${ampm}`;
       };
-      console.log(formatTimeTo12Hour(takeawayform.time));
 
       form = {
         Order_type: "Take away",
@@ -165,10 +164,10 @@ const Cart = () => {
 
     const message = cartItems
       .map(
-        (item) =>
-          `${item.name}${
+        (item, i) =>
+          `${i + 1}. ${item.name}${
             item?.customization ? ` (${item.customization})` : ""
-          } (${item.count})`
+          } (${item.count}) %0A`
       )
       .join("%0A");
 
@@ -181,7 +180,7 @@ const Cart = () => {
 
     const totalPriceText = encodeURIComponent(`Total price QR: ${totalPrice}`);
 
-    const whatsappURL = `${whatsappapi}=${phone}&text=Order%20Details:%0A%0A${message}%0A%0A${formDetails}%0A%0A${totalPriceText}`;
+    const whatsappURL = `${whatsappapi}=${phone}&text=%0A${message}%0A%0A${formDetails}%0A%0A${totalPriceText}`;
 
     window.open(whatsappURL, "_blank");
 
