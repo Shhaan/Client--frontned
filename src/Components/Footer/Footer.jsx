@@ -35,7 +35,7 @@ function Footer() {
           <a
             style={
               viewportWidth < 400
-                ? { fontSize: "10px", color: "blue" }
+                ? { fontSize: "15px", color: "blue" }
                 : { color: "blue" }
             }
             href="https://www.facebook.com/profile.php?id=100064014914279&mibextid=ZbWKwL"
@@ -49,7 +49,7 @@ function Footer() {
           <a
             style={
               viewportWidth < 400
-                ? { fontSize: "10px", color: "purple" }
+                ? { fontSize: "15px", color: "purple" }
                 : { color: "purple" }
             }
             href="https://www.instagram.com/sssfresh.qa/profilecard/?igsh=dnZhcHBmYWlicGJy"
@@ -63,7 +63,7 @@ function Footer() {
           <a
             style={
               viewportWidth < 400
-                ? { fontSize: "10px", color: "green" }
+                ? { fontSize: "15px", color: "green" }
                 : { color: "green" }
             }
             href="https://maps.app.goo.gl/qotnRqHcgmkBAB2Z9"

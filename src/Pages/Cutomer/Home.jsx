@@ -60,7 +60,11 @@ const Home = () => {
         <div className={style.shopbycategory}>
           <h1 className={style.shopbycategoryheading}>Shop by Category</h1>
           <div className={style.categoryNavigation}>
-            <div className={style.categoryRow} ref={categoryRowRef}>
+            <div
+              className={style.categoryRow}
+              style={{ overflow: "auto" }}
+              ref={categoryRowRef}
+            >
               {categories.map((category, index) => (
                 <div
                   onClick={() => navigate(`/category/${category.name}`)}
@@ -87,7 +91,11 @@ const Home = () => {
           >
             <h1 className={style.shopbycategoryheading}>Deals of the Day</h1>
             <div className={style.categoryNavigation}>
-              <div className={style.categoryRow} ref={categoryRowRef}>
+              <div
+                className={style.categoryRow}
+                style={{ overflow: "auto" }}
+                ref={categoryRowRef}
+              >
                 {deals.map((deal, index) => (
                   <div
                     key={deal.id}

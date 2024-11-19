@@ -5,6 +5,7 @@ import { baseURL } from "../../Functions/axios";
 import toast from "react-hot-toast";
 import { CartContext } from "../../App";
 import { useNavigate, useParams } from "react-router-dom";
+import { FaHome } from "react-icons/fa";
 const Categoryfetch = () => {
   const [categories, setCategories] = useState([]);
   const { isCart, setIsCart } = useContext(CartContext);
@@ -38,6 +39,13 @@ const Categoryfetch = () => {
   }, []);
   return (
     <div onClick={() => setIsCart(false)} className={style.categorylistmaindiv}>
+      <div
+        onClick={() => navigate(`/`)}
+        style={{ color: "white", marginRight: "10px" }}
+        className={style.categoryfetchsubdiv}
+      >
+        <FaHome />
+      </div>
       {categories.map((category, index) => (
         <React.Fragment key={category._id}>
           <div

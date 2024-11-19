@@ -6,7 +6,6 @@ import Adminheader from "../../Components/Adminheader/Adminheader";
 import Categoryfetch from "../../Components/Categoryfetch/Categoryfetch";
 import Footer from "../../Components/Footer/Footer";
 import { PuffLoader } from "react-spinners";
-import Unamed from "../../Asset/Image/image.png";
 import toast from "react-hot-toast";
 import AddToCartButton from "../../Components/Addcart";
 import { FaPlus, FaMinus, FaTrash } from "react-icons/fa";
@@ -198,7 +197,7 @@ function Product() {
                       ? { border: "none", paddingLeft: "0 !important" }
                       : {}
                   }
-                  className={`${style.productcatomize} col-12 col-md-6 ps-4 `}
+                  className={`${style.productcatomize} col-12 col-md-6 ps-4 mb-5`}
                 >
                   {cus.length > 0 ? (
                     <>
@@ -239,7 +238,7 @@ function Product() {
                                         borderRadius: "6px",
                                       }
                                 }
-                                src={i.image ? baseURL + i?.image : Unamed}
+                                src={i.image ? baseURL + i?.image : i.image}
                                 alt=""
                               />
                               <div style={{ width: "100%" }}>

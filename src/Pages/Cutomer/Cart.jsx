@@ -8,6 +8,7 @@ import {
   FaMinusCircle,
   FaTrash,
   FaInfoCircle,
+  FaBiking,
 } from "react-icons/fa";
 import { phone, whatsappapi } from "../../Functions/axios";
 import {
@@ -361,7 +362,7 @@ const Cart = () => {
                   }`}
                   onClick={() => handledelivery()}
                 >
-                  Delivery <MdDeliveryDining />
+                  Delivery <FaBiking />
                 </button>
 
                 {delivery && (

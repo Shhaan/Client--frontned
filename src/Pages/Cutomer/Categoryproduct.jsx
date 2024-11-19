@@ -209,48 +209,62 @@ export const Categoryproduct = () => {
           marginBottom: "150px",
         }}
       >
-        {product.length >= 1 ? (
-          product.map((product) => (
-            <div
-              style={
-                viewportWidth < 450
-                  ? { position: "relative", margin: "auto" }
-                  : { position: "relative" }
-              }
-              key={product.product_id}
-              onClick={() => navigate(`/product/${product.code}`)}
-            >
-              <div className={style.card}>
-                <img
-                  src={baseURL + product.image}
-                  alt="img"
-                  className={style.cardimg}
-                />
-                <p style={{ margin: 0 }} className={style.heading}>
-                  {product.name}
-                </p>
-                {product.original_price ? (
-                  <div style={{ padding: 0 }} className={style.dealPrice}>
-                    <span className={style.originalPrice}>
-                      QR{product.original_price}
-                    </span>
-                    <span className={style.discountedPrice}>
-                      QR{product.price}
-                    </span>
-                  </div>
+        {
+          <div
+            className={style.shopbycategory}
+            style={{ marginBottom: "100px", margin: "0" }}
+          >
+            <div className={style.categoryNavigation}>
+              <div
+                className={style.categoryRow}
+                style={{ flexWrap: "wrap", gap: "48px" }}
+              >
+                {product.length > 0 ? (
+                  product.map((deal, index) => (
+                    <div
+                      key={deal.id}
+                      className={` ${style.categorybestsellerImage} ${style.dealCard}`}
+                      style={{
+                        "--animation-order": index,
+                        position: "relative",
+                        cursor: "pointer",
+                      }}
+                      onClick={() => navigate(`/product/${deal.code}`)}
+                    >
+                      <img
+                        className={`${style.categoryImage} `}
+                        src={`${baseURL}${deal.image}`}
+                        alt={deal.name}
+                      />
+                      <h2 className={style.DealNameday}>{deal.name}</h2>
+
+                      {deal.original_price ? (
+                        <div className={style.dealPrice}>
+                          <span className={style.originalPrice}>
+                            QR{deal.original_price}
+                          </span>
+                          <span className={style.discountedPrice}>
+                            QR{deal.price}
+                          </span>
+                        </div>
+                      ) : (
+                        <div className={style.dealPrice}>
+                          <span className={style.discountedPrice}>
+                            QR{deal.price}
+                          </span>
+                        </div>
+                      )}
+
+                      <p className={style.bestpriceseller}>{deal.quantity}</p>
+                    </div>
+                  ))
                 ) : (
-                  <div style={{ padding: 0 }} className={style.dealPrice}>
-                    <span className={style.discountedPrice}>
-                      QR{product.price}
-                    </span>
-                  </div>
+                  <div style={{ margin: "auto" }}>No Item Found </div>
                 )}
               </div>
             </div>
-          ))
-        ) : (
-          <div style={{ margin: "auto" }}>No Item Found </div>
-        )}
+          </div>
+        }
       </div>
       {loading && (
         <div style={{ display: "flex", justifyContent: "center" }}>
