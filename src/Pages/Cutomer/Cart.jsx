@@ -154,8 +154,6 @@ const Cart = () => {
     } else if (takeaway) {
       if (takeawayform.phone.length != 8) error.phone = "Must submit 8 number";
 
-      if (!takeawayform.time) error.time = "Take away time is required";
-
       if (Object.keys(error).length > 0) {
         settakeawayformerror(error);
         return;
@@ -265,6 +263,10 @@ const Cart = () => {
             </li>
             <li className={style.pdeliverydetails}>
               {" "}
+              Zone 46 free delivery for QR 20 and above
+            </li>
+            <li className={style.pdeliverydetails}>
+              {" "}
               0 km - 6km free delivery for qr 40 and above
             </li>
             <li className={style.pdeliverydetails}>
@@ -295,7 +297,12 @@ const Cart = () => {
           }
         >
           {selected === 0 ? (
-            <div className={style.cartitemmain}>
+            <div
+              style={
+                viewportWidth > 500 ? { overflowY: "auto", height: "61vh" } : {}
+              }
+              className={style.cartitemmain}
+            >
               {cartItems.map((item) => (
                 <div
                   key={item.id}
@@ -682,35 +689,34 @@ const Cart = () => {
 
                     <label className={style.formlabel}>Pick up time</label>
 
-                    <input
-                      required
-                      type="time"
+                    <select
                       className={style.inputcheckout}
                       name="time"
-                      value={takeawayform.rawTime} // Use raw time for the input
+                      value={takeawayform.rawTime} // Use raw value for the select
                       style={
                         takeawayformerror.time
                           ? { border: "solid 1px red", color: "#c1532e" }
                           : { color: "#c1532e" }
                       }
                       onChange={(e) => {
-                        const time = e.target.value; // Raw time in HH:mm format
-
-                        const [hours, minutes] = time.split(":");
-                        const intHours = parseInt(hours, 10);
-                        const ampm = intHours >= 12 ? "PM" : "AM";
-                        const adjustedHours = intHours % 12 || 12;
-                        const formattedTime = `${adjustedHours}:${minutes} ${ampm}`; // Formatted time
+                        const selectedValue = e.target.value;
 
                         takeawayformerror.time = ""; // Clear any error message
 
                         settakeawayform((prev) => ({
                           ...prev,
-                          rawTime: time, // Store the raw time
-                          time: formattedTime, // Store the formatted time
+                          rawTime: selectedValue, // Store the raw selected value
+                          time: selectedValue, // Optionally store the same value as a formatted value
                         }));
                       }}
-                    />
+                    >
+                      <option value="">Select Time</option>{" "}
+                      {/* Default empty option */}
+                      <option value="Within 15">Within 15</option>
+                      <option value="Within 30">Within 30</option>
+                      <option value="Within 45">Within 45</option>
+                      <option value="Within 1 hour">Within 1 hour</option>
+                    </select>
 
                     {takeawayformerror.time && (
                       <h6 className={style.error}>{takeawayformerror.time}</h6>
@@ -733,6 +739,7 @@ const Cart = () => {
               <div>
                 <h4>Delivery Terms and conditions</h4>
                 <div>
+                  <p> Zone 46 free delivery for QR 20 and above</p>
                   <p> 0 km - 6km free delivery for qr 40 and above</p>
                   <p>6km - 8 km free delivery for qr 60 and above</p>
                   <p>8km -10 km free delivery for 80qr and above</p>

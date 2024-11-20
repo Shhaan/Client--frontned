@@ -1,8 +1,8 @@
 import React from "react";
 import { CCarousel, CCarouselItem, CImage } from "@coreui/react";
-import c1 from "../../Asset/Image/c1.jpg";
+import c1 from "../../Asset/Image/card.jpg";
 import c2 from "../../Asset/Image/c2.jpg";
-import c3 from "../../Asset/Image/c3.jpg";
+
 import "@coreui/coreui/dist/css/coreui.min.css";
 import style from "../../Main.module.css";
 const Carousel = () => {

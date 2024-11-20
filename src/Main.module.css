@@ -765,10 +765,6 @@
   font-weight: 600;
   color: #8b4513;
 }
-.cartitemmain {
-  overflow-y: auto;
-  height: 61vh;
-}
 
 .cartitemmain::-webkit-scrollbar {
   display: none;

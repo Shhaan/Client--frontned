@@ -127,7 +127,9 @@ function Product() {
         }}
       ></div>
       {loading ? (
-        <div style={{ display: "flex", justifyContent: "center" }}>
+        <div
+          style={{ display: "flex", justifyContent: "center", height: "100vh" }}
+        >
           <PuffLoader size={60} color="#b64d11" />
         </div>
       ) : (

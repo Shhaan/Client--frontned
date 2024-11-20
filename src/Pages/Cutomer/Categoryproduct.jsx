@@ -200,18 +200,25 @@ export const Categoryproduct = () => {
           </div>
         )}
       </div>
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          flexWrap: "wrap",
-          marginTop: "23px",
-          marginLeft: "25px",
-          gap: "50px",
-          marginBottom: "150px",
-        }}
-      >
-        {
+
+      {loading ? (
+        <div
+          style={{ display: "flex", justifyContent: "center", height: "100vh" }}
+        >
+          <PuffLoader size={60} color="#b64d11" />
+        </div>
+      ) : (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            flexWrap: "wrap",
+            marginTop: "23px",
+            marginLeft: "25px",
+            gap: "50px",
+            marginBottom: "150px",
+          }}
+        >
           <div
             className={style.shopbycategory}
             style={{ marginBottom: "100px", margin: "0" }}
@@ -225,7 +232,7 @@ export const Categoryproduct = () => {
                   product.map((deal, index) => (
                     <div
                       key={deal.id}
-                      className={` ${style.categorybestsellerImage} ${style.dealCard}`}
+                      className={`${style.categorybestsellerImage} ${style.dealCard}`}
                       style={{
                         "--animation-order": index,
                         position: "relative",
@@ -234,7 +241,7 @@ export const Categoryproduct = () => {
                       onClick={() => navigate(`/product/${deal.code}`)}
                     >
                       <img
-                        className={`${style.categoryImage} `}
+                        className={`${style.categoryImage}`}
                         src={`${baseURL}${deal.image}`}
                         alt={deal.name}
                       />
@@ -260,18 +267,14 @@ export const Categoryproduct = () => {
                     </div>
                   ))
                 ) : (
-                  <div style={{ margin: "auto" }}>No Item Found </div>
+                  <div style={{ margin: "auto" }}>No Item Found</div>
                 )}
               </div>
             </div>
           </div>
-        }
-      </div>
-      {loading && (
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <PuffLoader size={60} color="#b64d11" />
         </div>
       )}
+
       <div ref={observerRef} style={{ height: "1px" }}></div>
       <Footer />
     </React.Fragment>

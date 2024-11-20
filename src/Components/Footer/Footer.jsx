@@ -23,7 +23,10 @@ function Footer() {
   }, []);
 
   return (
-    <footer className={`${style.footer} container-fluid`}>
+    <footer
+      className={`${style.footer} container-fluid`}
+      style={{ position: "relative", bottom: "0" }}
+    >
       {/* Main Footer Content */}
       <div className="row py-2">
         {/* Contact Section */}
@@ -118,9 +121,17 @@ function Footer() {
             <FaMapMarkerAlt />
           </a>
         </div>
+        <div className="col-12  text-center   mt-2 mb-md-0">
+          <p
+            className="mb-0"
+            style={
+              viewportWidth < 400 ? { fontSize: "6px" } : { fontSize: "10px" }
+            }
+          >
+            © SSS Fresh chicken & meat - All rights reserved
+          </p>
+        </div>
       </div>
-
-      {/* Footer End */}
     </footer>
   );
 }
