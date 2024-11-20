@@ -23,7 +23,7 @@ function Footer() {
   }, []);
 
   return (
-    <footer className={`${style.footer} container-fluid fixed-bottom`}>
+    <footer className={`${style.footer} container-fluid `}>
       {/* Main Footer Content */}
 
       {/* Contact Section */}
