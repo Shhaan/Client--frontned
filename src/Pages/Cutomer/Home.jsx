@@ -47,6 +47,8 @@ const Home = () => {
           <Categoryfetch />
         </div>
       </div>
+      <Carousel />
+
       {!load ? (
         <div
           style={{ display: "flex", justifyContent: "center", height: "100vh" }}
@@ -55,7 +57,6 @@ const Home = () => {
         </div>
       ) : (
         <div>
-          <Carousel />
           <div className={style.shopbycategory}>
             <h1 className={style.shopbycategoryheading}>Shop by Category</h1>
             <div className={style.categoryNavigation}>
