@@ -17,34 +17,26 @@ const Home = () => {
   const [load, setload] = useState(false);
   const categoryRowRef = useRef(null);
   useEffect(() => {
-    const fetchCategories = async () => {
+    const fetchData = async () => {
       try {
-        const response = await axiosInstancemain.get("/category/");
+        const [categoriesResponse, dealsResponse, bestSellersResponse] =
+          await Promise.all([
+            axiosInstancemain.get("/category/"),
+            axiosInstancemain.get("/deal/"),
+            axiosInstancemain.get("/best-seller/"),
+          ]);
+
+        // Assuming no need to handle categories as you did not set them in state
+        setDeals(dealsResponse?.data?.message);
+        setBestSellers(bestSellersResponse?.data?.message);
+
+        setload(true); // Set loading state after all calls are successful
       } catch (error) {
         toast.error(error?.response?.data?.message);
       }
     };
-    fetchCategories();
-    const fetchDeals = async () => {
-      try {
-        const response = await axiosInstancemain.get("/deal/");
-        setDeals(response?.data?.message);
-      } catch (error) {
-        toast.error(error?.response?.data?.message);
-      }
-    };
-    fetchDeals();
-    const fetchBestSellers = async () => {
-      try {
-        const response = await axiosInstancemain.get("/best-seller/");
-        setBestSellers(response?.data?.message);
-      } catch (error) {
-        console.log(error);
-        toast.error(error?.response?.data?.message);
-      }
-    };
-    fetchBestSellers();
-    setload(true);
+
+    fetchData();
   }, []);
 
   return (
@@ -206,7 +198,7 @@ const Home = () => {
           )}
         </div>
       )}
-      {load && <Footer />}
+      <Footer />
     </>
   );
 };
