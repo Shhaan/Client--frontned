@@ -148,7 +148,11 @@ const Home = () => {
             <div className={style.categoryNavigation}>
               <div
                 className={style.categoryRow}
-                style={{ flexWrap: "wrap", gap: "45px" }}
+                style={{
+                  flexWrap: "wrap",
+                  gap: "45px",
+                  justifyContent: "center",
+                }}
                 ref={categoryRowRef}
               >
                 {bestSellers.map((deal, index) => (

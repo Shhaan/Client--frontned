@@ -96,7 +96,6 @@ function Dashboard() {
       if (error?.response?.data?.message?.code) {
         return toast.error(error?.response?.data?.message?.code);
       }
-      console.log(error);
 
       message.error(error?.response?.data?.message);
     }
@@ -104,12 +103,11 @@ function Dashboard() {
 
   const handleUploadChange = ({ fileList }) => {
     if (fileList.length > 1) {
-      message.error("You can only upload one image!");
-      return;
+      fileList = [fileList[fileList.length - 1]];
+      message.warning("Only the latest image will be kept.");
     }
     setImageFileList(fileList);
   };
-
   const handleCustomizationChange = (index, field, value) => {
     const updatedItems = [...customizationItems];
     updatedItems[index] = { ...updatedItems[index], [field]: value };
@@ -118,8 +116,8 @@ function Dashboard() {
 
   const handleCustomizationImageChange = (index, { fileList }) => {
     if (fileList.length > 1) {
-      message.error("You can only upload one image!");
-      return;
+      fileList = [fileList[fileList.length - 1]];
+      message.warning("Only the latest image will be kept.");
     }
     const updatedItems = [...customizationItems];
     updatedItems[index].image = fileList;

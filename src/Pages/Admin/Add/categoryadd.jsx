@@ -58,10 +58,10 @@ function Dashboard() {
 
   const handleUploadChange = ({ fileList }) => {
     if (fileList.length > 1) {
-      toast.error("You can only upload one image!", { position: "top-center" });
-      return; // Prevent setting more than one image
+      fileList = [fileList[fileList.length - 1]];
+      message.warning("Only the latest image will be kept.");
     }
-    setImageFileList(fileList); // Store the file list
+    setImageFileList(fileList);
   };
 
   return (

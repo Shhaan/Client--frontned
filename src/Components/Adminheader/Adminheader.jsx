@@ -67,7 +67,11 @@ function Adminheader({
         className={`${style.maindiv} align-items-center`}
       >
         <div
-          className={`${style.subdiv1} col-5 col-md-4 text-center text-md-start`}
+          className={
+            isAdmin
+              ? `${style.subdiv1} col-4 col-md-5 text-center text-md-start`
+              : `${style.subdiv1} col-8 col-md-6 text-center text-md-start`
+          }
           onClick={() => setIsCart(false)}
         >
           {!isAdmin ? (
@@ -93,7 +97,11 @@ function Adminheader({
           )}
         </div>
         <div
-          className={`${style.subdiv2} col-6 col-md-8 text-center text-md-start`}
+          className={
+            isAdmin
+              ? `${style.subdiv2} col-8 col-md-7 text-center text-md-start`
+              : `${style.subdiv2} col-4 col-md-6 text-center text-md-start`
+          }
         >
           {isAdmin && (
             <h3

@@ -216,8 +216,8 @@ function Dashboard() {
 
   const handleUploadChange = ({ fileList }) => {
     if (fileList.length > 1) {
-      message.error("You can only upload one image!");
-      return;
+      fileList = [fileList[fileList.length - 1]];
+      message.warning("Only the latest image will be kept.");
     }
     setImageFileList(fileList);
   };
@@ -230,8 +230,8 @@ function Dashboard() {
 
   const handleCustomizationImageChange = (index, { fileList }) => {
     if (fileList.length > 1) {
-      message.error("You can only upload one image!");
-      return;
+      fileList = [fileList[fileList.length - 1]];
+      message.warning("Only the latest image will be kept.");
     }
     const updatedItems = [...customizationItems];
     updatedItems[index].image = fileList;

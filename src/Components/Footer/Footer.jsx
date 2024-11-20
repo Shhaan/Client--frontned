@@ -41,7 +41,7 @@ function Footer() {
             href="https://www.facebook.com/profile.php?id=100064014914279&mibextid=ZbWKwL"
             target="_blank"
             rel="noopener noreferrer"
-            className={`${style.footerLink} me-3`}
+            className={`${style.footerLink} me-5`}
             title="Facebook"
           >
             <FaFacebookF />
@@ -55,7 +55,7 @@ function Footer() {
             href="https://www.instagram.com/sssfresh.qa/profilecard/?igsh=dnZhcHBmYWlicGJy"
             target="_blank"
             rel="noopener noreferrer"
-            className={`${style.footerLink} me-3`}
+            className={`${style.footerLink} me-5`}
             title="Instagram"
           >
             <FaInstagram />
