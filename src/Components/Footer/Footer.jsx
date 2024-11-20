@@ -23,11 +23,10 @@ function Footer() {
   }, []);
 
   return (
-    <footer className={`${style.footer} container-fluid `}>
+    <footer className={`${style.footer} container-fluid`}>
       {/* Main Footer Content */}
-
-      {/* Contact Section */}
       <div className="row py-2">
+        {/* Contact Section */}
         <div className="col-12 col-md-6 text-center text-md-start mb-2 mb-md-0">
           <h6
             style={{
@@ -42,8 +41,9 @@ function Footer() {
               viewportWidth < 400 ? { fontSize: "10px" } : { fontSize: "14px" }
             }
           >
-            <FaMapMarkerAlt style={{ color: "green" }} /> Al Furjan Market, No
-            :34, Shop No. 11 Near Al Thumama, Stadium, Doha-Qatar P.O.Box :21580
+            <FaMapMarkerAlt style={{ color: "green" }} /> Al Furjan Market,
+            No:34, Shop No. 11 Near Al Thumama, Stadium, Doha-Qatar P.O.Box:
+            21580
           </p>
           <p
             style={
@@ -54,8 +54,9 @@ function Footer() {
             <FaEnvelope style={{ color: "red" }} /> ssstradingqatar@gmail.com
           </p>
         </div>
+
+        {/* Social Media Links */}
         <div className="col-12 col-md-6 text-center text-md-end">
-          {/* Social Media Links */}
           <a
             style={{
               display: "inline-block",
