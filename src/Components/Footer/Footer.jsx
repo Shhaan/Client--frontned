@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { FaFacebookF, FaInstagram, FaMapMarkerAlt } from "react-icons/fa"; // Import icons
+import {
+  FaFacebookF,
+  FaInstagram,
+  FaMapMarkerAlt,
+  FaPhoneAlt,
+  FaEnvelope,
+} from "react-icons/fa"; // Import additional icons
 import style from "./Footer.module.css";
 
 function Footer() {
@@ -18,65 +24,102 @@ function Footer() {
 
   return (
     <footer className={`${style.footer} container-fluid fixed-bottom`}>
-      <div
-        className="row py-2 align-items-center"
-        style={{ justifyContent: "center" }}
-      >
+      {/* Main Footer Content */}
+
+      {/* Contact Section */}
+      <div className="row py-2">
         <div className="col-12 col-md-6 text-center text-md-start mb-2 mb-md-0">
-          <p
-            className="mb-0"
-            style={viewportWidth < 400 ? { fontSize: "10px" } : {}}
+          <h6
+            style={{
+              fontSize: viewportWidth < 400 ? "14px" : "16px",
+              fontWeight: "bold",
+            }}
           >
-            © SSS Fresh chicken & meat - Copyright all right reserved
+            Contact Us
+          </h6>
+          <p
+            style={
+              viewportWidth < 400 ? { fontSize: "10px" } : { fontSize: "14px" }
+            }
+          >
+            <FaMapMarkerAlt style={{ color: "green" }} /> Al Furjan Market, No
+            :34, Shop No. 11 Near Al Thumama, Stadium, Doha-Qatar P.O.Box :21580
+          </p>
+          <p
+            style={
+              viewportWidth < 400 ? { fontSize: "10px" } : { fontSize: "14px" }
+            }
+          >
+            <FaPhoneAlt style={{ color: "green" }} /> +97430162002 |{" "}
+            <FaEnvelope style={{ color: "red" }} /> ssstradingqatar@gmail.com
           </p>
         </div>
         <div className="col-12 col-md-6 text-center text-md-end">
           {/* Social Media Links */}
           <a
-            style={
-              viewportWidth < 400
-                ? { fontSize: "15px", color: "blue" }
-                : { color: "blue" }
-            }
+            style={{
+              display: "inline-block",
+              width: "40px",
+              height: "40px",
+              backgroundColor: "#f0f6f6",
+              borderRadius: "5px",
+              textAlign: "center",
+              lineHeight: "40px",
+              fontSize: viewportWidth < 400 ? "15px" : "20px",
+              color: "blue",
+            }}
             href="https://www.facebook.com/profile.php?id=100064014914279&mibextid=ZbWKwL"
             target="_blank"
             rel="noopener noreferrer"
-            className={`${style.footerLink} me-5`}
+            className={`${style.footerLink} me-3`}
             title="Facebook"
           >
             <FaFacebookF />
           </a>
           <a
-            style={
-              viewportWidth < 400
-                ? { fontSize: "15px", color: "purple" }
-                : { color: "purple" }
-            }
+            style={{
+              display: "inline-block",
+              width: "40px",
+              height: "40px",
+              backgroundColor: "#f0f6f6",
+              borderRadius: "5px",
+              textAlign: "center",
+              lineHeight: "40px",
+              fontSize: viewportWidth < 400 ? "15px" : "20px",
+              color: "purple",
+            }}
             href="https://www.instagram.com/sssfresh.qa/profilecard/?igsh=dnZhcHBmYWlicGJy"
             target="_blank"
             rel="noopener noreferrer"
-            className={`${style.footerLink} me-5`}
+            className={`${style.footerLink} me-3`}
             title="Instagram"
           >
             <FaInstagram />
           </a>
           <a
-            style={
-              viewportWidth < 400
-                ? { fontSize: "15px", color: "green" }
-                : { color: "green" }
-            }
+            style={{
+              display: "inline-block",
+              width: "40px",
+              height: "40px",
+              backgroundColor: "#f0f6f6",
+              borderRadius: "5px",
+              textAlign: "center",
+              lineHeight: "40px",
+              fontSize: viewportWidth < 400 ? "15px" : "20px",
+              color: "green",
+            }}
             href="https://maps.app.goo.gl/qotnRqHcgmkBAB2Z9"
             target="_blank"
             rel="noopener noreferrer"
             className={`${style.footerLink}`}
             title="Google Maps"
-            // Default color applied here
           >
             <FaMapMarkerAlt />
           </a>
         </div>
       </div>
+
+      {/* Footer End */}
     </footer>
   );
 }

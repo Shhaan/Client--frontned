@@ -260,6 +260,9 @@ const Cart = () => {
                 style={{ cursor: "pointer" }}
               />
             </p>
+            <li style={{ margin: "auto", listStyle: "none" }}>
+              Delivery Terms and conditions
+            </li>
             <li className={style.pdeliverydetails}>
               {" "}
               0 km - 6km free delivery for qr 40 and above
@@ -545,9 +548,9 @@ const Cart = () => {
                         }}
                       >
                         <option value="">Select Payment Type</option>
-                        <option value="Cash">Cash</option>
-                        <option value="Card">Card</option>
-                        <option value="Online">Online</option>
+                        <option value="Cash ">Cash 💵</option>
+                        <option value="Card">Card 💳</option>
+                        <option value="Online">Online 🌐 </option>
                       </select>
                       {deliveryformerror.paymentType && (
                         <h6 className={style.error}>
@@ -728,7 +731,7 @@ const Cart = () => {
                 }}
               />
               <div>
-                <h4>Delivery prices</h4>
+                <h4>Delivery Terms and conditions</h4>
                 <div>
                   <p> 0 km - 6km free delivery for qr 40 and above</p>
                   <p>6km - 8 km free delivery for qr 60 and above</p>
