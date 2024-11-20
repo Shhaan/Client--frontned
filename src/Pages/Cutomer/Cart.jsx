@@ -432,25 +432,22 @@ const Cart = () => {
                         <input
                           required
                           className={style.inputcheckout}
-                          type="tel"
+                          type="number"
                           name="phone"
                           value={deliveryform.phone}
                           onChange={(e) => {
-                            const inputValue = e.target.value.replace(
-                              /\D/g,
-                              ""
-                            );
+                            const inputValue = e.target.value;
                             setdeliveryform((i) => ({
                               ...i,
                               phone: inputValue,
                             }));
                             deliveryformerror.phone = ""; // Clear any errors
                           }}
-                          style={{
-                            ...(deliveryformerror.phone
+                          style={
+                            deliveryformerror.phone
                               ? { border: "solid 1px red" }
-                              : {}),
-                          }}
+                              : {}
+                          }
                         />
                       </div>
 
@@ -664,22 +661,22 @@ const Cart = () => {
                       <input
                         required
                         className={style.inputcheckout}
-                        type="tel"
+                        type="number"
                         name="phone"
                         value={takeawayform.phone}
                         onChange={(e) => {
-                          const inputValue = e.target.value.replace(/\D/g, ""); // Remove non-numeric characters
+                          const inputValue = e.target.value;
                           settakeawayform((i) => ({
                             ...i,
                             phone: inputValue,
                           }));
                           takeawayformerror.phone = ""; // Clear any errors
                         }}
-                        style={{
-                          ...(takeawayform.phone
+                        style={
+                          takeawayformerror.phone
                             ? { border: "solid 1px red" }
-                            : {}),
-                        }}
+                            : {}
+                        }
                       />
                     </div>
 
@@ -692,21 +689,16 @@ const Cart = () => {
                     <select
                       className={style.inputcheckout}
                       name="time"
-                      value={takeawayform.rawTime} // Use raw value for the select
-                      style={
-                        takeawayformerror.time
-                          ? { border: "solid 1px red", color: "#c1532e" }
-                          : { color: "#c1532e" }
-                      }
+                      value={takeawayform.time} // Use raw value for the select
                       onChange={(e) => {
                         const selectedValue = e.target.value;
 
-                        takeawayformerror.time = ""; // Clear any error message
+                        takeawayformerror.time = "";
 
                         settakeawayform((prev) => ({
                           ...prev,
-                          rawTime: selectedValue, // Store the raw selected value
-                          time: selectedValue, // Optionally store the same value as a formatted value
+
+                          time: selectedValue,
                         }));
                       }}
                     >
@@ -717,10 +709,6 @@ const Cart = () => {
                       <option value="Within 45">Within 45</option>
                       <option value="Within 1 hour">Within 1 hour</option>
                     </select>
-
-                    {takeawayformerror.time && (
-                      <h6 className={style.error}>{takeawayformerror.time}</h6>
-                    )}
                   </div>
                 )}
               </div>

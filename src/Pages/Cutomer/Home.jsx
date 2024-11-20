@@ -27,6 +27,8 @@ const Home = () => {
           ]);
 
         // Assuming no need to handle categories as you did not set them in state
+        setCategories(categoriesResponse?.data?.message);
+
         setDeals(dealsResponse?.data?.message);
         setBestSellers(bestSellersResponse?.data?.message);
 
