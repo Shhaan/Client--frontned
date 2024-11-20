@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import style from "./Adminheader.module.css";
-import logo from "../../Asset/Image/h.png";
+import logo from "../../Asset/Image/bg.png";
+import H2l from "../../Asset/Image/h2.png";
+
 import { useNavigate } from "react-router-dom";
 import { FaShoppingCart } from "react-icons/fa";
 import { CartContext } from "../../App";
@@ -75,15 +77,26 @@ function Adminheader({
           onClick={() => setIsCart(false)}
         >
           {!isAdmin ? (
-            <img
-              style={
-                viewportWidth < 400 ? { width: "100%", height: "70px" } : {}
-              }
-              onClick={() => navigate("/")}
-              className={`${style.logoimg} `}
-              src={logo}
-              alt="logo"
-            />
+            <>
+              <img
+                style={
+                  viewportWidth < 400 ? { width: "100%", height: "73px" } : {}
+                }
+                onClick={() => navigate("/")}
+                className={`${style.logoimg} `}
+                src={logo}
+                alt="logo"
+              />
+              <img
+                style={
+                  viewportWidth < 400 ? { width: "83%", height: "63px" } : {}
+                }
+                onClick={() => navigate("/")}
+                className={`${style.logoimg} `}
+                src={H2l}
+                alt="logo"
+              />
+            </>
           ) : side ? (
             <MdOutlineCancel
               style={{ color: "white", height: "27px", width: "24px" }}

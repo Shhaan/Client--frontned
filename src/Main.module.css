@@ -932,7 +932,7 @@ input[type="number"]::-webkit-inner-spin-button {
 
 /* Add this to your CSS file, e.g., SelectComponent.css */
 .selectDropdown {
-  width: 111%;
+  width: 100%;
   word-wrap: normal;
   border-radius: 6px;
   height: 40px;

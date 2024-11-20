@@ -239,25 +239,24 @@ export const Categoryproduct = () => {
                         alt={deal.name}
                       />
                       <h2 className={style.DealNameday}>{deal.name}</h2>
+                      <p className={style.bestpriceseller}>{deal.quantity}</p>
 
                       {deal.original_price ? (
                         <div className={style.dealPrice}>
                           <span className={style.originalPrice}>
-                            QR{deal.original_price}
+                            QR {deal.original_price}
                           </span>
                           <span className={style.discountedPrice}>
-                            QR{deal.price}
+                            QR {deal.price}
                           </span>
                         </div>
                       ) : (
                         <div className={style.dealPrice}>
                           <span className={style.discountedPrice}>
-                            QR{deal.price}
+                            QR {deal.price}
                           </span>
                         </div>
                       )}
-
-                      <p className={style.bestpriceseller}>{deal.quantity}</p>
                     </div>
                   ))
                 ) : (

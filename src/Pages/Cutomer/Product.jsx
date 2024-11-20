@@ -162,16 +162,16 @@ function Product() {
                           {product.original_price ? (
                             <div className={style.dealPrice}>
                               <span className={style.originalPrice}>
-                                QR{product.original_price}
+                                QR {product.original_price}
                               </span>
                               <span className={style.discountedPrice}>
-                                QR{product.price}
+                                QR {product.price}
                               </span>
                             </div>
                           ) : (
                             <div className={style.dealPrice}>
                               <span className={style.discountedPrice}>
-                                QR{product.price}
+                                QR {product.price}
                               </span>
                             </div>
                           )}
@@ -382,20 +382,21 @@ function Product() {
                   ) : (
                     <>
                       <h4 className={style.DealNameday}>{product?.name}</h4>
+
                       <div className={style.dealPrice}>
                         {product.original_price ? (
                           <div className={style.dealPrice}>
                             <span className={style.originalPrice}>
-                              QR{product.original_price}
+                              QR {product.original_price}
                             </span>
                             <span className={style.discountedPrice}>
-                              QR{product.price}
+                              QR {product.price}
                             </span>
                           </div>
                         ) : (
                           <div className={style.dealPrice}>
                             <span className={style.discountedPrice}>
-                              QR{product.price}
+                              QR {product.price}
                             </span>
                           </div>
                         )}
@@ -556,16 +557,16 @@ function Product() {
                               {deal.original_price ? (
                                 <div className={style.dealPrice}>
                                   <span className={style.originalPrice}>
-                                    QR{deal.original_price}
+                                    QR {deal.original_price}
                                   </span>
                                   <span className={style.discountedPrice}>
-                                    QR{deal.price}
+                                    QR {deal.price}
                                   </span>
                                 </div>
                               ) : (
                                 <div className={style.dealPrice}>
                                   <span className={style.discountedPrice}>
-                                    QR{deal.price}
+                                    QR {deal.price}
                                   </span>
                                 </div>
                               )}

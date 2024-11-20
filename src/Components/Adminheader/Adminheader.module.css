@@ -1,5 +1,6 @@
 .maindiv {
-  background: #3da3d4; /*FF0000*/
+  /* FF0000 #3da3d4 */
+  background: #000000;
   margin: 0;
   height: 89px;
   display: flex;
@@ -34,21 +35,21 @@
     height: 80px;
   }
   .logoimg {
-    height: 60px;
-    width: 54%;
+    height: 66px;
+    width: 29%;
   }
   .heading {
     font-size: 20px;
   }
 }
 
-@media (min-width: 1500px) {
+@media (min-width: 1300px) {
   .maindiv {
     height: 117px;
   }
   .logoimg {
-    height: 110px;
-    width: 250px;
+    height: 89px;
+    width: 175px;
   }
   .heading {
     font-size: 40px;

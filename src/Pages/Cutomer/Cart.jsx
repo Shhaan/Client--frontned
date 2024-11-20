@@ -9,6 +9,7 @@ import {
   FaTrash,
   FaInfoCircle,
   FaBiking,
+  FaCross,
 } from "react-icons/fa";
 import { phone, whatsappapi } from "../../Functions/axios";
 import {
@@ -21,7 +22,7 @@ import Adminheader from "../../Components/Adminheader/Adminheader";
 import Footer from "../../Components/Footer/Footer";
 import toast from "react-hot-toast";
 import Cartpopup from "../../Components/Home/Cartpopup";
-import { MdDeliveryDining } from "react-icons/md";
+import { MdDeliveryDining, MdOutlineCancel } from "react-icons/md";
 const Cart = () => {
   const navigate = useNavigate();
   const {
@@ -34,19 +35,25 @@ const Cart = () => {
   const dispatch = useDispatch();
   const [delivery, setdelivery] = useState(false);
   const [takeaway, settakeaway] = useState(true);
-  const [takeawayform, settakeawayform] = useState({ phone: "", time: "" });
+  const [takeawayform, settakeawayform] = useState({
+    phone: "",
+    time: "",
+    name: "",
+  });
   const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
   const [deliverydetail, setdeliverydetail] = useState(false);
   const [takeawayformerror, settakeawayformerror] = useState({
     phone: "",
     time: "",
   });
-
+  const [dcount, setdcount] = useState(0);
   const [deliveryform, setdeliveryform] = useState({
     phone: "",
     zone: "",
     building: "",
     street: "",
+    name: "",
+    paymentType: "",
   });
 
   const [deliveryformerror, setdeliveryformerror] = useState({
@@ -55,6 +62,7 @@ const Cart = () => {
     building: "",
     street: "",
     slot: "",
+    paymentType: "",
   });
   const [selected, setselected] = useState(0);
 
@@ -114,10 +122,12 @@ const Cart = () => {
     const error = {};
 
     if (delivery) {
-      if (!deliveryform.phone) error.phone = "Your phone number is required";
+      if (deliveryform.phone.length != 8) error.phone = "Must submit 8 number";
 
       if (!deliveryform.building)
         error.building = "Your building/villa number is required";
+      if (!deliveryform.paymentType)
+        error.paymentType = "Payment type is required";
 
       if (!timeandtype.deliverytype || !timeandtype.time || selectedtime === 0)
         error.slot = "Time slot must be selected";
@@ -129,17 +139,21 @@ const Cart = () => {
 
       form = {
         Order_type: "Home delivery",
-        Building: deliveryform.building,
-        Street: deliveryform.street,
-        Zone: deliveryform.zone,
-        Phone: deliveryform.phone,
+
         Date:
           timeandtype.deliverytype +
           (timeandtype.deliverytype == "Now" ? `` : `(${timeandtype.date})`),
         Slot: timeandtype.time,
+        PaymentType: deliveryform.paymentType,
+        Name: deliveryform.name,
+        Phone: deliveryform.phone,
+        Building: deliveryform.building,
+        Street: deliveryform.street,
+        Zone: deliveryform.zone,
       };
     } else if (takeaway) {
-      if (!takeawayform.phone) error.phone = "Your phone number is required";
+      if (takeawayform.phone.length != 8) error.phone = "Must submit 8 number";
+
       if (!takeawayform.time) error.time = "Take away time is required";
 
       if (Object.keys(error).length > 0) {
@@ -147,11 +161,11 @@ const Cart = () => {
         return;
       }
 
-      console.log(takeawayform.time);
-
       form = {
         Order_type: "Take away",
-        Time_slot: takeawayform.time,
+        Time: takeawayform.time,
+        Name: takeawayform.name,
+
         Phone_number: takeawayform.phone,
       };
     }
@@ -161,15 +175,18 @@ const Cart = () => {
         (item, i) =>
           `${i + 1}. ${item.name}${
             item?.customization ? ` (${item.customization})` : ""
-          }   (${item.quantity})  (${item.count}) %0A`
+          }   (${item.quantity})  x ${item.count} %0A`
       )
       .join("%0A");
 
     const formDetails = Object.entries(form)
-      .map(
-        ([key, value]) =>
-          `${encodeURIComponent(key)}: ${encodeURIComponent(value)}`
-      )
+      .filter(([key, value]) => value && value != "")
+      .map(([key, value]) => {
+        const lineBreak = ["Order_type", "Slot"].includes(key) ? "%0A" : "";
+        return `${encodeURIComponent(key)}: ${encodeURIComponent(
+          value
+        )}${lineBreak}`;
+      })
       .join("%0A");
 
     const totalPriceText = encodeURIComponent(`Total price QR: ${totalPrice}`);
@@ -185,8 +202,6 @@ const Cart = () => {
   const handledelivery = () => {
     if (cartItems.length == 1) {
       if (cartItems[0].take_away) {
-        console.log(cartItems);
-
         toast.error(
           `Home delivery not possible for ${cartItems[0].name}`,
           3000
@@ -194,6 +209,10 @@ const Cart = () => {
         return;
       }
     }
+    if (dcount === 0) {
+      setdeliverydetail(true);
+    }
+    setdcount((p) => p + 1);
     setdelivery(true);
     settakeaway(false);
   };
@@ -217,32 +236,47 @@ const Cart = () => {
         )}
 
         {deliverydetail && viewportWidth < 886 && (
-          <div
+          <ul
             ref={cartdelivery}
             style={{
+              padding: "20px",
+              width: "66%",
+              left: "49px",
+              top: "200px",
+              display: "flex",
+
+              flexDirection: "column",
+              gap: "14px",
+              borderRadius: "7px",
+
               position: "absolute",
               zIndex: 1,
               background: "#f0f6f6",
-              padding: "13px",
-              width: "35%",
-              left: "180px",
-              top: "100px",
             }}
           >
-            <p className={style.pdeliverydetails}> Zone 46 free delivery </p>
-            <p className={style.pdeliverydetails}>
+            <p>
+              <MdOutlineCancel
+                onClick={() => setdeliverydetail(false)}
+                style={{ cursor: "pointer" }}
+              />
+            </p>
+            <li className={style.pdeliverydetails}>
+              {" "}
               0 km - 6km free delivery for qr 40 and above
-            </p>
-            <p className={style.pdeliverydetails}>
+            </li>
+            <li className={style.pdeliverydetails}>
               6km - 8 km free delivery for qr 60 and above
-            </p>
-            <p className={style.pdeliverydetails}>
+            </li>
+            <li className={style.pdeliverydetails}>
               8km -10 km free delivery for 80qr and above
-            </p>
-            <p className={style.pdeliverydetails}>
-              10 km 12km free delivery for 100qr and above
-            </p>{" "}
-          </div>
+            </li>
+            <li className={style.pdeliverydetails}>
+              10 km -12km free delivery for 100qr and above
+            </li>
+            <li className={style.pdeliverydetails}>
+              12 km - 15 km free delivery for 130qr and above
+            </li>{" "}
+          </ul>
         )}
 
         <div
@@ -361,27 +395,55 @@ const Cart = () => {
                 {delivery && (
                   <div>
                     <div className={style.inputcheckoutdiv}>
-                      <label className={style.formlabel}>Mobile number</label>
+                      <label className={style.formlabel}>Name</label>
 
                       <input
-                        required
+                        type="text"
                         className={style.inputcheckout}
-                        type="Number"
-                        name="text"
-                        value={deliveryform.phone}
-                        onChange={(e) => (
-                          setdeliveryform((i) => ({
-                            ...i,
-                            phone: e.target.value,
-                          })),
-                          (deliveryformerror.phone = "")
-                        )}
-                        style={
-                          deliveryformerror.phone
-                            ? { border: "solid 1px red" }
-                            : {}
-                        }
+                        name="name"
+                        value={deliveryform.name}
+                        onChange={(e) => {
+                          setdeliveryform((prev) => ({
+                            ...prev,
+                            name: e.target.value,
+                          }));
+                        }}
                       />
+                      <label className={style.formlabel}>Mobile number</label>
+
+                      <div style={{ display: "flex", alignItems: "center" }}>
+                        <span
+                          style={{
+                            padding: "0.5rem",
+                          }}
+                        >
+                          +974
+                        </span>
+                        <input
+                          required
+                          className={style.inputcheckout}
+                          type="tel"
+                          name="phone"
+                          value={deliveryform.phone}
+                          onChange={(e) => {
+                            const inputValue = e.target.value.replace(
+                              /\D/g,
+                              ""
+                            );
+                            setdeliveryform((i) => ({
+                              ...i,
+                              phone: inputValue,
+                            }));
+                            deliveryformerror.phone = ""; // Clear any errors
+                          }}
+                          style={{
+                            ...(deliveryformerror.phone
+                              ? { border: "solid 1px red" }
+                              : {}),
+                          }}
+                        />
+                      </div>
+
                       {deliveryformerror.phone && (
                         <h6 className={style.error}>
                           {deliveryformerror.phone}
@@ -462,9 +524,34 @@ const Cart = () => {
                             : {}
                         }
                       />
-                      {deliveryformerror.zone && (
+
+                      <label className={style.formlabel}>Payment Type</label>
+
+                      <select
+                        className={style.inputcheckout}
+                        name="paymentType"
+                        style={
+                          deliveryformerror.paymentType
+                            ? { border: "solid 1px red" }
+                            : {}
+                        }
+                        value={deliveryform.paymentType || ""}
+                        onChange={(e) => {
+                          setdeliveryform((prev) => ({
+                            ...prev,
+                            paymentType: e.target.value,
+                          }));
+                          deliveryformerror.paymentType = "";
+                        }}
+                      >
+                        <option value="">Select Payment Type</option>
+                        <option value="Cash">Cash</option>
+                        <option value="Card">Card</option>
+                        <option value="Online">Online</option>
+                      </select>
+                      {deliveryformerror.paymentType && (
                         <h6 className={style.error}>
-                          {deliveryformerror.zone}
+                          {deliveryformerror.paymentType}
                         </h6>
                       )}
                     </div>
@@ -472,7 +559,7 @@ const Cart = () => {
                     <div
                       style={{
                         display: "flex",
-                        gap: "25px",
+                        gap: "17px",
                         marginTop: "46px",
                       }}
                     >
@@ -539,27 +626,53 @@ const Cart = () => {
 
                 {takeaway && (
                   <div className={style.inputcheckoutdiv}>
-                    <label className={style.formlabel}>Mobile number</label>
+                    <label className={style.formlabel}>Name</label>
 
                     <input
-                      required
+                      type="text"
                       className={style.inputcheckout}
-                      type="Number"
-                      name="text"
-                      value={takeawayform.phone}
-                      style={
-                        takeawayformerror.phone
-                          ? { border: "solid 1px red" }
-                          : {}
-                      }
-                      onChange={(e) => (
-                        settakeawayform((i) => ({
-                          ...i,
-                          phone: e.target.value,
-                        })),
-                        (takeawayformerror.phone = "")
-                      )}
+                      name="name"
+                      value={takeawayform.name}
+                      onChange={(e) => {
+                        settakeawayform((prev) => ({
+                          ...prev,
+                          name: e.target.value,
+                        }));
+                      }}
                     />
+
+                    <label className={style.formlabel}>Mobile number</label>
+
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                      <span
+                        style={{
+                          padding: "0.5rem",
+                        }}
+                      >
+                        +974
+                      </span>
+                      <input
+                        required
+                        className={style.inputcheckout}
+                        type="tel"
+                        name="phone"
+                        value={takeawayform.phone}
+                        onChange={(e) => {
+                          const inputValue = e.target.value.replace(/\D/g, ""); // Remove non-numeric characters
+                          settakeawayform((i) => ({
+                            ...i,
+                            phone: inputValue,
+                          }));
+                          takeawayformerror.phone = ""; // Clear any errors
+                        }}
+                        style={{
+                          ...(takeawayform.phone
+                            ? { border: "solid 1px red" }
+                            : {}),
+                        }}
+                      />
+                    </div>
+
                     {takeawayformerror.phone && (
                       <h6 className={style.error}>{takeawayformerror.phone}</h6>
                     )}
@@ -617,10 +730,10 @@ const Cart = () => {
               <div>
                 <h4>Delivery prices</h4>
                 <div>
-                  <p> Zone 46 free delivery </p>
-                  <p>0 km - 6km free delivery for qr 40 and above</p>
+                  <p> 0 km - 6km free delivery for qr 40 and above</p>
                   <p>6km - 8 km free delivery for qr 60 and above</p>
                   <p>8km -10 km free delivery for 80qr and above</p>
+                  <p>10 km -12km free delivery for 100qr and above</p>
                   <p>10 km 12km free delivery for 100qr and above</p>{" "}
                 </div>
               </div>
