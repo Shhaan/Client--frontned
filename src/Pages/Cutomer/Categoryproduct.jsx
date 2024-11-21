@@ -211,15 +211,27 @@ export const Categoryproduct = () => {
         </div>
       ) : (
         <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            flexWrap: "wrap",
-            marginTop: "23px",
-            marginLeft: "25px",
-            gap: "50px",
-            marginBottom: "200px",
-          }}
+          style={
+            product.length <= 2 && product.length >= 1
+              ? {
+                  display: "flex",
+                  alignItems: "center",
+                  flexWrap: "wrap",
+                  marginTop: "23px",
+                  marginLeft: "25px",
+                  gap: "50px",
+                  marginBottom: "100px",
+                }
+              : {
+                  display: "flex",
+                  alignItems: "center",
+                  flexWrap: "wrap",
+                  marginTop: "23px",
+                  marginLeft: "25px",
+                  gap: "50px",
+                  marginBottom: "200px",
+                }
+          }
         >
           <div className={style.shopbycategory} style={{ margin: "0" }}>
             <div className={style.categoryNavigation}>
