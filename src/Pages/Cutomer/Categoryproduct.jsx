@@ -216,8 +216,7 @@ export const Categoryproduct = () => {
             marginTop: "23px",
             marginLeft: "25px",
             gap: "50px",
-            marginBottom: "10px",
-            height: "100vh",
+            marginBottom: "100px",
           }}
         >
           <div className={style.shopbycategory} style={{ margin: "0" }}>
