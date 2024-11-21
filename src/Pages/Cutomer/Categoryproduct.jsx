@@ -212,7 +212,7 @@ export const Categoryproduct = () => {
       ) : (
         <div
           style={
-            product.length <= 2 && product.length >= 1
+            product.length <= 2 || product.length >= 1
               ? {
                   display: "flex",
                   alignItems: "center",
