@@ -110,6 +110,36 @@ const Cart = () => {
     }
   }, [totalItemsCount]);
 
+  const [isWithinTimeRange, setIsWithinTimeRange] = useState(false);
+
+  useEffect(() => {
+    const checkTimeRange = () => {
+      const now = new Date();
+      const qatarTime = new Intl.DateTimeFormat("en-US", {
+        timeZone: "Asia/Qatar",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+      }).format(now);
+
+      const [hour, minute] = qatarTime.split(":").map(Number);
+
+      if (
+        (hour > 7 || (hour === 7 && minute >= 0)) &&
+        (hour < 23 || (hour === 23 && minute <= 30))
+      ) {
+        setIsWithinTimeRange(true);
+      } else {
+        setIsWithinTimeRange(false);
+      }
+    };
+
+    checkTimeRange();
+    const interval = setInterval(checkTimeRange, 60000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   const handleclick = () => {
     if (selected === 0) {
       setdelivery(false);
@@ -571,15 +601,17 @@ const Cart = () => {
                       }}
                     >
                       <div
-                        onClick={() => (
-                          setselectedtime(1),
-                          settimeandtype((i) => ({
-                            ...i,
-                            deliverytype: "Now",
-                            time: "With in 90 minutes",
-                          })),
-                          (deliveryformerror.slot = "")
-                        )}
+                        onClick={() => {
+                          if (isWithinTimeRange) {
+                            setselectedtime(1);
+                            settimeandtype((prev) => ({
+                              ...prev,
+                              deliverytype: "Now",
+                              time: "With in 90 minutes",
+                            }));
+                            deliveryformerror.slot = "";
+                          }
+                        }}
                         className={style.checkoutcart}
                         style={
                           selectedtime === 1
@@ -588,7 +620,11 @@ const Cart = () => {
                         }
                       >
                         Now
-                        <h6 style={{ fontSize: "8px" }}>Within 90 minutes</h6>
+                        <h6 style={{ fontSize: "8px" }}>
+                          {isWithinTimeRange
+                            ? "Within 90 minutes"
+                            : "Delivery not available"}
+                        </h6>
                       </div>
                       <div
                         onClick={() => (deliveryformerror.slot = "")}
@@ -704,9 +740,15 @@ const Cart = () => {
                     >
                       <option value="">Select Time</option>{" "}
                       {/* Default empty option */}
-                      <option value="Within 15">Within 15</option>
-                      <option value="Within 30">Within 30</option>
-                      <option value="Within 45">Within 45</option>
+                      <option value="Within 15 minutes">
+                        Within 15 minutes
+                      </option>
+                      <option value="Within 30 minutes">
+                        Within 30 minutes
+                      </option>
+                      <option value="Within 45 minutes">
+                        Within 45 minutes
+                      </option>
                       <option value="Within 1 hour">Within 1 hour</option>
                     </select>
                   </div>
