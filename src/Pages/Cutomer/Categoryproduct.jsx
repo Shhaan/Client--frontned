@@ -216,13 +216,11 @@ export const Categoryproduct = () => {
             marginTop: "23px",
             marginLeft: "25px",
             gap: "50px",
-            marginBottom: "15px",
+            marginBottom: "10px",
+            height: "100vh",
           }}
         >
-          <div
-            className={style.shopbycategory}
-            style={{ marginBottom: "100px", margin: "0" }}
-          >
+          <div className={style.shopbycategory} style={{ margin: "0" }}>
             <div className={style.categoryNavigation}>
               <div
                 className={style.categoryRow}
