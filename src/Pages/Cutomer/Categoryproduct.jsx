@@ -216,7 +216,7 @@ export const Categoryproduct = () => {
             marginTop: "23px",
             marginLeft: "25px",
             gap: "50px",
-            marginBottom: "150px",
+            marginBottom: "15px",
           }}
         >
           <div
@@ -267,7 +267,9 @@ export const Categoryproduct = () => {
                     </div>
                   ))
                 ) : (
-                  <div style={{ margin: "auto" }}>No Item Found</div>
+                  <div style={{ margin: "auto", height: "100vh" }}>
+                    No Item Found
+                  </div>
                 )}
               </div>
             </div>
