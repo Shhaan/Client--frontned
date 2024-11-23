@@ -131,7 +131,7 @@ const Cart = () => {
       setCurrentQatarTime({ hours: hour, minutes: minute });
 
       if (
-        (hour > 19 || (hour === 19 && minute >= 0)) && // After or at 7:00 PM
+        (hour > 7 || (hour === 7 && minute >= 0)) && // After or at 7:00 PM
         (hour < 23 || (hour === 23 && minute <= 0)) // Before or at 11:00 PM
       ) {
         setIsWithinTimeRange(true);
