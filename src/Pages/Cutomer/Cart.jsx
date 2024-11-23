@@ -110,6 +110,10 @@ const Cart = () => {
     }
   }, [totalItemsCount]);
 
+  const [currentQatarTime, setCurrentQatarTime] = useState({
+    hours: 0,
+    minutes: 0,
+  });
   const [isWithinTimeRange, setIsWithinTimeRange] = useState(false);
 
   useEffect(() => {
@@ -124,9 +128,11 @@ const Cart = () => {
 
       const [hour, minute] = qatarTime.split(":").map(Number);
 
+      setCurrentQatarTime({ hours: hour, minutes: minute });
+
       if (
-        (hour > 7 || (hour === 7 && minute >= 0)) &&
-        (hour < 23 || (hour === 23 && minute <= 30))
+        (hour > 19 || (hour === 19 && minute >= 0)) && // After or at 7:00 PM
+        (hour < 23 || (hour === 23 && minute <= 0)) // Before or at 11:00 PM
       ) {
         setIsWithinTimeRange(true);
       } else {
@@ -135,6 +141,7 @@ const Cart = () => {
     };
 
     checkTimeRange();
+
     const interval = setInterval(checkTimeRange, 60000);
 
     return () => clearInterval(interval);
@@ -244,6 +251,7 @@ const Cart = () => {
     setdelivery(true);
     settakeaway(false);
   };
+
   return (
     <>
       <div className={style.mainheader}>
@@ -303,13 +311,13 @@ const Cart = () => {
               6km - 8 km free delivery for qr 60 and above
             </li>
             <li className={style.pdeliverydetails}>
-              8km -10 km free delivery for 80qr and above
+              8km -10 km free delivery for 100qr and above
             </li>
             <li className={style.pdeliverydetails}>
-              10 km -12km free delivery for 100qr and above
+              10 km -12km free delivery for 120qr and above
             </li>
             <li className={style.pdeliverydetails}>
-              12 km - 15 km free delivery for 130qr and above
+              12 km - 15 km free delivery for 150qr and above
             </li>{" "}
           </ul>
         )}
@@ -721,11 +729,10 @@ const Cart = () => {
                     )}
 
                     <label className={style.formlabel}>Pick up time</label>
-
                     <select
                       className={style.inputcheckout}
                       name="time"
-                      value={takeawayform.time} // Use raw value for the select
+                      value={takeawayform.time}
                       onChange={(e) => {
                         const selectedValue = e.target.value;
 
@@ -733,13 +740,11 @@ const Cart = () => {
 
                         settakeawayform((prev) => ({
                           ...prev,
-
                           time: selectedValue,
                         }));
                       }}
                     >
-                      <option value="">Select Time</option>{" "}
-                      {/* Default empty option */}
+                      <option value="">Select Time</option>
                       <option value="Within 15 minutes">
                         Within 15 minutes
                       </option>
@@ -750,6 +755,30 @@ const Cart = () => {
                         Within 45 minutes
                       </option>
                       <option value="Within 1 hour">Within 1 hour</option>
+                      {[...Array(17)] // 17 hours (7 AM to 11 PM inclusive)
+                        .map((_, index) => {
+                          const hour = 7 + index; // Start from 7 AM
+                          const isPM = hour >= 12;
+                          const formattedHour = hour > 12 ? hour - 12 : hour; // Convert to 12-hour format
+                          const timeLabel = `${formattedHour}:00 ${
+                            isPM ? "PM" : "AM"
+                          }`;
+
+                          // Include only future time slots
+                          if (
+                            hour > currentQatarTime.hours ||
+                            (hour === currentQatarTime.hours &&
+                              currentQatarTime.minutes === 0)
+                          ) {
+                            return (
+                              <option key={timeLabel} value={timeLabel}>
+                                {timeLabel}
+                              </option>
+                            );
+                          }
+                          return null;
+                        })
+                        .filter(Boolean)}
                     </select>
                   </div>
                 )}
@@ -772,9 +801,9 @@ const Cart = () => {
                   <p> Zone 46 free delivery for QR 20 and above</p>
                   <p> 0 km - 6km free delivery for qr 40 and above</p>
                   <p>6km - 8 km free delivery for qr 60 and above</p>
-                  <p>8km -10 km free delivery for 80qr and above</p>
-                  <p>10 km -12km free delivery for 100qr and above</p>
-                  <p>10 km 12km free delivery for 100qr and above</p>{" "}
+                  <p>8km -10 km free delivery for 100qr and above</p>
+                  <p>10 km -12km free delivery for 120qr and above</p>
+                  <p>12 km - 15 km free delivery for 150qr and above</p>{" "}
                 </div>
               </div>
             </>
