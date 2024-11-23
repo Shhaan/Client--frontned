@@ -148,13 +148,6 @@ const Cart = () => {
   }, []);
 
   const handleclick = () => {
-    if (selected === 0) {
-      setdelivery(false);
-      settakeaway(true);
-      setselected(1);
-      return;
-    }
-
     let form = {};
     const error = {};
 
@@ -249,6 +242,7 @@ const Cart = () => {
     }
     setdcount((p) => p + 1);
     setdelivery(true);
+    setselected(1);
     settakeaway(false);
   };
 
@@ -421,24 +415,28 @@ const Cart = () => {
           ) : (
             <>
               <div>
-                <button
-                  className={`${style.pickoptionbutton} ${
-                    takeaway && style.selectedpickoption
-                  }`}
-                  style={viewportWidth < 450 ? { width: "135px" } : {}}
-                  onClick={() => (settakeaway(true), setdelivery(false))}
-                >
-                  Take away{" "}
-                </button>
-                <button
-                  style={viewportWidth < 450 ? { width: "135px" } : {}}
-                  className={`${style.pickoptionbutton} ${
-                    delivery && style.selectedpickoption
-                  }`}
-                  onClick={() => handledelivery()}
-                >
-                  Delivery <FaBiking />
-                </button>
+                {takeaway && (
+                  <button
+                    className={`${style.pickoptionbutton} ${
+                      takeaway && style.selectedpickoption
+                    }`}
+                    style={viewportWidth < 450 ? { width: "135px" } : {}}
+                    onClick={() => (settakeaway(true), setdelivery(false))}
+                  >
+                    Take away{" "}
+                  </button>
+                )}
+                {delivery && (
+                  <button
+                    style={viewportWidth < 450 ? { width: "135px" } : {}}
+                    className={`${style.pickoptionbutton} ${
+                      delivery && style.selectedpickoption
+                    }`}
+                    onClick={() => handledelivery()}
+                  >
+                    Delivery <FaBiking />
+                  </button>
+                )}
 
                 {delivery && (
                   <div>
@@ -829,9 +827,28 @@ const Cart = () => {
               </button>
             )}
 
-            <button onClick={handleclick} className={style.orderNowButton}>
-              {orderlist[selected]}
-            </button>
+            {selected == 0 ? (
+              <>
+                <button
+                  onClick={() => (
+                    settakeaway(true), setdelivery(false), setselected(1)
+                  )}
+                  className={style.orderNowButton}
+                >
+                  Take away
+                </button>
+                <button
+                  onClick={() => handledelivery()}
+                  className={style.orderNowButton}
+                >
+                  Delivery <FaBiking />
+                </button>
+              </>
+            ) : (
+              <button onClick={handleclick} className={style.orderNowButton}>
+                {orderlist[1]}
+              </button>
+            )}
           </div>
         ) : (
           <div
@@ -854,9 +871,30 @@ const Cart = () => {
               </button>
             )}
 
-            <button onClick={handleclick} className={style.orderNowButton}>
-              {orderlist[selected]}
-            </button>
+            {selected == 0 ? (
+              <div style={{ display: "flex", flexDirection: "column" }}>
+                <button
+                  style={viewportWidth < 400 ? { fontSize: "10px" } : {}}
+                  className={style.orderNowButton}
+                  onClick={() => (
+                    settakeaway(true), setdelivery(false), setselected(1)
+                  )}
+                >
+                  Take away
+                </button>
+                <button
+                  style={viewportWidth < 400 ? { fontSize: "10px" } : {}}
+                  className={style.orderNowButton}
+                  onClick={() => handledelivery()}
+                >
+                  Delivery <FaBiking />
+                </button>
+              </div>
+            ) : (
+              <button onClick={handleclick} className={style.orderNowButton}>
+                {orderlist[1]}
+              </button>
+            )}
           </div>
         )}
       </div>
