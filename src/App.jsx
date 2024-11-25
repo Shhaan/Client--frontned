@@ -21,6 +21,8 @@ import Invoice from "./Pages/Admin/Invoice";
 import InvoiceAdd from "./Pages/Admin/Add/InoviceAdd";
 import InvoiceEdit from "./Pages/Admin/Edit/InvoiceEdit";
 import Productcus from "./Pages/Cutomer/Product";
+import Carousel from "./Pages/Admin/CarouselAdmin";
+import CarouselAdd from "./Pages/Admin/Add/CarouselAdd";
 
 export const CartContext = createContext();
 
@@ -39,6 +41,8 @@ const App = () => {
         <Route path="*" element={<Notfound />} />
         <Route path="/admin">
           <Route path="login" element={<Login />} />
+          <Route path="carousel" element={<Carousel />} />
+          <Route path="carousel/add" element={<CarouselAdd />} />
           <Route
             path=""
             element={

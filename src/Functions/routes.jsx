@@ -21,6 +21,11 @@ const routes = [
     name: "Invoice",
     navigate: "/admin/invoice",
   },
+
+  {
+    name: "Carousel",
+    navigate: "/admin/carousel",
+  },
 ];
 
 export default routes;
