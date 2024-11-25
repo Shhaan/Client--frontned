@@ -123,18 +123,48 @@ function Dashboard() {
       const blob = new Blob([response.data], { type: "application/pdf" });
       const url = window.URL.createObjectURL(blob);
 
-      const newWindow = window.open(url, "_blank");
-      if (newWindow) {
-        newWindow.addEventListener("load", () => {
-          newWindow.print();
-        });
-      }
+      // Create a hidden iframe for the PDF
+      const iframe = document.createElement("iframe");
+      iframe.style.display = "none"; // Hide the iframe
+      iframe.src = url;
+      document.body.appendChild(iframe);
 
-      setTimeout(() => window.URL.revokeObjectURL(url), 5000);
+      // Wait for the iframe to load, then trigger print
+      iframe.onload = () => {
+        iframe.contentWindow.print();
+        // Cleanup: Remove iframe after printing
+        setTimeout(() => {
+          document.body.removeChild(iframe);
+          window.URL.revokeObjectURL(url); // Revoke the object URL to free up memory
+        }, 1000);
+      };
     } catch (error) {
-      console.log(error);
+      console.error("Error generating PDF:", error);
     }
   };
+
+  // const hanldepdfclick = async (id) => {
+  //   try {
+  //     const response = await axiosInstance.get(`invoice/generate-pdf/${id}/`, {
+  //       headers: { Authorization: `Token ${localStorage.getItem("token")}` },
+  //       responseType: "blob",
+  //     });
+
+  //     const blob = new Blob([response.data], { type: "application/pdf" });
+  //     const url = window.URL.createObjectURL(blob);
+
+  //     const newWindow = window.open(url, "_blank");
+  //     if (newWindow) {
+  //       newWindow.addEventListener("load", () => {
+  //         newWindow.print();
+  //       });
+  //     }
+
+  //     setTimeout(() => window.URL.revokeObjectURL(url), 5000);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   return (
     <div>
