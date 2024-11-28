@@ -88,7 +88,10 @@ function Dashboard() {
           <Sidebar side={side} props={routes} />
         </div>
 
-        <div className="col-10 m-auto col-md-9 col-lg-7">
+        <div
+          style={isModalVisible ? { display: "none" } : {}}
+          className="col-10 m-auto col-md-9 col-lg-7"
+        >
           <Flex
             vertical
             style={{
@@ -207,14 +210,21 @@ function Dashboard() {
               <div
                 style={{
                   display: " flex",
-                  flexWrap: "wrap",
-                  justifyContent: "space-evenly",
+                  flexDirection: "column",
+
                   marginBottom: "10px",
                 }}
               >
                 {selectedProducts.map((i) => (
-                  <div key={i.id} className={style.selectedProducts}>
-                    <div style={{ textAlign: "left", width: "88%" }}>
+                  <div
+                    key={i.id}
+                    className={`${style.selectedProducts} col-10 m-auto p-1 mb-2`}
+                  >
+                    <h3 className={style.invoicepopupname}>
+                      {i.name} {`(${i.quantity})`} x{i.count}
+                    </h3>
+
+                    <div>
                       <FaTimes
                         style={{ cursor: "pointer" }}
                         onClick={() =>
@@ -226,77 +236,6 @@ function Dashboard() {
                         }
                       />
                     </div>
-                    <img
-                      style={{ width: "60%", maxHeight: "60%" }}
-                      src={` ${i.image}`}
-                      alt="photo"
-                    />
-
-                    <h3 className={style.invoicepopupname}>{i.name}</h3>
-                    <Form.Item className={`${style.inputofadd} me-1`}>
-                      <Input
-                        value={i?.customize}
-                        style={{ height: "52px" }}
-                        placeholder="Cutting size"
-                        type="text"
-                        onChange={(e) => {
-                          const newPrice = e.target.value;
-                          setSelectedProducts((prevSelectedProducts) =>
-                            prevSelectedProducts.map((product) =>
-                              product.id === i.id
-                                ? { ...product, customize: newPrice }
-                                : product
-                            )
-                          );
-                        }}
-                      />
-                    </Form.Item>
-                    <Flex className="col-10">
-                      <Form.Item
-                        rules={[
-                          { required: true, message: "Price is required" },
-                        ]}
-                        className={`${style.inputofadd} me-1`}
-                      >
-                        <Input
-                          placeholder="Price"
-                          value={i?.price}
-                          type="number"
-                          onChange={(e) => {
-                            const newPrice = e.target.value;
-                            setSelectedProducts((prevSelectedProducts) =>
-                              prevSelectedProducts.map((product) =>
-                                product.id === i.id
-                                  ? { ...product, price: newPrice }
-                                  : product
-                              )
-                            );
-                          }}
-                        />
-                      </Form.Item>
-
-                      <Form.Item>
-                        <Select
-                          name={`count-${i.product_id}`}
-                          value={i.count}
-                          onChange={(value) => {
-                            setSelectedProducts((prevSelectedProducts) =>
-                              prevSelectedProducts.map((product) =>
-                                product.id === i.id
-                                  ? { ...product, count: value }
-                                  : product
-                              )
-                            );
-                          }}
-                        >
-                          {[...Array(i.actualcount).keys()].map((opt) => (
-                            <Select.Option key={opt + 1} value={opt + 1}>
-                              {opt + 1}
-                            </Select.Option>
-                          ))}
-                        </Select>
-                      </Form.Item>
-                    </Flex>
                   </div>
                 ))}
               </div>
@@ -312,9 +251,11 @@ function Dashboard() {
 
               <h4 className="text-end">
                 Total :
-                {selectedProducts.reduce((sum, product) => {
-                  return sum + product.count * product.price;
-                }, 0)}
+                {selectedProducts
+                  .reduce((sum, product) => {
+                    return sum + product.count * product.price;
+                  }, 0)
+                  .toFixed(2)}
               </h4>
               <Form.Item>
                 <Button
@@ -326,26 +267,25 @@ function Dashboard() {
                   Submit
                 </Button>
               </Form.Item>
-
-              {isModalVisible && (
-                <Suspense
-                  fallback={
-                    <div style={{ textAlign: "center", margin: "20px 0" }}>
-                      <Spin size="large" />
-                      <p>Loading Invoice Product...</p>
-                    </div>
-                  }
-                >
-                  <InvoiceProduct
-                    onclose={() => setIsModalVisible(false)}
-                    setSelectedProducts={setSelectedProducts}
-                    selectedProducts={selectedProducts}
-                  />
-                </Suspense>
-              )}
             </Form>
           </Flex>
         </div>
+        {isModalVisible && (
+          <Suspense
+            fallback={
+              <div style={{ textAlign: "center", margin: "20px 0" }}>
+                <Spin size="large" />
+                <p>Loading Invoice Product...</p>
+              </div>
+            }
+          >
+            <InvoiceProduct
+              onclose={() => setIsModalVisible(false)}
+              setSelectedProducts={setSelectedProducts}
+              selectedProducts={selectedProducts}
+            />
+          </Suspense>
+        )}
       </div>
     </div>
   );
