@@ -28,7 +28,7 @@ const InvoiceProduct = ({ onclose, setSelectedProducts, selectedProducts }) => {
     const fetchCategory = async () => {
       try {
         const { data } = await axiosInstancemain.get(
-          `/products/?category=${type}`,
+          `/products/?category=${type}&is_paginated=${false}`,
           {
             headers: {
               Authorization: `Token ${localStorage.getItem("token")}`,
@@ -41,7 +41,7 @@ const InvoiceProduct = ({ onclose, setSelectedProducts, selectedProducts }) => {
           onclose();
         }
 
-        setProduct(data.results);
+        setProduct(data?.message);
       } catch (error) {
         setProduct([]);
         console.error("Failed to fetch products:", error);

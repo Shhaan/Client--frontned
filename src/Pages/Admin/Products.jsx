@@ -18,13 +18,21 @@ function Dashboard() {
 
   const [totalPages, setTotalPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
+  const [category, setCategories] = useState([]);
+  const [currectcat, setcurrectcat] = useState("");
+
   const navigate = useNavigate();
   useEffect(() => {
     const fetchproduct = async () => {
       try {
-        const productResponse = await axiosInstancemain.get(`/products/ `, {
-          headers: { Authorization: `Token ${localStorage.getItem("token")}` },
-        });
+        const productResponse = await axiosInstancemain.get(
+          `/products/?category=${currectcat} `,
+          {
+            headers: {
+              Authorization: `Token ${localStorage.getItem("token")}`,
+            },
+          }
+        );
         setproduct(productResponse?.data?.results);
         console.log(productResponse?.data);
 
@@ -34,7 +42,22 @@ function Dashboard() {
       }
     };
     fetchproduct();
+  }, [currectcat]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axiosInstancemain.get("/category/", {
+          headers: { Authorization: `Token ${localStorage.getItem("token")}` },
+        });
+        setCategories(response?.data?.message);
+      } catch (error) {
+        toast.error(error?.response?.data?.message);
+      }
+    };
+    fetchCategories();
   }, []);
+
   const handleclick = async (page) => {
     try {
       const productResponse = await axiosInstancemain.get(
@@ -105,6 +128,16 @@ function Dashboard() {
           setcount={setTotalPages}
           setcurrent={setCurrentPage}
         />
+        <select
+          onChange={(e) => setcurrectcat(e.target.value)}
+          className={style.customSelect}
+        >
+          <option value="">-------</option>
+
+          {category.map((i) => (
+            <option value={i.name}>{i.name}</option>
+          ))}
+        </select>
         <div className={style.productListContainer}>
           {product.map((item) => (
             <div key={item.id} className={`col-12 ${style.productItem}`}>
