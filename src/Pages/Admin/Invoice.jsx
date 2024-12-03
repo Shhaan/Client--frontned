@@ -11,6 +11,7 @@ import routes from "../../Functions/routes";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import axios from "axios";
 
 function Dashboard() {
   const [side, setside] = useState(false);
@@ -96,7 +97,16 @@ function Dashboard() {
         }
       );
 
-      console.log(response);
+      if (response.status == 200) {
+        const a = await axios.get("http://192.168.10.18:8000/kichen/", {
+          params: { message: response?.data?.message },
+        });
+        if (a.status == 200) {
+          toast.error("Print succesfully");
+        }
+      } else {
+        toast.error("Some error occured");
+      }
     } catch (error) {
       console.log(error);
     }
