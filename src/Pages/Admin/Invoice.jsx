@@ -98,7 +98,7 @@ function Dashboard() {
       );
 
       if (response.status == 200) {
-        const a = await axios.get("http://192.168.10.18:8000/kichen/", {
+        const a = await axios.get("https://127.0.0.1:8000/kichen/", {
           params: { message: response?.data?.message },
         });
         if (a.status == 200) {
