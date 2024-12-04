@@ -98,14 +98,28 @@ function Dashboard() {
       );
 
       if (response.status == 200) {
-        const a = await axios.post("https://127.0.0.1:8000/kichen/", {
-          data: response?.data?.message,
-        });
-        if (a.status == 200) {
-          toast.error("Print succesfully");
+        try {
+          const payload = {
+            message: response?.data?.message, // Replace with your actual data structure
+          };
+
+          const a = await axios.post(
+            "https://127.0.0.1:8000/kichen/",
+            payload,
+            {
+              headers: {
+                "Content-Type": "application/json", // Explicitly set the content type
+              },
+            }
+          );
+
+          if (a.status === 200) {
+            toast.success("Print successfully");
+          }
+        } catch (error) {
+          console.error("Error:", error);
+          toast.error("Failed to print");
         }
-      } else {
-        toast.error("Some error occured");
       }
     } catch (error) {
       console.log(error);
