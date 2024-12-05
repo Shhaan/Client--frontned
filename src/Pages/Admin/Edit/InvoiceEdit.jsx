@@ -13,6 +13,7 @@ import {
   createAxiosInstanceWithAuth,
 } from "../../../Functions/axios";
 import toast from "react-hot-toast";
+import axios from "axios";
 const InvoiceProduct = lazy(() =>
   import("../../../Components/Admin/Invoiceproduct")
 );
@@ -145,54 +146,99 @@ function Dashboard() {
   const hanldekichenpdfclick = async (id) => {
     try {
       const response = await axiosInstance.get(
-        `invoice/generate-kichen-pdf/${id}/`,
+        `invoice/generatethermal-kichen-pdf/${id}/`,
         {
           headers: { Authorization: `Token ${localStorage.getItem("token")}` },
-          responseType: "blob",
         }
       );
 
-      const blob = new Blob([response.data], { type: "application/pdf" });
-      const url = window.URL.createObjectURL(blob);
+      if (response.status == 200) {
+        try {
+          const payload = {
+            message: response?.data?.message, // Replace with your actual data structure
+          };
 
-      // Create an invisible iframe for printing
-      const iframe = document.createElement("iframe");
-      iframe.style.display = "none";
-      iframe.src = url;
+          const a = await axios.post(
+            "https://127.0.0.1:8000/kichen/",
+            payload,
+            {
+              headers: {
+                "Content-Type": "application/json", // Explicitly set the content type
+              },
+            }
+          );
 
-      document.body.appendChild(iframe);
-
-      iframe.onload = () => {
-        iframe.contentWindow.print();
-        document.body.removeChild(iframe);
-      };
-
-      setTimeout(() => window.URL.revokeObjectURL(url), 5000);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const hanldepdfclick = async (id) => {
-    try {
-      const response = await axiosInstance.get(`invoice/generate-pdf/${id}/`, {
-        headers: { Authorization: `Token ${localStorage.getItem("token")}` },
-        responseType: "blob",
-      });
-
-      const blob = new Blob([response.data], { type: "application/pdf" });
-      const url = window.URL.createObjectURL(blob);
-
-      const newWindow = window.open(url, "_blank");
-      if (newWindow) {
-        newWindow.addEventListener("load", () => {
-          newWindow.print();
-        });
+          if (a.status === 200) {
+            toast.success("Print successfully");
+          }
+        } catch (error) {
+          console.error("Error:", error);
+          toast.error("Failed to print");
+        }
       }
     } catch (error) {
       console.log(error);
     }
   };
+
+  const hanldepdfclick = async (id) => {
+    try {
+      const response = await axiosInstance.get(
+        `invoice/generatethermal-kichen-pdf/${id}/`,
+        {
+          headers: { Authorization: `Token ${localStorage.getItem("token")}` },
+        }
+      );
+
+      if (response.status == 200) {
+        try {
+          const payload = {
+            message: response?.data?.message, // Replace with your actual data structure
+          };
+
+          const a = await axios.post(
+            "https://127.0.0.1:8000/invoice/",
+            payload,
+            {
+              headers: {
+                "Content-Type": "application/json", // Explicitly set the content type
+              },
+            }
+          );
+
+          if (a.status === 200) {
+            toast.success("Print successfully");
+          }
+        } catch (error) {
+          console.error("Error:", error);
+          toast.error("Failed to print");
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // const hanldepdfclick = async (id) => {
+  //   try {
+  //     const response = await axiosInstance.get(`invoice/generate-pdf/${id}/`, {
+  //       headers: { Authorization: `Token ${localStorage.getItem("token")}` },
+  //       responseType: "blob",
+  //     });
+
+  //     const blob = new Blob([response.data], { type: "application/pdf" });
+  //     const url = window.URL.createObjectURL(blob);
+
+  //     const newWindow = window.open(url, "_blank");
+  //     if (newWindow) {
+  //       newWindow.addEventListener("load", () => {
+  //         newWindow.print();
+  //       });
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
   const handleitem = (id) => {
     setSelectedProducts((prevSelectedProducts) =>
       prevSelectedProducts.filter((product) => product.id !== id)

@@ -128,24 +128,59 @@ function Dashboard() {
 
   const hanldepdfclick = async (id) => {
     try {
-      const response = await axiosInstance.get(`invoice/generate-pdf/${id}/`, {
-        headers: { Authorization: `Token ${localStorage.getItem("token")}` },
-        responseType: "blob",
-      });
+      const response = await axiosInstance.get(
+        `invoice/generatethermal-kichen-pdf/${id}/`,
+        {
+          headers: { Authorization: `Token ${localStorage.getItem("token")}` },
+        }
+      );
 
-      const blob = new Blob([response.data], { type: "application/pdf" });
-      const url = window.URL.createObjectURL(blob);
+      if (response.status == 200) {
+        try {
+          const payload = {
+            message: response?.data?.message, // Replace with your actual data structure
+          };
 
-      const newWindow = window.open(url, "_blank");
-      if (newWindow) {
-        newWindow.addEventListener("load", () => {
-          newWindow.print();
-        });
+          const a = await axios.post(
+            "https://127.0.0.1:8000/invoice/",
+            payload,
+            {
+              headers: {
+                "Content-Type": "application/json", // Explicitly set the content type
+              },
+            }
+          );
+
+          if (a.status === 200) {
+            toast.success("Print successfully");
+          }
+        } catch (error) {
+          console.error("Error:", error);
+          toast.error("Failed to print");
+        }
       }
-
-      setTimeout(() => window.URL.revokeObjectURL(url), 5000);
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  const handlecash = async () => {
+    try {
+      const a = await axios.get(
+        "https://127.0.0.1:8000/cashdrawer/",
+
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (a.status === 200) {
+        toast.success("Cash counter opend succesfully");
+      }
+    } catch (error) {
+      toast.error("Failed to open counter");
     }
   };
 
@@ -169,6 +204,25 @@ function Dashboard() {
           setcount={setTotalPages}
           setcurrent={setCurrentPage}
         />
+        <div
+          style={{
+            textAlign: "end",
+            marginRight: "20px",
+          }}
+        >
+          <button
+            style={
+              viewportWidth < 453
+                ? { fontSize: "7px", width: "90px", height: "26px", margin: 0 }
+                : { margin: 0 }
+            }
+            onClick={handlecash}
+            className={style.counterb}
+          >
+            Open counter
+          </button>
+        </div>
+
         <div className={style.productListContainer}>
           {product &&
             product.map((item) => (

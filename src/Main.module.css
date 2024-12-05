@@ -1340,6 +1340,33 @@ input[type="number"]::-webkit-inner-spin-button {
   outline: none;
 }
 
+@media (max-width: 500px) {
+  .customSelect {
+    width: 129px;
+    padding: 7px;
+
+    font-size: 12px;
+  }
+}
 .rmscroll::-webkit-scrollbar {
   display: none;
+}
+.counterb {
+  background-color: #565168;
+  color: white;
+  font-weight: bold;
+  padding: 5px 11px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  align-self: center;
+  margin-top: 28px !important;
+  font-size: 13px;
+}
+
+.productfilters {
+  text-align: end;
+  margin-right: 21px;
+  margin-top: 16px;
 }

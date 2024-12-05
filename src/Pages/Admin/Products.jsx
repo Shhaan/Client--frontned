@@ -128,16 +128,18 @@ function Dashboard() {
           setcount={setTotalPages}
           setcurrent={setCurrentPage}
         />
-        <select
-          onChange={(e) => setcurrectcat(e.target.value)}
-          className={style.customSelect}
-        >
-          <option value="">-------</option>
+        <div className={style.productfilters}>
+          <select
+            onChange={(e) => setcurrectcat(e.target.value)}
+            className={style.customSelect}
+          >
+            <option value="">-------</option>
 
-          {category.map((i) => (
-            <option value={i.name}>{i.name}</option>
-          ))}
-        </select>
+            {category.map((i) => (
+              <option value={i.name}>{i.name}</option>
+            ))}
+          </select>
+        </div>
         <div className={style.productListContainer}>
           {product.map((item) => (
             <div key={item.id} className={`col-12 ${style.productItem}`}>
