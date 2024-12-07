@@ -181,7 +181,7 @@ function Dashboard() {
                     }
                   : { margin: 0 }
               }
-              onClick={() => nav(`${navigate}`)}
+              onClick={() => nav(`/admin/product/add`)}
               className={style.orderNowButton}
             >
               Add Product
