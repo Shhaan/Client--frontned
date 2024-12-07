@@ -9,24 +9,45 @@ import {
 import SearchComponent from "../../Components/Adminheader/SearchComponent";
 import routes from "../../Functions/routes";
 import { FaEdit, FaTrash } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import { Input, Form } from "antd";
+import { useDispatch, useSelector } from "react-redux";
+import { addvalue } from "../../redux/prfilter";
+
 function Dashboard() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const value = useSelector((state) => state.prfilter); // Safe handling
+
+  const dispatch = useDispatch();
+
   const [side, setside] = useState(false);
   const [product, setproduct] = useState([]);
 
   const [totalPages, setTotalPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [category, setCategories] = useState([]);
-  const [currectcat, setcurrectcat] = useState("");
+
+  useEffect(() => {
+    const searchParam = searchParams.get("search") || "";
+    dispatch(addvalue({ value: searchParam })); // Initialize Redux state from URL
+  }, [dispatch, searchParams]);
+
+  // Handle input changes
+  const handleInputChange = (e) => {
+    const newValue = e.target.value;
+    dispatch(addvalue({ value: newValue })); // Update Redux state
+    setSearchParams({ search: newValue }); // Update URL search param
+  };
 
   const navigate = useNavigate();
   useEffect(() => {
+    console.log(value);
+
     const fetchproduct = async () => {
       try {
         const productResponse = await axiosInstancemain.get(
-          `/products/?category=${currectcat} `,
+          `/products/?category=${value.value} `,
           {
             headers: {
               Authorization: `Token ${localStorage.getItem("token")}`,
@@ -42,7 +63,7 @@ function Dashboard() {
       }
     };
     fetchproduct();
-  }, [currectcat]);
+  }, []);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -129,11 +150,8 @@ function Dashboard() {
           setcurrent={setCurrentPage}
         />
         <div className={style.productfilters}>
-          <select
-            onChange={(e) => setcurrectcat(e.target.value)}
-            className={style.customSelect}
-          >
-            <option value="">-------</option>
+          <select onChange={handleInputChange} className={style.customSelect}>
+            <option value="">All product</option>
 
             {category.map((i) => (
               <option value={i.name}>{i.name}</option>
