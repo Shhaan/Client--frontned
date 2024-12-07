@@ -8,7 +8,7 @@ import {
 } from "../../Functions/axios";
 import SearchComponent from "../../Components/Adminheader/SearchComponent";
 import routes from "../../Functions/routes";
-import { FaEdit, FaTrash } from "react-icons/fa";
+import { FaEdit, FaSearch, FaTrash } from "react-icons/fa";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import { Input, Form } from "antd";
@@ -16,8 +16,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { addvalue } from "../../redux/prfilter";
 
 function Dashboard() {
-  const [searchParams, setSearchParams] = useSearchParams();
   const value = useSelector((state) => state.prfilter); // Safe handling
+  console.log("value:", value);
 
   const dispatch = useDispatch();
 
@@ -28,17 +28,11 @@ function Dashboard() {
   const [currentPage, setCurrentPage] = useState(1);
   const [category, setCategories] = useState([]);
 
-  useEffect(() => {
-    const searchParam = searchParams.get("search") || "";
-    dispatch(addvalue({ value: searchParam })); // Initialize Redux state from URL
-  }, [dispatch, searchParams]);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const nav = useNavigate();
 
-  // Handle input changes
-  const handleInputChange = (e) => {
-    const newValue = e.target.value;
-    dispatch(addvalue({ value: newValue })); // Update Redux state
-    setSearchParams({ search: newValue }); // Update URL search param
-  };
+  const searchValue = searchParams.get("search") || "";
+  const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -63,7 +57,7 @@ function Dashboard() {
       }
     };
     fetchproduct();
-  }, []);
+  }, [value.value]);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -129,6 +123,28 @@ function Dashboard() {
     }
   };
 
+  const fetchsearch = async (e) => {
+    dispatch(addvalue({ value: "" }));
+    setSearchParams({ search: e.target.value });
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axiosInstancemain.get(
+        `/products/?search=${searchValue}`,
+        { headers: { Authorization: `Token ${token}` } }
+      );
+      if (response.status === 200) {
+        setproduct(response?.data?.results);
+
+        setTotalPages(Math.ceil(response.data.count / 40));
+      }
+    } catch (error) {
+      setproduct([]);
+      toast.error(error?.response?.data?.message || "An error occurred", {
+        duration: 3000,
+      });
+    }
+  };
+
   return (
     <div>
       <Adminheader isAdmin={true} side={side} setside={setside} />
@@ -141,20 +157,49 @@ function Dashboard() {
           <Sidebar side={side} props={routes} />
         </div>
 
-        <SearchComponent
-          setitem={setproduct}
-          name={"Product"}
-          api={"/products"}
-          navigate={"/admin/product/add"}
-          setcount={setTotalPages}
-          setcurrent={setCurrentPage}
-        />
-        <div className={style.productfilters}>
-          <select onChange={handleInputChange} className={style.customSelect}>
-            <option value="">All product</option>
+        <div className={style.searchmaindiv}>
+          <form>
+            <input
+              className={style.searchinp}
+              value={searchValue}
+              style={
+                viewportWidth < 400 ? { width: "125px", height: "33px" } : {}
+              }
+              onChange={(e) => fetchsearch(e)}
+            />
+            <FaSearch />
+          </form>
+          <div>
+            <button
+              style={
+                viewportWidth < 453
+                  ? {
+                      fontSize: "8px",
+                      width: "105px",
+                      height: "33px",
+                      margin: 0,
+                    }
+                  : { margin: 0 }
+              }
+              onClick={() => nav(`${navigate}`)}
+              className={style.orderNowButton}
+            >
+              Add Product
+            </button>
+          </div>
+        </div>
 
+        <div className={style.productfilters}>
+          <select
+            value={value.value} // Set the current value from Redux state
+            onChange={(e) => dispatch(addvalue({ value: e.target.value }))} // Dispatch action on change
+            className={style.customSelect}
+          >
+            <option value="">All product</option>
             {category.map((i) => (
-              <option value={i.name}>{i.name}</option>
+              <option key={i.name} value={i.name}>
+                {i.name}
+              </option>
             ))}
           </select>
         </div>
