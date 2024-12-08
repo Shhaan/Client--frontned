@@ -18,7 +18,7 @@ const InvoiceProduct = lazy(() =>
 );
 function Dashboard() {
   const [side, setside] = useState(false);
-
+  const [paymentType, setPaymentType] = useState("");
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isdelivery, setisdelivery] = useState(false);
@@ -52,6 +52,23 @@ function Dashboard() {
       toast.error("Product must be selected");
       return;
     }
+    const total = selectedProducts
+      .reduce((sum, product) => {
+        return sum + product.count * product.price;
+      }, 0)
+      .toFixed(2);
+
+    console.log(total, values);
+
+    if (
+      values?.payment == "credit" &&
+      total < parseFloat(values?.pending_amount)
+    ) {
+      toast.error("Credit must be less than or equal to total");
+      return;
+    }
+    console.log("sf");
+
     let product = selectedProducts.map((e) => ({
       count: e.count,
       customize: e.customize,
@@ -175,25 +192,49 @@ function Dashboard() {
                 name="payment"
                 label="Payment"
                 rules={[
-                  { required: true, message: "payment slot is required" },
+                  { required: true, message: "Payment type is required" },
                 ]}
                 labelCol={{ span: 24 }}
                 wrapperCol={{ span: 24 }}
-                className={style.inputofadd}
               >
                 <Select
                   ref={paymentInputRef}
                   style={{ height: "52px" }}
                   placeholder="Select a payment type"
-                  options={[
-                    { value: "cash", label: "Cash" },
-                    { value: "online payment", label: "Online payment" },
-                    { value: "card", label: "Card" },
-                    { value: "credit", label: "Credit" },
-                  ]}
+                  value={paymentType}
+                  onChange={(value) => setPaymentType(value)} // Update payment type state
                   onKeyDown={(e) => handleKeyPress(e, isDeliveryInputRef)}
-                />
+                >
+                  <Select.Option value="cash">Cash</Select.Option>
+                  <Select.Option value="online payment">
+                    Online payment
+                  </Select.Option>
+                  <Select.Option value="card">Card</Select.Option>
+                  <Select.Option value="credit">Credit</Select.Option>
+                </Select>
               </Form.Item>
+
+              {paymentType === "credit" && (
+                <Form.Item
+                  name="pending_amount"
+                  label="Credit Payment Amount"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Credit payment amount is required",
+                    },
+                  ]}
+                  labelCol={{ span: 24 }}
+                  wrapperCol={{ span: 24 }}
+                >
+                  <Input
+                    style={{ height: "52px" }}
+                    type="number"
+                    placeholder="Enter credit payment amount"
+                    onKeyDown={(e) => handleKeyPress(e, isDeliveryInputRef)}
+                  />
+                </Form.Item>
+              )}
 
               <Form.Item name="is_delivery" label="Is delivery">
                 <label className={style.switch}>
@@ -343,11 +384,10 @@ function Dashboard() {
               </div>
             }
           >
-            <InvoiceProductSelection
-              setisModalVisible={setIsModalVisible}
+            <InvoiceProduct
+              onclose={() => setIsModalVisible(false)}
               setSelectedProducts={setSelectedProducts}
               selectedProducts={selectedProducts}
-              isdelivery={isdelivery}
             />
           </Suspense>
         )}

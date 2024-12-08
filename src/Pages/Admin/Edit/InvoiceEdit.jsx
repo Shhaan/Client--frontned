@@ -24,6 +24,7 @@ function Dashboard() {
   const [isdelivery, setisdelivery] = useState(false);
   const [form] = Form.useForm();
   const [time, settime] = useState([]);
+  const [paymentType, setPaymentType] = useState(""); // Track selected payment type
 
   const navigate = useNavigate();
   const handleAddProductClick = () => {
@@ -42,8 +43,10 @@ function Dashboard() {
 
         if (!data.error) {
           const { message } = data;
+          setPaymentType(message?.payment);
           form.setFieldsValue({
             name: message.name || "",
+            pending_amount: message?.pending_amount,
 
             time_slot: message.time_slot,
             is_delivery: message.is_delivery,
@@ -118,6 +121,21 @@ function Dashboard() {
   const onFinish = async (values) => {
     if (selectedProducts.length == 0) {
       toast.error("Must select a product");
+      return;
+    }
+    const total = selectedProducts
+      .reduce((sum, product) => {
+        return sum + product.count * product.price;
+      }, 0)
+      .toFixed(2);
+
+    console.log(total, values);
+
+    if (
+      values?.payment == "credit" &&
+      total < parseFloat(values?.pending_amount)
+    ) {
+      toast.error("Credit must be less than or equal to total");
       return;
     }
 
@@ -321,23 +339,46 @@ function Dashboard() {
                 name="payment"
                 label="Payment"
                 rules={[
-                  { required: true, message: "payment slot is required" },
+                  { required: true, message: "Payment type is required" },
                 ]}
                 labelCol={{ span: 24 }}
                 wrapperCol={{ span: 24 }}
-                className={style.inputofadd}
               >
                 <Select
                   style={{ height: "52px" }}
                   placeholder="Select a payment type"
-                  options={[
-                    { value: "cash", label: "Cash" },
-                    { value: "online payment", label: "Online payment" },
-                    { value: "card", label: "Card" },
-                    { value: "credit", label: "Credit" },
-                  ]}
-                />
+                  value={paymentType}
+                  onChange={(value) => setPaymentType(value)} // Update payment type state
+                >
+                  <Select.Option value="cash">Cash</Select.Option>
+                  <Select.Option value="online payment">
+                    Online payment
+                  </Select.Option>
+                  <Select.Option value="card">Card</Select.Option>
+                  <Select.Option value="credit">Credit</Select.Option>
+                </Select>
               </Form.Item>
+
+              {paymentType === "credit" && (
+                <Form.Item
+                  name="pending_amount"
+                  label="Credit Payment Amount"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Credit payment amount is required",
+                    },
+                  ]}
+                  labelCol={{ span: 24 }}
+                  wrapperCol={{ span: 24 }}
+                >
+                  <Input
+                    type="number"
+                    style={{ height: "52px" }}
+                    placeholder="Enter credit payment amount"
+                  />
+                </Form.Item>
+              )}
 
               <Form.Item name="is_delivery" label="Is delivery">
                 <label className={style.switch}>
