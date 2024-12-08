@@ -245,7 +245,6 @@ function Dashboard() {
                   <Form.Item
                     name="Street"
                     label="Street"
-                    rules={[{ required: true, message: "Street is required" }]}
                     labelCol={{ span: 24 }}
                     wrapperCol={{ span: 24 }}
                     className={style.inputofadd}
@@ -260,7 +259,6 @@ function Dashboard() {
                   <Form.Item
                     name="Zone"
                     label="Zone"
-                    rules={[{ required: true, message: "Zone is required" }]}
                     labelCol={{ span: 24 }}
                     wrapperCol={{ span: 24 }}
                     className={style.inputofadd}
