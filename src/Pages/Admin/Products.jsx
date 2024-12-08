@@ -30,7 +30,7 @@ function Dashboard() {
 
   const [searchParams, setSearchParams] = useSearchParams();
   const nav = useNavigate();
-
+  const [flag, setflag] = useState(false);
   const searchValue = searchParams.get("search") || "";
   const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
 
@@ -57,7 +57,7 @@ function Dashboard() {
       }
     };
     fetchproduct();
-  }, [value.value]);
+  }, [value.value, flag]);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -104,8 +104,7 @@ function Dashboard() {
         });
 
         if (response.status === 204 || response.status === 200) {
-          setproduct(response?.data?.results);
-          console.log(response);
+          setflag((e) => !e);
 
           setTotalPages(Math.ceil(response.data.count / 40));
           toast.success(`Product availablity Changed  to ${!available}`, 2000);
