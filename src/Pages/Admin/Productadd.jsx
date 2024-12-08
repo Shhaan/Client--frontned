@@ -222,7 +222,8 @@ function Dashboard() {
                   type="number"
                   style={{ height: "52px" }}
                   placeholder="Stock"
-                  min={1}
+                  min={0.01} // Minimum value allowed
+                  step={0.01} // Step for decimal increments
                 />
               </Form.Item>
 

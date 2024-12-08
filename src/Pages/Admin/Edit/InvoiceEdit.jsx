@@ -51,6 +51,7 @@ function Dashboard() {
             Street: message.Street,
             Zone: message.Zone,
             location: message.location,
+            payment: message?.payment,
           });
           setisdelivery(message?.is_delivery);
           console.log(message);
@@ -140,6 +141,7 @@ function Dashboard() {
       if (data.status == 200) navigate("/admin/invoice");
     } catch (error) {
       console.log(error);
+      toast.error(error.response.data.message);
     }
   };
 
@@ -312,6 +314,28 @@ function Dashboard() {
                     label: slot, // Displayed in the dropdown
                     value: slot, // Stored in the form state
                   }))}
+                />
+              </Form.Item>
+
+              <Form.Item
+                name="payment"
+                label="Payment"
+                rules={[
+                  { required: true, message: "payment slot is required" },
+                ]}
+                labelCol={{ span: 24 }}
+                wrapperCol={{ span: 24 }}
+                className={style.inputofadd}
+              >
+                <Select
+                  style={{ height: "52px" }}
+                  placeholder="Select a payment type"
+                  options={[
+                    { value: "cash", label: "Cash" },
+                    { value: "online payment", label: "Online payment" },
+                    { value: "card", label: "Card" },
+                    { value: "credit", label: "Credit" },
+                  ]}
                 />
               </Form.Item>
 

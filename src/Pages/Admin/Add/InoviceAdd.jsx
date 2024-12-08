@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useEffect, useState } from "react";
+import React, { Suspense, lazy, useEffect, useRef, useState } from "react";
 import Adminheader from "../../../Components/Adminheader/Adminheader";
 import Sidebar from "../../../Components/Admin/Sidebar";
 import style from "../../../Main.module.css";
@@ -73,6 +73,24 @@ function Dashboard() {
         });
     } catch (error) {
       console.log(error);
+      toast.error(error.response.data.message);
+    }
+  };
+
+  const formRef = useRef();
+
+  const timeSlotInputRef = useRef();
+  const paymentInputRef = useRef();
+  const isDeliveryInputRef = useRef();
+  const locationInputRef = useRef();
+  const streetInputRef = useRef();
+  const zoneInputRef = useRef();
+  const InvoiceProductSelection = useRef();
+
+  const handleKeyPress = (e, nextInputRef) => {
+    if (e.key === "Enter") {
+      nextInputRef.current?.focus();
+      e.preventDefault(); // Prevent form submission
     }
   };
 
@@ -101,6 +119,7 @@ function Dashboard() {
             }}
           >
             <Form
+              ref={formRef}
               style={{
                 padding: "32px",
                 background: "rgb(255 246 242)",
@@ -125,7 +144,11 @@ function Dashboard() {
                 wrapperCol={{ span: 24 }}
                 className={style.inputofadd}
               >
-                <Input style={{ height: "52px" }} placeholder="Customer name" />
+                <Input
+                  style={{ height: "52px" }}
+                  placeholder="Customer name"
+                  onKeyDown={(e) => handleKeyPress(e, timeSlotInputRef)}
+                />
               </Form.Item>
 
               <Form.Item
@@ -137,12 +160,38 @@ function Dashboard() {
                 className={style.inputofadd}
               >
                 <Select
+                  ref={timeSlotInputRef}
                   style={{ height: "52px" }}
                   placeholder="Select a time slot"
                   options={time.map((slot) => ({
                     label: slot, // Displayed in the dropdown
                     value: slot, // Stored in the form state
                   }))}
+                  onKeyDown={(e) => handleKeyPress(e, paymentInputRef)}
+                />
+              </Form.Item>
+
+              <Form.Item
+                name="payment"
+                label="Payment"
+                rules={[
+                  { required: true, message: "payment slot is required" },
+                ]}
+                labelCol={{ span: 24 }}
+                wrapperCol={{ span: 24 }}
+                className={style.inputofadd}
+              >
+                <Select
+                  ref={paymentInputRef}
+                  style={{ height: "52px" }}
+                  placeholder="Select a payment type"
+                  options={[
+                    { value: "cash", label: "Cash" },
+                    { value: "online payment", label: "Online payment" },
+                    { value: "card", label: "Card" },
+                    { value: "credit", label: "Credit" },
+                  ]}
+                  onKeyDown={(e) => handleKeyPress(e, isDeliveryInputRef)}
                 />
               </Form.Item>
 
@@ -170,7 +219,11 @@ function Dashboard() {
                     wrapperCol={{ span: 24 }}
                     className={style.inputofadd}
                   >
-                    <Input style={{ height: "52px" }} placeholder="Building" />
+                    <Input
+                      style={{ height: "52px" }}
+                      placeholder="Building"
+                      onKeyDown={(e) => handleKeyPress(e, locationInputRef)}
+                    />
                   </Form.Item>
                   <Form.Item
                     name="location"
@@ -182,7 +235,12 @@ function Dashboard() {
                     wrapperCol={{ span: 24 }}
                     className={style.inputofadd}
                   >
-                    <Input style={{ height: "52px" }} placeholder="Location" />
+                    <Input
+                      ref={locationInputRef}
+                      style={{ height: "52px" }}
+                      placeholder="Location"
+                      onKeyDown={(e) => handleKeyPress(e, streetInputRef)}
+                    />
                   </Form.Item>
                   <Form.Item
                     name="Street"
@@ -192,7 +250,12 @@ function Dashboard() {
                     wrapperCol={{ span: 24 }}
                     className={style.inputofadd}
                   >
-                    <Input style={{ height: "52px" }} placeholder="Street" />
+                    <Input
+                      ref={streetInputRef}
+                      style={{ height: "52px" }}
+                      placeholder="Street"
+                      onKeyDown={(e) => handleKeyPress(e, zoneInputRef)}
+                    />
                   </Form.Item>
                   <Form.Item
                     name="Zone"
@@ -202,8 +265,12 @@ function Dashboard() {
                     wrapperCol={{ span: 24 }}
                     className={style.inputofadd}
                   >
-                    <Input style={{ height: "52px" }} placeholder="Zone" />
-                  </Form.Item>{" "}
+                    <Input
+                      ref={zoneInputRef}
+                      style={{ height: "52px" }}
+                      placeholder="Zone"
+                    />
+                  </Form.Item>
                 </>
               )}
 
@@ -211,7 +278,6 @@ function Dashboard() {
                 style={{
                   display: " flex",
                   flexDirection: "column",
-
                   marginBottom: "10px",
                 }}
               >
@@ -279,10 +345,11 @@ function Dashboard() {
               </div>
             }
           >
-            <InvoiceProduct
-              onclose={() => setIsModalVisible(false)}
+            <InvoiceProductSelection
+              setisModalVisible={setIsModalVisible}
               setSelectedProducts={setSelectedProducts}
               selectedProducts={selectedProducts}
+              isdelivery={isdelivery}
             />
           </Suspense>
         )}
