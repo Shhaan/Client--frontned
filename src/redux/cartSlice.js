@@ -16,21 +16,30 @@ const cartSlice = createSlice({
             ? item.customization === action.payload.customization
             : true)
       );
+
+      const price = parseFloat(action.payload.price);
+
       if (existingItem) {
         existingItem.count += 1;
-        existingItem.subtotal += action.payload.price;
+        existingItem.subtotal = parseFloat(
+          (existingItem.count * existingItem.price).toFixed(2)
+        );
       } else {
         state.items.push({
           ...action.payload,
+          price: price, // Ensure price is a float
           count: 1,
-          subtotal: action.payload.price,
+          subtotal: price,
         });
       }
-      const sub = state.items.map((item) => item.subtotal);
-      state.totalPrice = sub.reduce((accumulator, currentValue) => {
-        return parseFloat(accumulator) + parseFloat(currentValue);
-      }, 0);
-      state.totalItemsCount = state.items.length;
+
+      state.totalPrice = state.items
+        .reduce((acc, item) => acc + item.subtotal, 0)
+        .toFixed(2);
+      state.totalItemsCount = state.items.reduce(
+        (acc, item) => acc + item.count,
+        0
+      );
     },
     Increasecount: (state, action) => {
       const existingItem = state.items.find(
@@ -40,14 +49,21 @@ const cartSlice = createSlice({
             ? item.customization === action.payload.customization
             : true)
       );
+
       if (existingItem) {
         existingItem.count += 1;
-        existingItem.subtotal += action.payload.price;
+        existingItem.subtotal = parseFloat(
+          (existingItem.count * existingItem.price).toFixed(2)
+        );
       }
-      const sub = state.items.map((item) => item.subtotal);
-      state.totalPrice = sub.reduce((accumulator, currentValue) => {
-        return parseFloat(accumulator) + parseFloat(currentValue);
-      }, 0);
+
+      state.totalPrice = state.items
+        .reduce((acc, item) => acc + item.subtotal, 0)
+        .toFixed(2);
+      state.totalItemsCount = state.items.reduce(
+        (acc, item) => acc + item.count,
+        0
+      );
     },
     Decreasecount: (state, action) => {
       const existingItem = state.items.find(
@@ -58,19 +74,20 @@ const cartSlice = createSlice({
             : true)
       );
 
-      if (existingItem) {
-        if (existingItem.count > 1) {
-          existingItem.count -= 1;
-          existingItem.subtotal -= action.payload.price;
-
-          if (existingItem.count < 0) existingItem.count = 0;
-          if (existingItem.subtotal < 0) existingItem.subtotal = 0;
-        }
+      if (existingItem && existingItem.count > 1) {
+        existingItem.count -= 1;
+        existingItem.subtotal = parseFloat(
+          (existingItem.count * existingItem.price).toFixed(2)
+        );
       }
-      const sub = state.items.map((item) => item.subtotal);
-      state.totalPrice = sub.reduce((accumulator, currentValue) => {
-        return parseFloat(accumulator) + parseFloat(currentValue);
-      }, 0);
+
+      state.totalPrice = state.items
+        .reduce((acc, item) => acc + item.subtotal, 0)
+        .toFixed(2);
+      state.totalItemsCount = state.items.reduce(
+        (acc, item) => acc + item.count,
+        0
+      );
     },
     RemoveItem: (state, action) => {
       state.items = state.items.filter(
@@ -82,13 +99,16 @@ const cartSlice = createSlice({
               : true)
           )
       );
-      state.totalItemsCount = state.items.length;
-      const sub = state.items.map((item) => item.subtotal);
-      state.totalPrice = sub.reduce((accumulator, currentValue) => {
-        return parseFloat(accumulator) + parseFloat(currentValue);
-      }, 0);
+
+      state.totalPrice = state.items
+        .reduce((acc, item) => acc + item.subtotal, 0)
+        .toFixed(2);
+      state.totalItemsCount = state.items.reduce(
+        (acc, item) => acc + item.count,
+        0
+      );
     },
-    removecart: (state, action) => {
+    removecart: (state) => {
       state.totalItemsCount = 0;
       state.items = [];
       state.totalPrice = 0;

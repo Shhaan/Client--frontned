@@ -23,6 +23,7 @@ import InvoiceEdit from "./Pages/Admin/Edit/InvoiceEdit";
 import Productcus from "./Pages/Cutomer/Product";
 import Carousel from "./Pages/Admin/CarouselAdmin";
 import CarouselAdd from "./Pages/Admin/Add/CarouselAdd";
+import SalesReport from "./Pages/Admin/Salesreport";
 
 export const CartContext = createContext();
 
@@ -48,6 +49,14 @@ const App = () => {
             element={
               <AdminWrapper>
                 <Dashboard />
+              </AdminWrapper>
+            }
+          />
+          <Route
+            path="sales"
+            element={
+              <AdminWrapper>
+                <SalesReport />
               </AdminWrapper>
             }
           />

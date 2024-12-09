@@ -219,7 +219,15 @@ const Cart = () => {
 
     const totalPriceText = encodeURIComponent(`Total price QR: ${totalPrice}`);
 
-    const whatsappURL = `${whatsappapi}=${phone}&text=%0A${message}%0A%0A${formDetails}%0A%0A${totalPriceText}`;
+    const today = new Date();
+    const dd = String(today.getDate()).padStart(2, "0");
+    const twoDigitNumber1 = Math.floor(10 + Math.random() * 90);
+    const twoDigitNumber2 = Math.floor(10 + Math.random() * 90);
+    const OrderId =
+      String(twoDigitNumber1) + String(dd) + String(twoDigitNumber2);
+    const OrderIdenc = encodeURIComponent(`Order Id: ${OrderId}`);
+
+    const whatsappURL = `${whatsappapi}=${phone}&text=%0A${message}%0A%0A${formDetails}%0A%0A${totalPriceText}%0A%0A${OrderIdenc}`;
 
     window.open(whatsappURL, "_blank");
 
@@ -817,7 +825,7 @@ const Cart = () => {
               marginBottom: "50px",
             }}
           >
-            <div className={style.total}>Total: QR{totalPrice}</div>
+            <div className={style.total}>Total: QR {totalPrice}</div>
             {selected === 1 && (
               <button
                 onClick={() => setselected(0)}

@@ -21,6 +21,10 @@ const routes = [
     name: "Invoice",
     navigate: "/admin/invoice",
   },
+  {
+    name: "Sales report",
+    navigate: "/admin/sales",
+  },
 
   {
     name: "Carousel",
