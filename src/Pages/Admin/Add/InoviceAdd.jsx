@@ -18,7 +18,7 @@ const InvoiceProduct = lazy(() =>
 );
 function Dashboard() {
   const [side, setside] = useState(false);
-  const [paymentType, setPaymentType] = useState("");
+  const [paymentType, setPaymentType] = useState("cash");
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(true);
   const [isdelivery, setisdelivery] = useState(false);
@@ -150,9 +150,6 @@ function Dashboard() {
 
               <Form.Item
                 name="name"
-                rules={[
-                  { required: true, message: "Customer Name is required" },
-                ]}
                 label="Customer Name"
                 labelCol={{ span: 24 }}
                 wrapperCol={{ span: 24 }}
@@ -168,7 +165,6 @@ function Dashboard() {
               <Form.Item
                 name="time_slot"
                 label="Time slot"
-                rules={[{ required: true, message: "Time slot is required" }]}
                 labelCol={{ span: 24 }}
                 wrapperCol={{ span: 24 }}
                 className={style.inputofadd}
@@ -195,11 +191,10 @@ function Dashboard() {
                 wrapperCol={{ span: 24 }}
               >
                 <Select
-                  ref={paymentInputRef}
                   style={{ height: "52px" }}
                   placeholder="Select a payment type"
-                  value={paymentType}
-                  onChange={(value) => setPaymentType(value)} // Update payment type state
+                  value={paymentType} // Bind the value to the paymentType state
+                  onChange={(value) => setPaymentType(value)} // Update payment type state on change
                   onKeyDown={(e) => handleKeyPress(e, isDeliveryInputRef)}
                 >
                   <Select.Option value="cash">Cash</Select.Option>

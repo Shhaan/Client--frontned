@@ -28,8 +28,6 @@ const InvoiceProduct = ({ onclose, setSelectedProducts, selectedProducts }) => {
     };
   }, []);
 
-  console.log(viewportWidth);
-
   useEffect(() => {
     const fetchCategory = async () => {
       try {
@@ -91,7 +89,7 @@ const InvoiceProduct = ({ onclose, setSelectedProducts, selectedProducts }) => {
     setIsEditing(false); // Reset editing state
     setCurrentProduct(product);
     setIsModalOpen(true);
-
+    quantityRef.current?.focus();
     form.setFieldsValue({
       count: 1,
 
@@ -107,6 +105,7 @@ const InvoiceProduct = ({ onclose, setSelectedProducts, selectedProducts }) => {
       customize: product?.customize,
       price: product.price,
     });
+    quantityRef.current?.focus();
     setIsEditing(true); // Set editing state
     setCurrentProduct(product);
     setIsModalOpen(true);
@@ -177,6 +176,7 @@ const InvoiceProduct = ({ onclose, setSelectedProducts, selectedProducts }) => {
           >
             <option value="shop">Shop</option>
             <option value="order">Order</option>
+            <option value="combo">Combo</option>
           </select>
 
           <FaTimes
@@ -380,10 +380,11 @@ const InvoiceProduct = ({ onclose, setSelectedProducts, selectedProducts }) => {
               rules={[{ required: true, message: "Please enter a count" }]}
             >
               <InputNumber
+                ref={quantityRef} // Focus reference
                 type="number"
                 min={1}
                 style={{ width: "100%" }}
-                onKeyDown={(e) => handleKeyDown(e, customizeRef)}
+                autoFocus // Focus on load
               />
             </Form.Item>
 
