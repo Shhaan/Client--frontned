@@ -11,6 +11,7 @@ import {
 import { FaEdit, FaTrash } from "react-icons/fa";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { Form, Input } from "antd";
 function Dashboard() {
   const [side, setside] = useState(false);
 
@@ -83,6 +84,34 @@ function Dashboard() {
     }
   };
 
+  const handleavailablity = async (id) => {
+    const confirmDelete = window.confirm(
+      "Are you sure to change  the availablity of  Deal?"
+    );
+
+    if (confirmDelete) {
+      try {
+        const axios = createAxiosInstanceWithAuth();
+
+        const formData = new FormData();
+
+        const response = await axios.patch("main/deal/", {
+          data: { id },
+        });
+
+        if (response.status === 204 || response.status === 200) {
+          setdeal(response?.data?.results);
+          setTotalPages(Math.ceil(response.data.count / 40));
+          toast.success("Deal status changed successfully!");
+        }
+      } catch (error) {
+        console.error(error.response ? error.response.data : error.message);
+      }
+    } else {
+      toast("cancelled");
+    }
+  };
+
   return (
     <div>
       <Adminheader isAdmin={true} side={side} setside={setside} />
@@ -126,6 +155,17 @@ function Dashboard() {
               )}
 
               <div className={style.iconContainer}>
+                <Form.Item name="is_available" style={{ marginBottom: 0 }}>
+                  <label className={style.switch}>
+                    <Input
+                      type="checkbox"
+                      checked={item?.is_available}
+                      value={item?.is_available}
+                      onClick={() => handleavailablity(item.id)}
+                    />
+                    <span className={style.slider}></span>
+                  </label>
+                </Form.Item>
                 <FaEdit
                   style={{ color: "blue", cursor: "pointer" }}
                   onClick={() => navigate(`/admin/deal-of-day/edit/${item.id}`)}

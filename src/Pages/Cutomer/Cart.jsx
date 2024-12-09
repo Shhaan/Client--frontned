@@ -201,9 +201,10 @@ const Cart = () => {
     const message = cartItems
       .map(
         (item, i) =>
-          `${i + 1}. ${item.name}${
-            item?.customization ? ` (${item.customization})` : ""
-          }   (${item.quantity})  x ${item.count} %0A`
+          `${i + 1}. ${item.name} x${item.count}
+        %0A${item?.customization ? ` (${item.customization})` : ""}%0A   (${
+            item.quantity
+          })   %0A`
       )
       .join("%0A");
 
@@ -226,8 +227,16 @@ const Cart = () => {
     const OrderId =
       String(twoDigitNumber1) + String(dd) + String(twoDigitNumber2);
     const OrderIdenc = encodeURIComponent(`Order Id: ${OrderId}`);
+    const options = {
+      timeZone: "Asia/Qatar",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    };
+    const qatarTime = new Intl.DateTimeFormat("en-US", options).format(today);
 
-    const whatsappURL = `${whatsappapi}=${phone}&text=%0A${message}%0A%0A${formDetails}%0A%0A${totalPriceText}%0A%0A${OrderIdenc}`;
+    const nowtime = encodeURIComponent(`Ordered time: ${qatarTime}`);
+    const whatsappURL = `${whatsappapi}=${phone}&text=%0A${message}%0A%0A${formDetails}%0A%0A${totalPriceText}%0A%0A${OrderIdenc}%0A${nowtime}`;
 
     window.open(whatsappURL, "_blank");
 

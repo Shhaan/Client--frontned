@@ -48,6 +48,7 @@ function Dashboard() {
     formData.append("price", values.price);
     formData.append("quantity", values.Quantity);
     formData.append("product", values.product);
+    formData.append("is_available", values.is_available);
 
     try {
       const token = localStorage.getItem("token");
@@ -148,6 +149,10 @@ function Dashboard() {
                   style={{ height: "52px" }}
                   placeholder="Price"
                 />
+              </Form.Item>
+
+              <Form.Item name="is_available" valuePropName="checked">
+                <Checkbox>Is available</Checkbox>
               </Form.Item>
 
               <Form.Item

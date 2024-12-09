@@ -3,7 +3,7 @@ import Adminheader from "../../../Components/Adminheader/Adminheader";
 import Sidebar from "../../../Components/Admin/Sidebar";
 import style from "../../../Main.module.css";
 import routes from "../../../Functions/routes";
-import { Form, Input, Button, Select, message, Flex } from "antd";
+import { Form, Input, Button, Select, message, Flex, Checkbox } from "antd";
 import { axiosInstancemain } from "../../../Functions/axios";
 import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
@@ -52,6 +52,7 @@ function Dashboard() {
               product: data.message.product_id,
               price: data.message.price,
               Quantity: data.message.quantity,
+              is_available: data.message.is_available,
             };
             setInitialValues(newInitialValues);
             form.setFieldsValue(newInitialValues); // Set the form values
@@ -75,6 +76,7 @@ function Dashboard() {
     formData.append("price", values.price);
     formData.append("quantity", values.Quantity);
     formData.append("product", values.product);
+    formData.append("is_available", values.is_available);
     formData.append("id", id);
 
     try {
@@ -177,6 +179,9 @@ function Dashboard() {
                   style={{ height: "52px" }}
                   placeholder="Price"
                 />
+              </Form.Item>
+              <Form.Item name="is_available" valuePropName="checked">
+                <Checkbox>Is available</Checkbox>
               </Form.Item>
 
               <Form.Item
