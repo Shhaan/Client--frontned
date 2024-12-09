@@ -28,7 +28,7 @@ const cartSlice = createSlice({
       }
       const sub = state.items.map((item) => item.subtotal);
       state.totalPrice = sub.reduce((accumulator, currentValue) => {
-        return accumulator + currentValue;
+        return parseFloat(accumulator) + parseFloat(currentValue);
       }, 0);
       state.totalItemsCount = state.items.length;
     },
@@ -46,7 +46,7 @@ const cartSlice = createSlice({
       }
       const sub = state.items.map((item) => item.subtotal);
       state.totalPrice = sub.reduce((accumulator, currentValue) => {
-        return accumulator + currentValue;
+        return parseFloat(accumulator) + parseFloat(currentValue);
       }, 0);
     },
     Decreasecount: (state, action) => {
@@ -69,7 +69,7 @@ const cartSlice = createSlice({
       }
       const sub = state.items.map((item) => item.subtotal);
       state.totalPrice = sub.reduce((accumulator, currentValue) => {
-        return accumulator + currentValue;
+        return parseFloat(accumulator) + parseFloat(currentValue);
       }, 0);
     },
     RemoveItem: (state, action) => {
@@ -85,7 +85,7 @@ const cartSlice = createSlice({
       state.totalItemsCount = state.items.length;
       const sub = state.items.map((item) => item.subtotal);
       state.totalPrice = sub.reduce((accumulator, currentValue) => {
-        return accumulator + currentValue;
+        return parseFloat(accumulator) + parseFloat(currentValue);
       }, 0);
     },
     removecart: (state, action) => {

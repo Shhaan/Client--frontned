@@ -93,9 +93,9 @@ function Dashboard() {
           Array.isArray(data?.today?.timeslote) &&
           data?.today?.timeslote.length > 0
         ) {
-          settime(data?.today?.timeslote);
+          settime((e) => ["Now", ...data?.today?.timeslote]);
         } else {
-          settime(data?.tomorrow?.timeslote);
+          settime((e) => ["Now", ...data?.tomorrow?.timeslote]);
         }
       } catch (e) {
         console.error("Error fetching time slots:", e);
@@ -451,9 +451,14 @@ function Dashboard() {
                   <div
                     key={i.id}
                     className={`${style.selectedProducts} col-10 m-auto p-1 mb-2`}
+                    style={{
+                      background: "#f8cec3",
+                      boxShadow: "1px 1px #ffe2da",
+                    }}
                   >
                     <h3 className={style.invoicepopupname}>
-                      {i.name} {`(${i?.quantity})`} x{i?.count}
+                      {i.name} {`(${i?.quantity})`} x{i?.count}{" "}
+                      {i?.customize ? `- ${i?.customize}` : ""}
                     </h3>
 
                     <div>

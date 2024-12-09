@@ -1,16 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import {
-  Form,
-  Modal,
-  InputNumber,
-  Radio,
-  Button,
-  Spin,
-  message,
-  Input,
-  Menu,
-  Dropdown,
-} from "antd";
+import { Form, Modal, InputNumber, Button, Spin, message, Select } from "antd";
 import { FaTimes } from "react-icons/fa";
 import { axiosInstancemain, baseURL } from "../../Functions/axios";
 import toast from "react-hot-toast";
@@ -24,6 +13,23 @@ const InvoiceProduct = ({ onclose, setSelectedProducts, selectedProducts }) => {
   const [currentProduct, setCurrentProduct] = useState({});
   const [isEditing, setIsEditing] = useState(false); // Track editing state
   const [type, settype] = useState("shop");
+  const [customize, setCustomize] = useState([]);
+  const [flag, setflag] = useState(false);
+  const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setViewportWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  console.log(viewportWidth);
+
   useEffect(() => {
     const fetchCategory = async () => {
       try {
@@ -54,6 +60,33 @@ const InvoiceProduct = ({ onclose, setSelectedProducts, selectedProducts }) => {
     fetchCategory();
   }, [onclose, type]);
 
+  useEffect(() => {
+    const fetchcus = async () => {
+      if (currentProduct.product_id) {
+        console.log(currentProduct);
+
+        try {
+          const customizationResponse = await axiosInstancemain.get(
+            `/customize/${currentProduct.product_id}/`
+          );
+
+          const customizationData = customizationResponse?.data?.message || [];
+          console.log(customizationData);
+
+          if (customizationData.length > 0) {
+            setCustomize(customizationData);
+          } else {
+            setCustomize([]);
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    };
+
+    fetchcus();
+  }, [flag]);
+
   const handleProductClick = (product) => {
     setIsEditing(false); // Reset editing state
     setCurrentProduct(product);
@@ -65,6 +98,7 @@ const InvoiceProduct = ({ onclose, setSelectedProducts, selectedProducts }) => {
       customize: "",
       price: product.price,
     });
+    setflag((e) => !e);
   };
 
   const handleEditClick = (product) => {
@@ -76,6 +110,7 @@ const InvoiceProduct = ({ onclose, setSelectedProducts, selectedProducts }) => {
     setIsEditing(true); // Set editing state
     setCurrentProduct(product);
     setIsModalOpen(true);
+    setflag((e) => !e);
   };
 
   const handleAddOrUpdateProduct = (values) => {
@@ -109,6 +144,20 @@ const InvoiceProduct = ({ onclose, setSelectedProducts, selectedProducts }) => {
 
     setIsModalOpen(false);
     setCurrentProduct({});
+  };
+
+  const handleChange = (value) => {};
+
+  const formRef = useRef(null); // Reference for the form
+  const quantityRef = useRef(null); // Reference for the quantity input
+  const customizeRef = useRef(null); // Reference for the customize select
+  const priceRef = useRef(null); // Reference for the price input
+
+  const handleKeyDown = (e, nextRef) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      nextRef?.current?.focus(); // Focus the next field
+    }
   };
 
   return (
@@ -153,7 +202,7 @@ const InvoiceProduct = ({ onclose, setSelectedProducts, selectedProducts }) => {
           }}
         >
           <div
-            className={`col-12 col-md-8 col-xl-9 ${style.rmscroll}`}
+            className={`col-8 col-md-8 col-xl-9 ${style.rmscroll}`}
             style={{
               display: "flex",
               flexWrap: "wrap",
@@ -169,19 +218,21 @@ const InvoiceProduct = ({ onclose, setSelectedProducts, selectedProducts }) => {
                 className={style.withoutselectedProducts}
                 onClick={() => handleProductClick(i)}
                 style={{
-                  width: "200px",
+                  width: "150px",
                   textAlign: "center",
                   padding: "12px",
+                  gap: "0",
                   cursor: "pointer",
                   border: "1px solid #f0f0f0",
                   borderRadius: "8px",
-                  height: "286px",
+                  height: "250px",
+                  boxShadow: "1px 1px  #cbcdce",
                 }}
               >
                 <img
                   style={{
                     width: "100%",
-                    height: "150px",
+                    height: "120px",
                     objectFit: "contain",
                     marginBottom: "8px",
                     borderRadius: "6px",
@@ -205,8 +256,9 @@ const InvoiceProduct = ({ onclose, setSelectedProducts, selectedProducts }) => {
           </div>
 
           {/* Selected Products */}
+
           <div
-            className="col-12 col-md-4 col-xl-3"
+            className="col-4 col-md-4 col-xl-3"
             style={{
               padding: "20px",
               background: "#f8f8f8",
@@ -215,11 +267,16 @@ const InvoiceProduct = ({ onclose, setSelectedProducts, selectedProducts }) => {
             }}
           >
             <h3
-              style={{
-                marginBottom: "16px",
-                color: "#333",
-                textAlign: "center",
-              }}
+              style={
+                viewportWidth < 500
+                  ? {
+                      marginBottom: "16px",
+                      color: "#333",
+                      textAlign: "center",
+                      fontSize: "14px",
+                    }
+                  : { marginBottom: "16px", color: "#333", textAlign: "center" }
+              }
             >
               Selected Products
             </h3>
@@ -229,22 +286,39 @@ const InvoiceProduct = ({ onclose, setSelectedProducts, selectedProducts }) => {
             >
               {selectedProducts.map((i) => (
                 <div
-                  style={{
-                    background: "#fff",
-                    marginBottom: "10px",
-                    padding: "10px",
-                    borderRadius: "6px",
-                    boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    cursor: "pointer",
-                  }}
+                  style={
+                    viewportWidth < 500
+                      ? {
+                          background: "#fff",
+                          marginBottom: "10px",
+                          padding: "10px",
+                          borderRadius: "6px",
+                          boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+                          display: "flex",
+                          flexDirection: "row",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                          cursor: "pointer",
+                          fontSize: "10px",
+                        }
+                      : {
+                          background: "#fff",
+                          marginBottom: "10px",
+                          padding: "10px",
+                          borderRadius: "6px",
+                          boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+                          display: "flex",
+                          flexDirection: "row",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                          cursor: "pointer",
+                        }
+                  }
                   onClick={() => handleEditClick(i)}
                 >
                   <div key={i.id}>
-                    {i.name} {`(${i.quantity})`} x {i.count}
+                    {i.name} {`(${i.quantity})`} x {i.count}{" "}
+                    {i.customize ? `- ${i.customize}` : ""}
                   </div>
                   <FaTimes
                     style={{ cursor: "pointer" }}
@@ -261,10 +335,16 @@ const InvoiceProduct = ({ onclose, setSelectedProducts, selectedProducts }) => {
               ))}
             </div>
             <h6
-              style={{
-                color: "#333",
-                textAlign: "end",
-              }}
+              style={
+                viewportWidth < 500
+                  ? {
+                      color: "#333",
+                      textAlign: "end",
+                      fontSize: "13px",
+                      marginTop: "22px",
+                    }
+                  : { color: "#333", textAlign: "end", marginTop: "22px" }
+              }
             >
               Total:
               {selectedProducts
@@ -299,11 +379,28 @@ const InvoiceProduct = ({ onclose, setSelectedProducts, selectedProducts }) => {
               name="count"
               rules={[{ required: true, message: "Please enter a count" }]}
             >
-              <InputNumber type="number" min={1} style={{ width: "100%" }} />
+              <InputNumber
+                type="number"
+                min={1}
+                style={{ width: "100%" }}
+                onKeyDown={(e) => handleKeyDown(e, customizeRef)}
+              />
             </Form.Item>
 
             <Form.Item label="Cutting size" name="customize">
-              <Input style={{ width: "100%" }} />
+              <Select
+                style={{ width: "100%" }}
+                placeholder="Select a cutting size"
+                ref={customizeRef}
+                onKeyDown={(e) => handleKeyDown(e, priceRef)}
+                onChange={handleChange} // Update state on selection
+              >
+                {customize.map((size) => (
+                  <Select.Option key={size.customization_id} value={size.name}>
+                    {size.name}
+                  </Select.Option>
+                ))}
+              </Select>
             </Form.Item>
 
             <Form.Item
@@ -311,19 +408,13 @@ const InvoiceProduct = ({ onclose, setSelectedProducts, selectedProducts }) => {
               name="price"
               rules={[{ required: true, message: "Please enter a price" }]}
             >
-              <InputNumber min={1} type="number" style={{ width: "100%" }} />
+              <InputNumber
+                min={1}
+                type="number"
+                style={{ width: "100%" }}
+                ref={priceRef}
+              />
             </Form.Item>
-
-            {/* <Form.Item
-              label="Unit Type"
-              name="unitType"
-              rules={[{ required: true }]}
-            >
-              <Radio.Group>
-                <Radio value="piece">Piece</Radio>
-                <Radio value="kg">Kg</Radio>
-              </Radio.Group>
-            </Form.Item> */}
 
             <Button type="primary" htmlType="submit" block>
               {isEditing ? "Update Product" : "Add to Item"}
