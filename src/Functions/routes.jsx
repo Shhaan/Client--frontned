@@ -1,7 +1,7 @@
 const routes = [
   {
     name: "Dashboard",
-    navigate: "/admin",
+    navigate: "/admin/dashboard",
   },
 
   {
@@ -22,8 +22,13 @@ const routes = [
     navigate: "/admin/invoice",
   },
   {
-    name: "Sales report",
+    name: "SL report",
     navigate: "/admin/sales",
+  },
+
+  {
+    name: "PR report",
+    navigate: "/admin/purchase",
   },
 
   {

@@ -24,6 +24,7 @@ import Productcus from "./Pages/Cutomer/Product";
 import Carousel from "./Pages/Admin/CarouselAdmin";
 import CarouselAdd from "./Pages/Admin/Add/CarouselAdd";
 import SalesReport from "./Pages/Admin/Salesreport";
+import Purchasereport from "./Pages/Admin/Purchasereport";
 
 export const CartContext = createContext();
 
@@ -45,7 +46,7 @@ const App = () => {
           <Route path="carousel" element={<Carousel />} />
           <Route path="carousel/add" element={<CarouselAdd />} />
           <Route
-            path=""
+            path="dashboard"
             element={
               <AdminWrapper>
                 <Dashboard />
@@ -57,6 +58,14 @@ const App = () => {
             element={
               <AdminWrapper>
                 <SalesReport />
+              </AdminWrapper>
+            }
+          />
+          <Route
+            path="purchase"
+            element={
+              <AdminWrapper>
+                <Purchasereport />
               </AdminWrapper>
             }
           />
@@ -141,7 +150,7 @@ const App = () => {
             }
           />
           <Route
-            path="invoice/add"
+            path=""
             element={
               <AdminWrapper>
                 <InvoiceAdd />

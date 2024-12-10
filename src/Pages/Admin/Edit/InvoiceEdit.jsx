@@ -340,12 +340,6 @@ function Dashboard() {
                 <Form.Item
                   name="pending_amount"
                   label="Credit Payment Amount"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Credit payment amount is required",
-                    },
-                  ]}
                   labelCol={{ span: 24 }}
                   wrapperCol={{ span: 24 }}
                 >

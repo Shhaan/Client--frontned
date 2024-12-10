@@ -200,7 +200,7 @@ function Dashboard() {
           setitem={setproduct}
           name={"Invoice"}
           api={"/invoice"}
-          navigate={"/admin/invoice/add"}
+          navigate={"/admin"}
           setcount={setTotalPages}
           setcurrent={setCurrentPage}
         />
@@ -227,7 +227,15 @@ function Dashboard() {
           {product &&
             product.map((item) => (
               <div key={item.id} className={`col-12 ${style.productItem}`}>
-                <span className={style.productName}># {item.id}</span>
+                <div>
+                  <span className={`me-4 ${style.productName}`}>
+                    # {item.id}
+                  </span>
+                  <span className={`me-4 ${style.productName}`}>
+                    {item.created_at}
+                  </span>
+                  <span className={style.productName}>QR: {item.total}</span>
+                </div>
 
                 <div className={style.iconContainer}>
                   <button
