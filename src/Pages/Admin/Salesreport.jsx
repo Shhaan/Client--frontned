@@ -1,35 +1,32 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Adminheader from "../../Components/Adminheader/Adminheader";
 import Sidebar from "../../Components/Admin/Sidebar";
 import style from "../../Main.module.css";
 import routes from "../../Functions/routes";
+import { axiosInstance } from "../../Functions/axios";
 
 const SalesReport = () => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [side, setside] = useState(false);
-
-  // Dummy data
-  const orders = [
-    {
-      orderNumber: 101,
-      firstName: "John",
-      number: "1234567890",
-      productName: "Product A",
-      itemTotal: 50.0,
-      totalAmount: 100.0,
-      orderDate: "2024-12-01",
-    },
-    {
-      orderNumber: 102,
-      firstName: "Jane",
-      number: "9876543210",
-      productName: "Product B",
-      itemTotal: 75.0,
-      totalAmount: 150.0,
-      orderDate: "2024-12-02",
-    },
-  ];
+  const [orders, setorders] = useState([]);
+  useEffect(() => {
+    const salesreport = async () => {
+      try {
+        const response = await axiosInstance.get(
+          `invoice/generatethermal-kichen-pdf/`,
+          {
+            headers: {
+              Authorization: `Token ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    salesreport();
+  }, []);
 
   const handleGenerateReport = (e) => {
     e.preventDefault();
@@ -104,13 +101,12 @@ const SalesReport = () => {
           <table className="table table-bordered">
             <thead className="thead-dark">
               <tr>
-                <th>Order Number</th>
-                <th>First Name</th>
-                <th>Number</th>
-                <th>Product Name</th>
-                <th>Item Total</th>
-                <th>Total Amount</th>
                 <th>Order Date</th>
+
+                <th>Sales by item</th>
+                <th>Quantity</th>
+                <th>Net profit </th>
+                <th>Total</th>
               </tr>
             </thead>
             <tbody>
@@ -121,8 +117,6 @@ const SalesReport = () => {
                   <td>{order.number}</td>
                   <td>{order.productName}</td>
                   <td>{order.itemTotal.toFixed(2)}</td>
-                  <td>{order.totalAmount.toFixed(2)}</td>
-                  <td>{order.orderDate}</td>
                 </tr>
               ))}
             </tbody>

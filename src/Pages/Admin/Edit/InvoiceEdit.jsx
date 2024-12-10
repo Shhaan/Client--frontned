@@ -25,7 +25,7 @@ function Dashboard() {
   const [form] = Form.useForm();
   const [time, settime] = useState([]);
   const [paymentType, setPaymentType] = useState(""); // Track selected payment type
-
+  const [sale, setsale] = useState(true);
   const navigate = useNavigate();
   const handleAddProductClick = () => {
     setIsModalVisible(true);
@@ -44,20 +44,20 @@ function Dashboard() {
         if (!data.error) {
           const { message } = data;
           setPaymentType(message?.payment);
+          setsale(message.is_sales);
           form.setFieldsValue({
-            name: message.name || "",
+            name: message.name,
             pending_amount: message?.pending_amount,
-
+            created_at: message?.created_at,
             time_slot: message.time_slot,
             is_delivery: message.is_delivery,
-            building: message.building || "",
+            building: message.building,
             Street: message.Street,
             Zone: message.Zone,
             location: message.location,
             payment: message?.payment,
           });
           setisdelivery(message?.is_delivery);
-          console.log(message);
 
           const productsWithCustomize = message?.items.map((item) => ({
             product_id: item.product_id,
@@ -129,8 +129,6 @@ function Dashboard() {
       }, 0)
       .toFixed(2);
 
-    console.log(total, values);
-
     if (
       values?.payment == "credit" &&
       total < parseFloat(values?.pending_amount)
@@ -152,6 +150,7 @@ function Dashboard() {
       const data = await axios.put("main/invoice/", {
         invoiceid: id,
         ...values,
+        is_sales: sale,
         product,
         is_delivery: isdelivery,
       });
@@ -163,7 +162,8 @@ function Dashboard() {
     }
   };
 
-  const hanldekichenpdfclick = async (id) => {
+  const hanldekichenpdfclick = async (id, e) => {
+    e.preventDefault();
     try {
       const response = await axiosInstance.get(
         `invoice/generatethermal-kichen-pdf/${id}/`,
@@ -201,7 +201,8 @@ function Dashboard() {
     }
   };
 
-  const hanldepdfclick = async (id) => {
+  const hanldepdfclick = async (id, e) => {
+    e.preventDefault();
     try {
       const response = await axiosInstance.get(
         `invoice/generatethermal-kichen-pdf/${id}/`,
@@ -239,26 +240,6 @@ function Dashboard() {
     }
   };
 
-  // const hanldepdfclick = async (id) => {
-  //   try {
-  //     const response = await axiosInstance.get(`invoice/generate-pdf/${id}/`, {
-  //       headers: { Authorization: `Token ${localStorage.getItem("token")}` },
-  //       responseType: "blob",
-  //     });
-
-  //     const blob = new Blob([response.data], { type: "application/pdf" });
-  //     const url = window.URL.createObjectURL(blob);
-
-  //     const newWindow = window.open(url, "_blank");
-  //     if (newWindow) {
-  //       newWindow.addEventListener("load", () => {
-  //         newWindow.print();
-  //       });
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
   const handleitem = (id) => {
     setSelectedProducts((prevSelectedProducts) =>
       prevSelectedProducts.filter((product) => product.id !== id)
@@ -307,9 +288,6 @@ function Dashboard() {
               <Form.Item
                 name="name"
                 label="Customer Name"
-                rules={[
-                  { required: true, message: "Customer Name is required" },
-                ]}
                 labelCol={{ span: 24 }}
                 wrapperCol={{ span: 24 }}
                 className={style.inputofadd}
@@ -320,7 +298,6 @@ function Dashboard() {
               <Form.Item
                 name="time_slot"
                 label="Time slot"
-                rules={[{ required: true, message: "Time slot is required" }]}
                 labelCol={{ span: 24 }}
                 wrapperCol={{ span: 24 }}
                 className={style.inputofadd}
@@ -485,6 +462,44 @@ function Dashboard() {
               >
                 Add Product
               </Button>
+
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  marginBottom: "18px",
+                  marginTop: "16px",
+                  gap: "18px",
+                }}
+              >
+                <div
+                  className={sale ? style.selectedsale : style.notselectedsale}
+                  onClick={() => setsale(true)}
+                >
+                  Sale
+                </div>
+                <div
+                  className={sale ? style.notselectedsale : style.selectedsale}
+                  onClick={() => setsale(false)}
+                >
+                  Purchase
+                </div>
+              </div>
+
+              <Form.Item
+                name="created_at"
+                label="Invoice date"
+                labelCol={{ span: 24 }}
+                wrapperCol={{ span: 24 }}
+                className={style.inputofadd}
+              >
+                <Input
+                  type="date"
+                  style={{ height: "52px", width: "100%" }}
+                  placeholder="Select date"
+                  format="DD-MM-YYYY"
+                />
+              </Form.Item>
               <h4 className="text-end">
                 Total :
                 {selectedProducts
@@ -505,9 +520,13 @@ function Dashboard() {
               </Form.Item>
 
               <button
-                style={viewportWidth < 453 ? { fontSize: "10px" } : {}}
+                style={
+                  viewportWidth < 453
+                    ? { fontSize: "10px", marginRight: "5px" }
+                    : { marginRight: "5px" }
+                }
                 className={style.buttoninvoicegen}
-                onClick={() => hanldepdfclick(id)}
+                onClick={(e) => hanldepdfclick(id, e)}
               >
                 Generate invoice
               </button>
@@ -515,7 +534,7 @@ function Dashboard() {
               <button
                 style={viewportWidth < 453 ? { fontSize: "10px" } : {}}
                 className={style.buttoninvoicegen}
-                onClick={() => hanldekichenpdfclick(id)}
+                onClick={(e) => hanldekichenpdfclick(id, e)}
               >
                 Kichen invoice
               </button>

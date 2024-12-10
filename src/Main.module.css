@@ -1370,3 +1370,22 @@ input[type="number"]::-webkit-inner-spin-button {
   margin-right: 21px;
   margin-top: 16px;
 }
+
+.notselectedsale {
+  width: 84px;
+  background: #f4b7a7;
+  padding: 10px;
+  border-radius: 9px;
+  font-family: "Montserrat";
+  cursor: pointer;
+}
+.selectedsale {
+  width: 84px;
+  background: #a76857;
+  padding: 10px;
+  border-radius: 9px;
+  font-family: "Montserrat";
+  color: white;
+  font-size: 15px;
+  cursor: pointer;
+}

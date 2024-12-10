@@ -3,7 +3,17 @@ import Adminheader from "../../../Components/Adminheader/Adminheader";
 import Sidebar from "../../../Components/Admin/Sidebar";
 import style from "../../../Main.module.css";
 import routes from "../../../Functions/routes";
-import { Form, Input, Button, message, Flex, Select, Spin } from "antd";
+import dayjs from "dayjs";
+import {
+  Form,
+  Input,
+  Button,
+  message,
+  Flex,
+  Select,
+  Spin,
+  DatePicker,
+} from "antd";
 import { useNavigate } from "react-router-dom";
 
 import { FaTimes } from "react-icons/fa";
@@ -23,6 +33,10 @@ function Dashboard() {
   const [isModalVisible, setIsModalVisible] = useState(true);
   const [isdelivery, setisdelivery] = useState(false);
   const [time, settime] = useState([]);
+  const [form] = Form.useForm();
+  const [sale, setsale] = useState(true);
+  const nameref = useRef();
+
   const navigate = useNavigate();
   const handleAddProductClick = () => {
     setIsModalVisible(true);
@@ -46,6 +60,13 @@ function Dashboard() {
     };
 
     fetchdata();
+    form.setFieldsValue({
+      time_slot: "Now",
+      created_at: dayjs().format("YYYY-MM-DD"),
+      payment: "cash",
+    });
+
+    nameref.current.focus();
   }, []);
   const onFinish = async (values) => {
     if (selectedProducts.length == 0) {
@@ -77,6 +98,7 @@ function Dashboard() {
       const axios = createAxiosInstanceWithAuth();
       const data = await axios.post("main/invoice/", {
         ...values,
+        is_sales: sale,
         product,
         is_delivery: isdelivery,
       });
@@ -134,6 +156,7 @@ function Dashboard() {
           >
             <Form
               ref={formRef}
+              form={form}
               style={{
                 padding: "32px",
                 background: "rgb(255 246 242)",
@@ -156,9 +179,11 @@ function Dashboard() {
                 className={style.inputofadd}
               >
                 <Input
+                  ref={nameref}
                   style={{ height: "52px" }}
                   placeholder="Customer name"
                   onKeyDown={(e) => handleKeyPress(e, timeSlotInputRef)}
+                  autoFocus
                 />
               </Form.Item>
 
@@ -173,20 +198,23 @@ function Dashboard() {
                   ref={timeSlotInputRef}
                   style={{ height: "52px" }}
                   placeholder="Select a time slot"
+                  defaultValue={"Now"}
                   options={time.map((slot) => ({
                     label: slot, // Displayed in the dropdown
                     value: slot, // Stored in the form state
                   }))}
                   onKeyDown={(e) => handleKeyPress(e, paymentInputRef)}
-                />
+                >
+                  <Select.Option value="Now">Now</Select.Option>
+                  {time.map((slot) => (
+                    <Select.Option value={slot}>{slot}</Select.Option>
+                  ))}
+                </Select>
               </Form.Item>
 
               <Form.Item
                 name="payment"
                 label="Payment"
-                rules={[
-                  { required: true, message: "Payment type is required" },
-                ]}
                 labelCol={{ span: 24 }}
                 wrapperCol={{ span: 24 }}
               >
@@ -196,6 +224,7 @@ function Dashboard() {
                   value={paymentType} // Bind the value to the paymentType state
                   onChange={(value) => setPaymentType(value)} // Update payment type state on change
                   onKeyDown={(e) => handleKeyPress(e, isDeliveryInputRef)}
+                  defaultValue={paymentType}
                 >
                   <Select.Option value="cash">Cash</Select.Option>
                   <Select.Option value="online payment">
@@ -351,6 +380,48 @@ function Dashboard() {
                 Add Product
               </Button>
 
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  marginBottom: "18px",
+                  marginTop: "16px",
+                  gap: "18px",
+                }}
+              >
+                <div
+                  className={sale ? style.selectedsale : style.notselectedsale}
+                  onClick={() => setsale(true)}
+                >
+                  Sale
+                </div>
+                <div
+                  className={sale ? style.notselectedsale : style.selectedsale}
+                  onClick={() => setsale(false)}
+                >
+                  Purchase
+                </div>
+              </div>
+
+              <Form.Item
+                name="created_at"
+                label="Invoice date"
+                labelCol={{ span: 24 }}
+                wrapperCol={{ span: 24 }}
+                className={style.inputofadd}
+              >
+                <Input
+                  type="date"
+                  style={{ height: "52px", width: "100%" }}
+                  placeholder="Select date"
+                  format="DD-MM-YYYY"
+                  value={dayjs().format("YYYY-MM-DD")}
+                  defaultValue={dayjs().format("YYYY-MM-DD")}
+                  // Set the current date as the default value (using dayjs)
+                  // Disable future dates using dayjs
+                />
+              </Form.Item>
+
               <h4 className="text-end">
                 Total :
                 {selectedProducts
@@ -359,6 +430,7 @@ function Dashboard() {
                   }, 0)
                   .toFixed(2)}
               </h4>
+
               <Form.Item>
                 <Button
                   className={style.orderNow}
