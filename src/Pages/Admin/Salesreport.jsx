@@ -1,10 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Adminheader from "../../Components/Adminheader/Adminheader";
 import Sidebar from "../../Components/Admin/Sidebar";
 import style from "../../Main.module.css";
 import routes from "../../Functions/routes";
 import { axiosInstance } from "../../Functions/axios";
 import toast from "react-hot-toast";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 const SalesReport = () => {
   const [startDate, setStartDate] = useState("");
@@ -15,8 +16,6 @@ const SalesReport = () => {
   const [loading, setLoading] = useState(false);
   const [orders, setorders] = useState([]);
   const [side, setside] = useState(false);
-
-  const observerRef = useRef(null);
 
   // Initial Data Fetch
   useEffect(() => {
@@ -33,7 +32,7 @@ const SalesReport = () => {
           setNextPage(response?.data?.next);
         }
       } catch (error) {
-        toast.error("Failed to fetch sales data.");
+        toast.error("Failed to fetch purchase data.");
         console.error(error);
       } finally {
         setLoading(false);
@@ -42,49 +41,13 @@ const SalesReport = () => {
     salesreport();
   }, []);
 
-  // Infinite Scrolling
-  const loadMoreProducts = async () => {
-    if (!nextpage || loading) return;
-    setLoading(true);
-
-    try {
-      const response = await axiosInstance.get(nextpage);
-      if (response.status === 200) {
-        setorders((prevOrders) => [...prevOrders, ...response.data.results]);
-        setNextPage(response.data.next);
-      }
-    } catch (error) {
-      toast.error("Error loading more data.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting && nextpage) {
-          loadMoreProducts();
-        }
-      },
-      { threshold: 1 }
-    );
-
-    if (observerRef.current) observer.observe(observerRef.current);
-
-    return () => {
-      if (observerRef.current) observer.unobserve(observerRef.current);
-    };
-  }, [nextpage]);
-
-  // Generate Report with Filters
   const handleGenerateReport = async (e) => {
     e.preventDefault();
     try {
       setLoading(true);
       const response = await axiosInstance.get("invoice/sales-report/", {
         headers: {
-          Authorization: `Token ${localStorage.getItem("token") || ""}`,
+          Authorization: `Token ${localStorage.getItem("token")}`,
         },
         params: { startDate, endDate, ordertype, paymenttype },
       });
@@ -95,6 +58,28 @@ const SalesReport = () => {
       }
     } catch (error) {
       toast.error("Failed to generate report.");
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handlepage = async () => {
+    if (!nextpage) return;
+
+    try {
+      setLoading(true);
+      const response = await axiosInstance.get(nextpage, {
+        headers: {
+          Authorization: `Token ${localStorage.getItem("token")}`,
+        },
+      });
+      if (response.status === 200) {
+        setorders((prevOrders) => [...prevOrders, ...response.data?.results]);
+        setNextPage(response?.data?.next);
+      }
+    } catch (error) {
+      toast.error("Failed to load more orders.");
       console.error(error);
     } finally {
       setLoading(false);
@@ -151,10 +136,8 @@ const SalesReport = () => {
                 onChange={(e) => setpayment(e.target.value)}
                 className="form-control"
                 name="payment"
-                id=""
               >
                 <option value="">All payment type</option>
-
                 <option value="cash">Cash</option>
                 <option value="online payment">Online payment</option>
                 <option value="card ">Card</option>
@@ -170,10 +153,8 @@ const SalesReport = () => {
                 onChange={(e) => setordertype(e.target.value)}
                 className="form-control"
                 name="payment"
-                id=""
               >
                 <option value="">All order type</option>
-
                 <option value="delivery">Delivery</option>
                 <option value="Take_away">Take away</option>
               </select>
@@ -187,14 +168,6 @@ const SalesReport = () => {
                 Generate Report
               </button>
             </div>
-            {/* <div className="col-md-4 mb-3" style={{ marginTop: "32px" }}>
-              <button
-                onClick={handleDownloadReport}
-                className="btn text-white btn-success mt-3"
-              >
-                Download Sales Report
-              </button>
-            </div> */}
           </div>
         </form>
 
@@ -204,31 +177,37 @@ const SalesReport = () => {
           <p>No sales data available.</p>
         ) : (
           <div className="table-responsive mt-4">
-            <table className="table table-bordered">
-              <thead>
-                <tr>
-                  <th>Order Date</th>
-                  <th>Sales Item</th>
-                  <th>Quantity</th>
-                  <th>Net Profit</th>
-                  <th>Total</th>
-                </tr>
-              </thead>
-              <tbody>
-                {orders.map((order, index) => (
-                  <tr key={index}>
-                    <td>{order.created_at}</td>
-                    <td>{order.product_name}</td>
-                    <td>{order.count}</td>
-                    <td>{order.price}</td>
-                    <td>{order.sub_total}</td>
+            <InfiniteScroll
+              dataLength={orders.length}
+              next={handlepage}
+              hasMore={nextpage !== null}
+              loader={<p>Loading more orders...</p>}
+            >
+              <table className="table table-bordered">
+                <thead>
+                  <tr>
+                    <th>Order Date</th>
+                    <th>Sales Item</th>
+                    <th>Quantity</th>
+                    <th>Net Profit</th>
+                    <th>Total</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {orders.map((order, index) => (
+                    <tr key={index}>
+                      <td>{order.created_at}</td>
+                      <td>{order.product_name}</td>
+                      <td>{order.count}</td>
+                      <td>{order.price}</td>
+                      <td>{order.sub_total}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </InfiniteScroll>
           </div>
         )}
-        <div ref={observerRef} style={{ height: "1px" }}></div>
       </div>
     </div>
   );
