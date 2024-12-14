@@ -406,12 +406,12 @@ function Product() {
                       <h4 className={style.dealPrice}>{product?.quantity}</h4>
                       {product.discription &&
                         product.discription != "undefined" && (
-                          <p
+                          <textarea
                             style={{ textAlign: "left" }}
                             className={style.dealPrice}
                           >
                             {product?.discription}
-                          </p>
+                          </textarea>
                         )}
                       <div style={{ width: "100%" }}>
                         <div>
