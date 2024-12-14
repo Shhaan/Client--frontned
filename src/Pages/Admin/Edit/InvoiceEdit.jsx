@@ -503,11 +503,23 @@ function Dashboard() {
               </button>
 
               <button
-                style={viewportWidth < 453 ? { fontSize: "10px" } : {}}
+                style={
+                  viewportWidth < 453
+                    ? { fontSize: "10px", marginRight: "5px" }
+                    : { marginRight: "5px" }
+                }
                 className={style.buttoninvoicegen}
                 onClick={(e) => hanldekichenpdfclick(id, e)}
               >
                 Kichen invoice
+              </button>
+
+              <button
+                style={viewportWidth < 453 ? { fontSize: "10px" } : {}}
+                className={style.buttoninvoicegen}
+                onClick={(e) => navigate("/admin")}
+              >
+                Add invoice
               </button>
             </Form>
           </Flex>
