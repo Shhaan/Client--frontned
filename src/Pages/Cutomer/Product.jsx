@@ -180,13 +180,16 @@ function Product() {
                         </div>
                         <h4 className={style.dealPrice}>{product?.quantity}</h4>
                         {product.discription &&
-                          product.discription != "undefined" && (
-                            <p
+                          product.discription !== "undefined" && (
+                            <div
                               style={{ textAlign: "left" }}
                               className={style.dealPrice}
-                            >
-                              {product?.discription}
-                            </p>
+                              dangerouslySetInnerHTML={{
+                                __html: product.discription
+                                  .replace(/\r\n/g, "<br />")
+                                  .replace(/\n/g, "<br />"),
+                              }}
+                            />
                           )}
                       </>
                     )}
@@ -405,14 +408,18 @@ function Product() {
                       </div>
                       <h4 className={style.dealPrice}>{product?.quantity}</h4>
                       {product.discription &&
-                        product.discription != "undefined" && (
-                          <textarea
+                        product.discription !== "undefined" && (
+                          <div
                             style={{ textAlign: "left" }}
                             className={style.dealPrice}
-                          >
-                            {product?.discription}
-                          </textarea>
+                            dangerouslySetInnerHTML={{
+                              __html: product.discription
+                                .replace(/\r\n/g, "<br />")
+                                .replace(/\n/g, "<br />"),
+                            }}
+                          />
                         )}
+
                       <div style={{ width: "100%" }}>
                         <div>
                           {cartItems.length > 0 &&
