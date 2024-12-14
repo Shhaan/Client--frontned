@@ -10,51 +10,72 @@ import {
 import SearchComponent from "../../Components/Adminheader/SearchComponent";
 import routes from "../../Functions/routes";
 import { FaEdit, FaEye, FaSearch, FaTrash } from "react-icons/fa";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import toast from "react-hot-toast";
-import { Input, Form } from "antd";
+import { Input, Form, message } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { addvalue } from "../../redux/prfilter";
 import axios from "axios";
 
 function Dashboard() {
   const value = useSelector((state) => state.prfilter); // Safe handling
-  console.log("value:", value);
-
-  const dispatch = useDispatch();
 
   const [side, setside] = useState(false);
   const [product, setproduct] = useState([]);
 
   const [totalPages, setTotalPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-  const [category, setCategories] = useState([]);
 
   const [searchParams, setSearchParams] = useSearchParams();
   const nav = useNavigate();
-  const [flag, setflag] = useState(false);
   const searchValue = searchParams.get("search") || "";
   const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
 
   const navigate = useNavigate();
-  useEffect(() => {
-    const fetchproduct = async () => {
-      try {
-        const productResponse = await axiosInstance.get(`/invoice/customer/ `, {
-          headers: {
-            Authorization: `Token ${localStorage.getItem("token")}`,
-          },
-        });
-        setproduct(productResponse?.data?.results);
-        console.log(productResponse?.data);
+  const [invoiceData, setInvoiceData] = useState(null); // Holds the invoice data
+  const [loading, setLoading] = useState(true); // Loading state
 
-        setTotalPages(Math.ceil(productResponse.data.count / 40));
+  const { id } = useParams();
+
+  useEffect(() => {
+    const fetchCategory = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await axiosInstance.get(
+          "/invoice/customer-mainitem/",
+          {
+            headers: { Authorization: `Token ${token}` },
+            params: { id },
+          }
+        );
+        setproduct(response?.data?.results);
+        if (response?.data?.count == 0) {
+          toast.error("No item available for customer");
+          navigate("/admin/purchase");
+        }
+
+        console.log(response);
+
+        setTotalPages(Math.ceil(response.data.count / 40));
       } catch (error) {
-        console.log(error);
+        console.error(error);
+        message.error("Failed to fetch invoice data");
+      } finally {
+        setLoading(false); // Set loading to false once data fetching is complete
       }
     };
-    fetchproduct();
-  }, [value.value, flag]);
+
+    fetchCategory();
+
+    const handleResize = () => {
+      setViewportWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [id]);
 
   const handleclick = async (page) => {
     try {
@@ -68,58 +89,6 @@ function Dashboard() {
       setTotalPages(Math.ceil(productResponse.data.count / 40));
     } catch (error) {
       console.log(error);
-    }
-  };
-  const handleDelete = async (id, available) => {
-    const confirmDelete = window.confirm(
-      `Do you want   delete the customer the purchase item will be deleted?`
-    );
-
-    if (confirmDelete) {
-      try {
-        const axios = createAxiosInstanceWithAuth();
-
-        const formData = new FormData();
-        formData.append("id", id);
-
-        const response = await axios.delete("/invoice/customer/", {
-          data: formData,
-        });
-
-        if (response.status === 204 || response.status === 200) {
-          setflag((e) => !e);
-
-          setTotalPages(Math.ceil(response.data.count / 40));
-          toast.success(`The customer is deleted  ${!available}`, 2000);
-        }
-      } catch (error) {
-        toast.error(error.response ? error.response.data.error : error.message);
-        return;
-      }
-    } else {
-      toast("Deletion cancelled");
-    }
-  };
-
-  const fetchsearch = async (e) => {
-    dispatch(addvalue({ value: "" }));
-    setSearchParams({ search: e.target.value });
-    try {
-      const token = localStorage.getItem("token");
-      const response = await axiosInstance.get(
-        `/invoice/customer/?search=${searchValue}`,
-        { headers: { Authorization: `Token ${token}` } }
-      );
-      if (response.status === 200) {
-        setproduct(response?.data?.results);
-
-        setTotalPages(Math.ceil(response.data.count / 40));
-      }
-    } catch (error) {
-      setproduct([]);
-      toast.error(error?.response?.data?.message || "An error occurred", {
-        duration: 3000,
-      });
     }
   };
 
@@ -143,28 +112,10 @@ function Dashboard() {
               style={
                 viewportWidth < 400 ? { width: "125px", height: "33px" } : {}
               }
-              onChange={(e) => fetchsearch(e)}
+              onChange={(e) => e}
             />
             <FaSearch />
           </form>
-          <div>
-            <button
-              style={
-                viewportWidth < 453
-                  ? {
-                      fontSize: "8px",
-                      width: "105px",
-                      height: "33px",
-                      margin: 0,
-                    }
-                  : { margin: 0 }
-              }
-              onClick={() => nav(`/admin/purchase/add`)}
-              className={style.orderNowButton}
-            >
-              Add Purchase report
-            </button>
-          </div>
         </div>
 
         <div className={style.productListContainer}>
@@ -173,25 +124,21 @@ function Dashboard() {
               <div>
                 <span className={`me-4 ${style.productName}`}>{item.name}</span>
                 <span className={`me-4 ${style.productName}`}>
-                  credit: {item.credit}
+                  {item.created_at}
                 </span>
-                <span className={style.productName}>
-                  Total amount: {item.total}
+                <span className={`me-4 ${style.productName}`}>
+                  Total: {item.total}
+                </span>
+                <span className={`me-4 ${style.productName}`}>
+                  credit: {item.credit}
                 </span>
               </div>
               <div className={style.iconContainer}>
-                <FaEye
-                  style={{ cursor: "pointer" }}
-                  onClick={() => navigate(`/admin/purchase/view/${item.id}`)}
-                />
-                {/* <FaEdit
+                <FaEdit
                   style={{ color: "blue", cursor: "pointer" }}
-                  onClick={() => navigate(`/admin/purchase/item/${item.id}`)}
-                /> */}
-                <FaTrash
-                  style={{ color: "red", cursor: "pointer" }}
-                  onClick={() => handleDelete(item.id)}
+                  onClick={() => navigate(`/admin/purchase/edit/${item.id}`)}
                 />
+                <FaTrash style={{ color: "red", cursor: "pointer" }} />
               </div>
             </div>
           ))}

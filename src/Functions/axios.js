@@ -1,7 +1,7 @@
 import axios from "axios";
 
-export const baseURL = "https://shanmohammed.pythonanywhere.com";
-const baseURLmain = "https://shanmohammed.pythonanywhere.com/main";
+export const baseURL = "http://127.0.0.1:8000";
+const baseURLmain = "http://127.0.0.1:8000/main";
 export const phone = 97430162002;
 export const whatsappapi = "https://api.whatsapp.com/send/?phone";
 

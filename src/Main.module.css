@@ -1389,3 +1389,58 @@ input[type="number"]::-webkit-inner-spin-button {
   font-size: 15px;
   cursor: pointer;
 }
+
+/* Basic table styling */
+.invoicetable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.invoicetable th,
+.invoicetable td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: left;
+}
+
+.invoicetable th {
+  background-color: #f4f4f4;
+  font-weight: bold;
+}
+
+.invoicetable tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .invoicetable {
+    font-size: 14px;
+  }
+
+  .invoicetable th,
+  .invoicetable td {
+    padding: 8px;
+  }
+
+  .invoicetable th {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .invoicetable th,
+  .invoicetable td {
+    font-size: 12px;
+    padding: 6px;
+  }
+
+  .invoicetable th {
+    font-size: 14px;
+  }
+}
+
+.productName:hover {
+  color: rgb(145, 145, 221);
+}

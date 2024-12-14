@@ -374,29 +374,6 @@ function Dashboard() {
                 Add Product
               </Button>
 
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  marginBottom: "18px",
-                  marginTop: "16px",
-                  gap: "18px",
-                }}
-              >
-                <div
-                  className={sale ? style.selectedsale : style.notselectedsale}
-                  onClick={() => setsale(true)}
-                >
-                  Sale
-                </div>
-                <div
-                  className={sale ? style.notselectedsale : style.selectedsale}
-                  onClick={() => setsale(false)}
-                >
-                  Purchase
-                </div>
-              </div>
-
               <Form.Item
                 name="created_at"
                 label="Invoice date"

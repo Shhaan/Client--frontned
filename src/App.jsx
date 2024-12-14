@@ -25,6 +25,9 @@ import Carousel from "./Pages/Admin/CarouselAdmin";
 import CarouselAdd from "./Pages/Admin/Add/CarouselAdd";
 import SalesReport from "./Pages/Admin/Salesreport";
 import Purchasereport from "./Pages/Admin/Purchasereport";
+import Addpurchasereport from "./Pages/Admin/Add/Addpurchasereport";
+import Editpurchasereport from "./Pages/Admin/Edit/Editpurchasereport";
+import Purchaseorderlist from "./Pages/Admin/Purchaseorderlist";
 
 export const CartContext = createContext();
 
@@ -66,6 +69,30 @@ const App = () => {
             element={
               <AdminWrapper>
                 <Purchasereport />
+              </AdminWrapper>
+            }
+          />
+          <Route
+            path="purchase/add"
+            element={
+              <AdminWrapper>
+                <Addpurchasereport />
+              </AdminWrapper>
+            }
+          />
+          <Route
+            path="purchase/view/:id"
+            element={
+              <AdminWrapper>
+                <Editpurchasereport />
+              </AdminWrapper>
+            }
+          />
+          <Route
+            path="purchase/item/:id"
+            element={
+              <AdminWrapper>
+                <Purchaseorderlist />
               </AdminWrapper>
             }
           />
