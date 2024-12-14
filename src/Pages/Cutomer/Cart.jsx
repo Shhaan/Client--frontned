@@ -873,7 +873,7 @@ const Cart = () => {
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
-              gap: "60px",
+              gap: "48px",
               paddingBottom: "40px",
               marginBottom: "100px",
             }}
