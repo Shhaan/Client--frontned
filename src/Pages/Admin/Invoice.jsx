@@ -19,6 +19,8 @@ function Dashboard() {
 
   const [totalPages, setTotalPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
+  const [datec, setdatec] = useState("");
+
   const navigate = useNavigate();
 
   const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
@@ -40,7 +42,7 @@ function Dashboard() {
         const axios = createAxiosInstanceWithAuth();
         const productResponse = await axios.get(`main/invoice/`);
         setproduct(productResponse?.data?.results);
-
+        setdatec(productResponse?.data?.results[0].created_at);
         setTotalPages(Math.ceil(productResponse.data.count / 40));
       } catch (error) {
         console.log(error);
@@ -53,6 +55,8 @@ function Dashboard() {
       const axios = createAxiosInstanceWithAuth();
       const productResponse = await axios.get(`main/invoice/?page=${page} `);
       setproduct(productResponse?.data?.results);
+      setdatec(productResponse?.data?.results[0].created_at);
+
       setCurrentPage(page);
       setTotalPages(Math.ceil(productResponse.data.count / 40));
     } catch (error) {

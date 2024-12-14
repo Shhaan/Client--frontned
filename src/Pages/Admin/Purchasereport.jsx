@@ -162,23 +162,58 @@ function Dashboard() {
               onClick={() => nav(`/admin/purchase/add`)}
               className={style.orderNowButton}
             >
-              Add Purchase report
+              Add Purchase
             </button>
           </div>
         </div>
 
         <div className={style.productListContainer}>
+          <div className={style.customerDetails}>
+            <br />
+            <div className={style.customerinfo}>
+              <h2>
+                <strong>
+                  Credit:
+                  {product.reduce((a, c) => {
+                    return a + c.credit;
+                  }, 0)}
+                </strong>
+              </h2>
+              <h2>
+                <strong>
+                  Paid:
+                  {product.reduce((a, c) => {
+                    return a + c.paid;
+                  }, 0)}
+                </strong>
+              </h2>
+              <h2>
+                <strong>
+                  Total:
+                  {product.reduce((a, c) => {
+                    return a + c.total;
+                  }, 0)}
+                </strong>
+              </h2>
+            </div>
+          </div>
           {product.map((item) => (
             <div key={item.id} className={`col-12 ${style.productItem}`}>
-              <div>
-                <span className={`me-4 ${style.productName}`}>{item.name}</span>
-                <span className={`me-4 ${style.productName}`}>
-                  credit: {item.credit}
+              <div className={`row w-50`}>
+                <span className={`col-12 col-sm-3 ${style.productName}`}>
+                  {item.name}
                 </span>
-                <span className={style.productName}>
-                  Total amount: {item.total}
+                <span className={`col-12 col-sm-3 ${style.productName}`}>
+                  Credit: {item.credit}
+                </span>
+                <span className={`col-12 col-sm-3 ${style.productName}`}>
+                  Paid: {item.paid}
+                </span>
+                <span className={`col-12 col-sm-3 ${style.productName}`}>
+                  Total: {item.total}
                 </span>
               </div>
+
               <div className={style.iconContainer}>
                 <FaEye
                   style={{ cursor: "pointer" }}

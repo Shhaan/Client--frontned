@@ -69,6 +69,7 @@ function Dashboard() {
         });
 
         const dataMessage = data?.data?.message;
+        console.log(dataMessage);
 
         const initialValues = {
           is_bestseller: dataMessage?.is_bestseller || false,
@@ -310,15 +311,16 @@ function Dashboard() {
 
               <Form.Item
                 name="discription"
-                label="Discription"
+                label="Description"
                 labelCol={{ span: 24 }}
                 wrapperCol={{ span: 24 }}
                 className={style.inputofadd}
               >
-                <Input
-                  type="text"
-                  style={{ height: "52px" }}
-                  placeholder="discription"
+                <Input.TextArea
+                  // Adjust the number of visible rows as needed
+
+                  style={{ resize: "none" }} // Optional: Prevents resizing
+                  placeholder="Enter description"
                 />
               </Form.Item>
               <Form.Item

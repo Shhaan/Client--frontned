@@ -6,16 +6,18 @@ import routes from "../../Functions/routes";
 import { axiosInstance } from "../../Functions/axios";
 import toast from "react-hot-toast";
 import InfiniteScroll from "react-infinite-scroll-component";
+import dayjs from "dayjs";
 
 const SalesReport = () => {
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
+  const [startDate, setStartDate] = useState(dayjs().format("YYYY-MM-DD"));
+  const [endDate, setEndDate] = useState(dayjs().format("YYYY-MM-DD"));
   const [ordertype, setordertype] = useState("");
   const [paymenttype, setpayment] = useState("");
   const [nextpage, setNextPage] = useState(null);
   const [loading, setLoading] = useState(false);
   const [orders, setorders] = useState([]);
   const [side, setside] = useState(false);
+  const [filer, setfilter] = useState(false);
 
   // Initial Data Fetch
   useEffect(() => {
@@ -26,6 +28,7 @@ const SalesReport = () => {
           headers: {
             Authorization: `Token ${localStorage.getItem("token") || ""}`,
           },
+          params: { startDate, endDate, ordertype, paymenttype },
         });
         if (response.status === 200) {
           setorders(response.data?.results);
@@ -39,30 +42,7 @@ const SalesReport = () => {
       }
     };
     salesreport();
-  }, []);
-
-  const handleGenerateReport = async (e) => {
-    e.preventDefault();
-    try {
-      setLoading(true);
-      const response = await axiosInstance.get("invoice/sales-report/", {
-        headers: {
-          Authorization: `Token ${localStorage.getItem("token")}`,
-        },
-        params: { startDate, endDate, ordertype, paymenttype },
-      });
-      if (response.status === 200) {
-        setorders(response.data?.results);
-        setNextPage(response?.data?.next);
-        toast.success("Report generated successfully!");
-      }
-    } catch (error) {
-      toast.error("Failed to generate report.");
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  }, [filer]);
 
   const handlepage = async () => {
     if (!nextpage) return;
@@ -162,7 +142,7 @@ const SalesReport = () => {
 
             <div className="col-md-2 mb-3" style={{ marginTop: "32px" }}>
               <button
-                onClick={(e) => handleGenerateReport(e)}
+                onClick={(e) => setfilter((i) => !i)}
                 className="btn btn-primary"
               >
                 Generate Report

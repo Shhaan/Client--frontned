@@ -34,6 +34,7 @@ function Dashboard() {
               name: data.message.name,
               as_peace: data.message.as_piece,
               is_available: data.message.is_available,
+              SortOrder: data?.message.sort_order || 0,
             };
 
             // Check if there's an image in the response
@@ -78,6 +79,7 @@ function Dashboard() {
     formData.append("as_piece", values.as_peace);
     formData.append("name", values.name);
     formData.append("is_available", initialValues.is_available);
+    formData.append("sort_order", values.SortOrder);
 
     formData.append("id", id);
     console.log(imageFileList);
@@ -158,6 +160,20 @@ function Dashboard() {
                 <Input style={{ height: "52px" }} placeholder="Name" />
               </Form.Item>
 
+              <Form.Item
+                name="SortOrder"
+                label="Sort Order"
+                rules={[{ required: true, message: "Sort order is required" }]}
+                labelCol={{ span: 24 }}
+                wrapperCol={{ span: 24 }}
+                className={style.inputofadd}
+              >
+                <Input
+                  type="number"
+                  style={{ height: "52px" }}
+                  placeholder="Sort Order"
+                />
+              </Form.Item>
               <Form.Item name="as_peace" valuePropName="checked">
                 <Checkbox>As Piece</Checkbox>
               </Form.Item>

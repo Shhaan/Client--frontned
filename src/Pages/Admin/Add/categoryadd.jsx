@@ -36,6 +36,7 @@ function Dashboard() {
 
     formData.append("name", values["Category name"]); // Correct access
     formData.append("as_peace", values.as_peace); // Access checkbox correctly
+    formData.append("sort_order", values.SortOrder);
 
     try {
       const token = localStorage.getItem("token");
@@ -111,6 +112,21 @@ function Dashboard() {
               </Form.Item>
               <Form.Item name="as_peace" valuePropName="checked">
                 <Checkbox>As Peace</Checkbox>
+              </Form.Item>
+
+              <Form.Item
+                name="SortOrder"
+                label="Sort Order"
+                rules={[{ required: true, message: "Sort order is required" }]}
+                labelCol={{ span: 24 }}
+                wrapperCol={{ span: 24 }}
+                className={style.inputofadd}
+              >
+                <Input
+                  type="number"
+                  style={{ height: "52px" }}
+                  placeholder="Sort Order"
+                />
               </Form.Item>
               <Form.Item
                 name="image"

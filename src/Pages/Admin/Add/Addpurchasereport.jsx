@@ -26,7 +26,7 @@ function Dashboard() {
   const [side, setside] = useState(false);
   const [category, setcategory] = useState([]);
   const [customizationItems, setCustomizationItems] = useState([
-    { Product: "", Quantity: 0, Price: 0 },
+    { Product: "" },
   ]); // State for customization items
   const navigate = useNavigate();
   const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
@@ -91,6 +91,16 @@ function Dashboard() {
         return acc + item.Price * item.Quantity;
       }, 0) - credit
     );
+
+    if (
+      credit >
+      customizationItems.reduce((acc, item) => {
+        return acc + item.Price * item.Quantity;
+      }, 0)
+    ) {
+      toast.error("The credit paying amount must be less than total");
+      return;
+    }
 
     if (customizationItems.length <= 0) {
       toast.error("Must enter one product");
@@ -271,6 +281,17 @@ function Dashboard() {
                         >
                           Price
                         </th>
+
+                        <th
+                          style={{
+                            border: "1px solid #ddd",
+                            padding: "8px",
+                            textAlign: "left",
+                          }}
+                        >
+                          Sub total
+                        </th>
+
                         <th
                           style={{
                             border: "1px solid #ddd",
@@ -309,6 +330,7 @@ function Dashboard() {
                               placeholder={`Quantity ${index + 1}`}
                               value={item.Quantity}
                               type="number"
+                              step="0.01"
                               min={0}
                               onChange={(e) =>
                                 handleCustomizationChange(
@@ -326,6 +348,7 @@ function Dashboard() {
                               required
                               placeholder={`Price ${index + 1}`}
                               value={item.Price}
+                              step="0.01"
                               min={0}
                               type="number"
                               onChange={(e) =>
@@ -337,6 +360,21 @@ function Dashboard() {
                               }
                             />
                           </td>
+
+                          <td
+                            style={{ border: "1px solid #ddd", padding: "8px" }}
+                          >
+                            <Input
+                              placeholder={`0`}
+                              value={item.Price * item.Quantity}
+                              defaultValue={0}
+                              step="0.01"
+                              min={0}
+                              type="number"
+                              disabled
+                            />
+                          </td>
+
                           <td
                             style={{ border: "1px solid #ddd", padding: "8px" }}
                           >
@@ -385,6 +423,7 @@ function Dashboard() {
                   style={{ height: "52px" }}
                   type="number"
                   min={0}
+                  step="0.01"
                   max={customizationItems.reduce(
                     (acc, item) => acc + item.Price * item.Quantity,
                     0
@@ -411,27 +450,35 @@ function Dashboard() {
               <h6 className="text-end">
                 Pending amount:{" "}
                 {isNaN(
-                  customizationItems.reduce((acc, item) => {
-                    return acc + item.Price * item.Quantity;
-                  }, 0)
+                  customizationItems
+                    .reduce((acc, item) => {
+                      return acc + item.Price * item.Quantity;
+                    }, 0)
+                    .toFixed(2)
                 )
                   ? 0
-                  : customizationItems.reduce((acc, item) => {
-                      return acc + item.Price * item.Quantity;
-                    }, 0) - credit}
+                  : (
+                      customizationItems.reduce((acc, item) => {
+                        return acc + item.Price * item.Quantity;
+                      }, 0) - credit
+                    ).toFixed(2)}
               </h6>
               <h6 className="text-end">
                 {" "}
                 Total:{" "}
                 {isNaN(
-                  customizationItems.reduce((acc, item) => {
-                    return acc + item.Price * item.Quantity;
-                  }, 0)
+                  customizationItems
+                    .reduce((acc, item) => {
+                      return acc + item.Price * item.Quantity;
+                    }, 0)
+                    .toFixed(2)
                 )
                   ? 0
-                  : customizationItems.reduce((acc, item) => {
-                      return acc + item.Price * item.Quantity;
-                    }, 0)}
+                  : customizationItems
+                      .reduce((acc, item) => {
+                        return acc + item.Price * item.Quantity;
+                      }, 0)
+                      .toFixed(2)}
               </h6>
               <Form.Item>
                 <Button

@@ -1052,11 +1052,16 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 .productName {
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 500;
   color: white;
 }
 
+@media (max-width: 576px) {
+  .productName {
+    font-size: 9px;
+  }
+}
 .iconContainer {
   display: flex;
   align-items: center;
@@ -1443,4 +1448,51 @@ input[type="number"]::-webkit-inner-spin-button {
 
 .productName:hover {
   color: rgb(145, 145, 221);
+}
+
+.customerdetails {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 20px;
+  margin: 10px;
+  font-family: Arial, sans-serif;
+}
+
+.customername,
+.customerphone {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.customerinfo h2 {
+  margin: 5px 0;
+  font-size: 1rem;
+}
+
+.customerinfo {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid black;
+  margin-bottom: 35px;
+}
+.customerinfo strong {
+  font-weight: bold;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .customerdetails {
+    padding: 10px;
+  }
+
+  .customername,
+  .customerphone {
+    font-size: 1.2rem;
+  }
+
+  .customerinfo h2 {
+    font-size: 0.9rem;
+  }
 }
