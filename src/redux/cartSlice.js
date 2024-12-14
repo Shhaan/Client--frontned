@@ -36,10 +36,7 @@ const cartSlice = createSlice({
       state.totalPrice = state.items
         .reduce((acc, item) => acc + item.subtotal, 0)
         .toFixed(2);
-      state.totalItemsCount = state.items.reduce(
-        (acc, item) => acc + item.count,
-        0
-      );
+      state.totalItemsCount = state.items.reduce((acc, item) => acc + 1, 0);
     },
     Increasecount: (state, action) => {
       const existingItem = state.items.find(
@@ -60,10 +57,7 @@ const cartSlice = createSlice({
       state.totalPrice = state.items
         .reduce((acc, item) => acc + item.subtotal, 0)
         .toFixed(2);
-      state.totalItemsCount = state.items.reduce(
-        (acc, item) => acc + item.count,
-        0
-      );
+      state.totalItemsCount = state.items.reduce((acc, item) => acc + 1, 0);
     },
     Decreasecount: (state, action) => {
       const existingItem = state.items.find(
@@ -84,10 +78,7 @@ const cartSlice = createSlice({
       state.totalPrice = state.items
         .reduce((acc, item) => acc + item.subtotal, 0)
         .toFixed(2);
-      state.totalItemsCount = state.items.reduce(
-        (acc, item) => acc + item.count,
-        0
-      );
+      state.totalItemsCount = state.items.reduce((acc, item) => acc + 1, 0);
     },
     RemoveItem: (state, action) => {
       state.items = state.items.filter(
@@ -103,10 +94,7 @@ const cartSlice = createSlice({
       state.totalPrice = state.items
         .reduce((acc, item) => acc + item.subtotal, 0)
         .toFixed(2);
-      state.totalItemsCount = state.items.reduce(
-        (acc, item) => acc + item.count,
-        0
-      );
+      state.totalItemsCount = state.items.reduce((acc, item) => acc + 1, 0);
     },
     removecart: (state) => {
       state.totalItemsCount = 0;
