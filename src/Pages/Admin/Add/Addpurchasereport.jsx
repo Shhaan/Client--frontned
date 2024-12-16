@@ -366,7 +366,7 @@ function Dashboard() {
                           >
                             <Input
                               placeholder={`0`}
-                              value={item.Price * item.Quantity}
+                              value={(item.Price * item.Quantity).toFixed(2)}
                               defaultValue={0}
                               step="0.01"
                               min={0}

@@ -89,6 +89,8 @@ function Dashboard() {
         setInvoiceData((prevData) =>
           prevData.filter((item) => item.id !== orderId)
         );
+        fetchcustomer();
+
         toast.success("Order deleted successfully!");
       } else {
         throw new Error("Failed to delete order");
