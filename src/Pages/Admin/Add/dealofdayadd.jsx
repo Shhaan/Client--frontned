@@ -123,13 +123,20 @@ function Dashboard() {
                   <Select
                     placeholder="Select a product"
                     style={{ width: "100%" }}
+                    showSearch
+                    optionFilterProp="children"
+                    filterOption={(input, option) =>
+                      option?.children
+                        .toLowerCase()
+                        .includes(input.toLowerCase())
+                    }
                   >
                     {product.map((product, i) => (
                       <Select.Option
                         key={product.product_id}
                         value={product.product_id}
                       >
-                        {product.name} ({product.code}) ({product.price})
+                        {`${product.name} (${product.code}) (${product.price})`}
                       </Select.Option>
                     ))}
                   </Select>

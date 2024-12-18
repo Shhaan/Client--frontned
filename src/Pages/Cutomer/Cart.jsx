@@ -168,13 +168,13 @@ const Cart = () => {
       }
 
       form = {
-        Order_type: "Home delivery",
+        PaymentType: deliveryform.paymentType,
 
+        Order_type: "Home delivery",
         Date:
           timeandtype.deliverytype +
           (timeandtype.deliverytype == "Now" ? `` : `(${timeandtype.date})`),
         Slot: timeandtype.time,
-        PaymentType: deliveryform.paymentType,
         Name: deliveryform.name,
         Phone: deliveryform.phone,
         Building: deliveryform.building,
@@ -211,7 +211,9 @@ const Cart = () => {
     const formDetails = Object.entries(form)
       .filter(([key, value]) => value && value != "")
       .map(([key, value]) => {
-        const lineBreak = ["Order_type", "Slot"].includes(key) ? "%0A" : "";
+        const lineBreak = ["PaymentType", "Order_type", "Slot"].includes(key)
+          ? "%0A"
+          : "";
         return `${encodeURIComponent(key)}: ${encodeURIComponent(
           value
         )}${lineBreak}`;

@@ -278,6 +278,7 @@ function Dashboard() {
                     <Input
                       style={{ height: "52px" }}
                       placeholder="Building"
+                      type="number"
                       onKeyDown={(e) => handleKeyPress(e, locationInputRef)}
                     />
                   </Form.Item>
@@ -309,6 +310,7 @@ function Dashboard() {
                       ref={streetInputRef}
                       style={{ height: "52px" }}
                       placeholder="Street"
+                      type="number"
                       onKeyDown={(e) => handleKeyPress(e, zoneInputRef)}
                     />
                   </Form.Item>
@@ -320,6 +322,7 @@ function Dashboard() {
                     className={style.inputofadd}
                   >
                     <Input
+                      type="number"
                       ref={zoneInputRef}
                       style={{ height: "52px" }}
                       placeholder="Zone"
